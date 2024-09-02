@@ -32,9 +32,9 @@ namespace Clases.Shared
 
         public DateTime FecNacimiento { get; set; }
 
-        private string _user;
+        private string _userName;
 
-        public string User { get; set; }
+        public string UserName { get; set; }
 
         private string _contraseña;
 
