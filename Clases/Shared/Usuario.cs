@@ -8,9 +8,9 @@ namespace Clases.Shared
 {
     public class Usuario
     {
-        private int _id;
+        private int _idUsu;
 
-        public int Id { get; set; }
+        public int IdUsu { get; set; }
 
         private string _nombre;
 
