@@ -9,6 +9,10 @@ namespace Clases.Shared
 {
     public class Linea
     {
+        private int _numeroLinea;
+
+        public int NumeroLinea { get; set; }
+
         private int _cantidadPrenda;
 
         public int CantidadPrenda { get; set; }
