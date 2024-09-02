@@ -37,7 +37,11 @@ namespace Clases.Shared
         public string UserName { get; set; }
 
         private string _contraseña;
-
+       
         public string Contraseña { get; set; }
+
+        private string _tipoUsuario;
+
+        public string TipoUsuario { get; set; }
     }
 }
