@@ -7,7 +7,7 @@ using Domain.Model.Prendas;
 
 namespace Domain.Model.Shared
 {
-    public class Linea
+    public abstract class Linea
     {
         private int _numeroLinea;
 

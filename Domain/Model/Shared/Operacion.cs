@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Model.Shared
 {
-    public class Operacion
+    public abstract class Operacion
     {
         private int _idOperacion;
 

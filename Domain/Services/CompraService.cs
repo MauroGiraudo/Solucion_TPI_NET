@@ -1,12 +1,11 @@
 using Domain.Model.Compras;
 using ProgramaPrincipal;
-using OperacionService;
 
 namespace Domain.Services
 {
-    public class CompraService : OperacionService
+    public class CompraService
     {
-        public override void Add(Compra compra)
+        public  void Add(Compra compra)
         {
             using var context = new TiendaRopaContext();
 
@@ -14,25 +13,26 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public override void Update(Compra compra)
+        public  void Update(Compra compra)
         {
-            base.Update(compra);
             using var context = new TiendaRopaContext();
 
-            Compra? compraToUpdate = context.Compras.Find(compra.IdCompra);
+            Compra? compraToUpdate = context.Compras.Find(compra.IdOperacion);
 
             if (compraToUpdate != null)
             {
+                compraToUpdate.FecOperacion = compra.FecOperacion;
+                compraToUpdate.EstadoOperacion = compra.EstadoOperacion;
                 compraToUpdate.Cliente = compra.Cliente;
                 context.SaveChanges();
             }
         }
 
-        public override void Delete(int idCompra)
+        public  void Delete(int IdOperacion)
         {
             using var context = new TiendaRopaContext();
 
-            Compra? compraToDelete = context.Compras.Find(compra.IdCompra);
+            Compra? compraToDelete = context.Compras.Find(IdOperacion);
 
             if (compraToDelete != null)
             {
@@ -41,13 +41,13 @@ namespace Domain.Services
             }
         }
 
-        public override Compra? GetOne(int idCompra)
+        public  Compra? GetOne(int IdOperacion)
         {
             using var context = new TiendaRopaContext();
-            return context.Compras.Find(IdCompra);
+            return context.Compras.Find(IdOperacion);
         }
 
-        public override IEnumerable<Compra> FindAll()
+        public  IEnumerable<Compra> FindAll()
         {
             using var context = new TiendaRopaContext();
             return context.Compras.ToList();

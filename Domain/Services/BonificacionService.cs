@@ -28,11 +28,11 @@ namespace Domain.Services
             }
         }
 
-        public void Delete(int idBonificacion)
+        public void Delete(int IdBonificacion)
         {
             using var context = new TiendaRopaContext();
 
-            Bonificacion? bonificacionToDelete = context.Bonificaciones.Find(bonificacion.IdBonificacion);
+            Bonificacion? bonificacionToDelete = context.Bonificaciones.Find(IdBonificacion);
 
             if (bonificacionToDelete != null)
             {
@@ -41,7 +41,7 @@ namespace Domain.Services
             }
         }
 
-        public Bonificacion? GetOne(int idBonificacion)
+        public Bonificacion? GetOne(int IdBonificacion)
         {
             using var context = new TiendaRopaContext();
             return context.Bonificaciones.Find(IdBonificacion);
