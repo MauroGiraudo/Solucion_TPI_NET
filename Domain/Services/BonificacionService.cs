@@ -1,5 +1,4 @@
 using Domain.Model.Compras;
-using ProgramaPrincipal;
 
 namespace Domain.Services
 {

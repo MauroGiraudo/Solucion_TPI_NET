@@ -1,5 +1,4 @@
 ﻿using Domain.Model.Cargas;
-using ProgramaPrincipal;
 
 namespace Domain.Services
 {

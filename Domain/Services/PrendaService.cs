@@ -1,5 +1,4 @@
 ﻿using Domain.Model.Prendas;
-using ProgramaPrincipal;
 
 namespace Domain.Services
 {

@@ -262,9 +262,9 @@
             // 
             pnl_logo.BackColor = Color.Transparent;
             pnl_logo.BackgroundImage = (Image)resources.GetObject("pnl_logo.BackgroundImage");
-            pnl_logo.Location = new Point(781, 12);
+            pnl_logo.Location = new Point(793, 0);
             pnl_logo.Name = "pnl_logo";
-            pnl_logo.Size = new Size(93, 93);
+            pnl_logo.Size = new Size(93, 104);
             pnl_logo.TabIndex = 19;
             // 
             // form_Registro

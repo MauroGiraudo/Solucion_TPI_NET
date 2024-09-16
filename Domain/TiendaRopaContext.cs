@@ -3,10 +3,11 @@ using Domain.Model.Usuarios;
 using Domain.Model.Prendas;
 using Domain.Model.Compras;
 using Domain.Model.Cargas;
+using Domain.Model.Shared;
 
-namespace ProgramaPrincipal
+namespace Domain
 {
-    internal class TiendaRopaContext : DbContext
+    public class TiendaRopaContext : DbContext
     {
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Empleado> Empleados { get; set; }
@@ -23,6 +24,10 @@ namespace ProgramaPrincipal
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=.\\SQLEXPRESS;Initial Catalog=Tienda_Ropa;Integrated Security=true;Trusted_Connection=true;TrustServerCertificate=True");
+        }
+
+        public TiendaRopaContext(DbContextOptions<TiendaRopaContext> options) : base(options)
+        {
         }
 
         public TiendaRopaContext()
