@@ -12,11 +12,11 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public void Update(LineaCompra lineaCompra, int IdOperacion)
+        public void Update(LineaCompra lineaCompra, int NumeroLinea, int IdOperacion)
         {
             using var context = new TiendaRopaContext();
 
-            LineaCompra? lineaCompraToUpdate = context.LineasCompra.Find(lineaCompra.NumeroLinea, IdOperacion);
+            LineaCompra? lineaCompraToUpdate = context.LineasCompra.Find(lineaCompra.NumeroLinea, lineaCompra.Compra.IdOperacion);
 
             if (lineaCompraToUpdate != null)
             {
