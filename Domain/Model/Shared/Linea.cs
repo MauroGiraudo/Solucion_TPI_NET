@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,15 +10,12 @@ namespace Domain.Model.Shared
 {
     public abstract class Linea
     {
-        private int _numeroLinea;
-
+        [Key]
         public int NumeroLinea { get; set; }
-
-        private int _cantidadPrenda;
 
         public int CantidadPrenda { get; set; }
 
-        private Prenda _prenda;
+        public int IdPrenda { get; set; }
 
         public Prenda Prenda { get; set; }
     }

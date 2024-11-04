@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,19 +9,12 @@ namespace Domain.Model.Compras
 {
     public class Bonificacion
     {
-        private int _idBonificacion;
-
+        [Key]
         public int IdBonificacion { get; set; }
-
-        private int _cantidadParaDescuento;
 
         public int CantidadParaDescuento { get; set; }
 
-        private float _proporcionDescuento;
-
         public float ProporcionDescuento { get; set; }
-
-        private DateTime _fecVigenciaBonificacion;
 
         public DateTime FecVigenciaBonificacion { get; set; }
     }

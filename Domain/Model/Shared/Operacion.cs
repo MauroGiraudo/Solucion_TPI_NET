@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,15 +9,10 @@ namespace Domain.Model.Shared
 {
     public abstract class Operacion
     {
-        private int _idOperacion;
-
+        [Key]
         public int IdOperacion { get; set; }
 
-        private DateTime _fecOperacion;
-
         public DateTime FecOperacion { get; set; }
-
-        private string _estadoOperacion;
 
         public string EstadoOperacion { get; set; }
     }

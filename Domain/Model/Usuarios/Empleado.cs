@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Model.Cargas;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Model.Usuarios
 {
     public class Empleado : Usuario
     {
-        private List<Carga> _cargas = new List<Carga>();
-
+        [Key]
         public List<Carga> Cargas { get; set; }
     }
 }

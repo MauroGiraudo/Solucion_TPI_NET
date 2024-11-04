@@ -136,19 +136,19 @@
             // remerasToolStripMenuItem
             // 
             remerasToolStripMenuItem.Name = "remerasToolStripMenuItem";
-            remerasToolStripMenuItem.Size = new Size(163, 26);
+            remerasToolStripMenuItem.Size = new Size(224, 26);
             remerasToolStripMenuItem.Text = "Remeras";
             // 
             // pantalonesToolStripMenuItem
             // 
             pantalonesToolStripMenuItem.Name = "pantalonesToolStripMenuItem";
-            pantalonesToolStripMenuItem.Size = new Size(163, 26);
+            pantalonesToolStripMenuItem.Size = new Size(224, 26);
             pantalonesToolStripMenuItem.Text = "Pantalones";
             // 
             // buzosToolStripMenuItem
             // 
             buzosToolStripMenuItem.Name = "buzosToolStripMenuItem";
-            buzosToolStripMenuItem.Size = new Size(163, 26);
+            buzosToolStripMenuItem.Size = new Size(224, 26);
             buzosToolStripMenuItem.Text = "Abrigo";
             // 
             // calzadoToolStripMenuItem
@@ -236,7 +236,7 @@
             iconMiCuenta.Name = "iconMiCuenta";
             iconMiCuenta.Padding = new Padding(5, 0, 1, 0);
             iconMiCuenta.RightToLeft = RightToLeft.Yes;
-            iconMiCuenta.Size = new Size(80, 70);
+            iconMiCuenta.Size = new Size(152, 70);
             iconMiCuenta.Text = "Cuenta";
             iconMiCuenta.TextImageRelation = TextImageRelation.ImageAboveText;
             // 

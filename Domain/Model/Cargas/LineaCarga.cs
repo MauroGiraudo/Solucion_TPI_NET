@@ -1,6 +1,7 @@
 ﻿using Domain.Model.Shared;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,8 +10,9 @@ namespace Domain.Model.Cargas
 {
     public class LineaCarga : Linea
     {
-        private Carga _carga;
-
+        [Key]
+        public int IdUsu { get; set; }
+        public int IdOperacion { get; set; }
         public Carga Carga { get; set; }
     }
 }

@@ -25,17 +25,12 @@ namespace Domain.Services
             }
         }
 
-        public void Delete(int idTipoPrenda)
+        public void Delete(TipoPrenda tipoPrenda)
         {
             using var context = new TiendaRopaContext();
 
-            TipoPrenda? tipoPrendaToDelete = context.TiposPrenda.Find(idTipoPrenda);
-
-            if (tipoPrendaToDelete != null)
-            {
-                context.TiposPrenda.Remove(tipoPrendaToDelete);
-                context.SaveChanges();
-            }
+            context.TiposPrenda.Remove(tipoPrenda);
+            context.SaveChanges();
         }
 
         public TipoPrenda? GetOne(int idTipoPrenda)

@@ -25,17 +25,12 @@ namespace Domain.Services
             }
         }
 
-        public void Delete(int idMarca)
+        public void Delete(Marca marca)
         {
             using var context = new TiendaRopaContext();
 
-            Marca? marcaToDelete = context.Marcas.Find(idMarca);
-
-            if (marcaToDelete != null)
-            {
-                context.Marcas.Remove(marcaToDelete);
-                context.SaveChanges();
-            }
+            context.Marcas.Remove(marca);
+            context.SaveChanges();
         }
 
         public Marca? GetOne(int idMarca)

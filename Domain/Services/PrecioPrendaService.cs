@@ -7,6 +7,7 @@ namespace Domain.Services
         public void Add(PrecioPrenda precioPrenda)
         {
             using var context = new TiendaRopaContext();
+
             context.PreciosPrenda.Add(precioPrenda);
             context.SaveChanges();
         }
@@ -22,15 +23,12 @@ namespace Domain.Services
             }
         }
 
-        public void Delete(int idPrenda, DateTime fecVigencia)
+        public void Delete(PrecioPrenda precioPrenda)
         {
             using var context = new TiendaRopaContext();
-            PrecioPrenda? precioPrendaToDelete = context.PreciosPrenda.Find(idPrenda, fecVigencia);
-            if (precioPrendaToDelete != null)
-            {
-                context.PreciosPrenda.Remove(precioPrendaToDelete);
-                context.SaveChanges();
-            }
+
+            context.PreciosPrenda.Remove(precioPrenda);
+            context.SaveChanges();
         }
 
         public PrecioPrenda? GetOne(int idPrenda, DateTime fecVigencia)

@@ -7,6 +7,7 @@ namespace Domain.Services {
         public void Add(Cliente cliente)
         {
             using var context = new TiendaRopaContext();
+
             context.Clientes.Add(cliente);
             context.SaveChanges();
         }
@@ -19,7 +20,6 @@ namespace Domain.Services {
 
             if (clienteToUpdate != null)
             {
-                context.Entry(clienteToUpdate).State = EntityState.Modified;
                 clienteToUpdate.Nombre = cliente.Nombre;
                 clienteToUpdate.Apellido = cliente.Apellido;
                 clienteToUpdate.Email = cliente.Email;
@@ -31,24 +31,18 @@ namespace Domain.Services {
             }
         }
 
-        public bool Delete(int IdUsu)
+        public void Delete(Cliente cliente)
         {
             using var context = new TiendaRopaContext();
 
-            Cliente? cargaToDelete = context.Clientes.Find(IdUsu);
-
-            if (cargaToDelete == null)
-            {
-                return false;
-            }
-            context.Clientes.Remove(cargaToDelete);
+            context.Clientes.Remove(cliente);
             context.SaveChanges();
-            return true;
         }
 
         public Cliente? GetOne(int IdUsu)
         {
             using var context = new TiendaRopaContext();
+
             return context.Clientes.Find(IdUsu);
         }
 

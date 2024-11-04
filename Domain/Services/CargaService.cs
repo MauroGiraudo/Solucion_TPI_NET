@@ -27,17 +27,13 @@ namespace Domain.Services
             }
         }
 
-        public  void Delete(int IdOperacion)
+        public  void Delete(Carga carga)
         {
             using var context = new TiendaRopaContext();
 
-            Carga? cargaToDelete = context.Cargas.Find(IdOperacion);
-
-            if (cargaToDelete != null)
-            {
-                context.Cargas.Remove(cargaToDelete);
-                context.SaveChanges();
-            }
+            context.Cargas.Remove(carga);
+            context.SaveChanges();
+            
         }
 
         public  Carga? GetOne(int IdOperacion)

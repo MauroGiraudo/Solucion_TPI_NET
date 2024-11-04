@@ -12,16 +12,12 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public void Delete(int idPrenda)
+        public void Delete(Prenda prenda)
         {
             using var context = new TiendaRopaContext();
 
-            Prenda? prendaToDelete = context.Prendas.Find(idPrenda);
-            if (prendaToDelete != null)
-            {
-                context.Prendas.Remove(prendaToDelete);
-                context.SaveChanges();
-            }
+            context.Prendas.Remove(prenda);
+            context.SaveChanges();
         }
 
         public void Update(Prenda prenda)

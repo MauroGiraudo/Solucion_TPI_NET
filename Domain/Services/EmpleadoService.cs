@@ -30,17 +30,12 @@ namespace Domain.Services
             }
         }
 
-        public void Delete(int IdUsu)
+        public void Delete(Empleado empleado)
         {
             using var context = new TiendaRopaContext();
 
-            Empleado? cargaToDelete = context.Empleados.Find(IdUsu);
-
-            if (cargaToDelete != null)
-            {
-                context.Empleados.Remove(cargaToDelete);
-                context.SaveChanges();
-            }
+            context.Empleados.Remove(empleado);
+            context.SaveChanges();
         }
 
         public Empleado? GetOne(int IdUsu)

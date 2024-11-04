@@ -27,17 +27,12 @@ namespace Domain.Services
             }
         }
 
-        public  void Delete(int IdOperacion)
+        public  void Delete(Compra compra)
         {
             using var context = new TiendaRopaContext();
 
-            Compra? compraToDelete = context.Compras.Find(IdOperacion);
-
-            if (compraToDelete != null)
-            {
-                context.Compras.Remove(compraToDelete);
-                context.SaveChanges();
-            }
+            context.Compras.Remove(compra);
+            context.SaveChanges();
         }
 
         public  Compra? GetOne(int IdOperacion)

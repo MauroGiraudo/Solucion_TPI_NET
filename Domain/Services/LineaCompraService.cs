@@ -12,7 +12,7 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public void Update(LineaCompra lineaCompra, int NumeroLinea, int IdOperacion)
+        public void Update(LineaCompra lineaCompra)
         {
             using var context = new TiendaRopaContext();
 
@@ -27,17 +27,12 @@ namespace Domain.Services
             }
         }
 
-        public void Delete(int NumeroLinea, int IdOperacion)
+        public void Delete(LineaCompra lineaCompra)
         {
             using var context = new TiendaRopaContext();
 
-            LineaCompra? lineaCompraToDelete = context.LineasCompra.Find(NumeroLinea, IdOperacion);
-
-            if (lineaCompraToDelete != null)
-            {
-                context.LineasCompra.Remove(lineaCompraToDelete);
-                context.SaveChanges();
-            }
+            context.LineasCompra.Remove(lineaCompra);
+            context.SaveChanges();
         }
 
         public LineaCompra? GetOne(int NumeroLinea, int IdOperacion)
