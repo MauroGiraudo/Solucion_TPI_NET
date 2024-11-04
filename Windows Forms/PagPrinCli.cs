@@ -11,29 +11,34 @@ using FontAwesome.Sharp;
 
 namespace Windows_Forms
 {
-    public partial class FormPagPrinCli : Form
+    public partial class FormPagPrin : Form
     {
         private static IconMenuItem MenuActivo = null;
         private static Form FormularioActivo = null;
-        public FormPagPrinCli()
+        public enum TipoUsuario
+        {
+            Administrador,
+            Usuario,
+        }
+        public TipoUsuario TipoDeUsuarioActual { get; set; }
+        public enum TipoPrenda
+        {
+            Ropa,
+            Calzado,
+            Accesorio,
+        }
+        public TipoPrenda TipoPrendaElegido { get; set; }
+
+        public FormPagPrin()
         {
             InitializeComponent();
+            TipoDeUsuarioActual = TipoUsuario.Administrador;
         }
-
-        private void gb_Header_Enter(object sender, EventArgs e)
+        private void FormPagPrin_Load(object sender, EventArgs e)
         {
-
+            VistaSegunUsuario();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -45,9 +50,20 @@ namespace Windows_Forms
 
         }
 
-        private void FormPagPrinCli_Load(object sender, EventArgs e)
+        public void  AbrirFormulario(Form formulario)
         {
+            if (FormularioActivo != null)
+            {
+                FormularioActivo.Close();
+            }
 
+            FormularioActivo = formulario;
+            formulario.TopLevel = false;
+            formulario.FormBorderStyle = FormBorderStyle.None;
+            formulario.Dock = DockStyle.Fill;
+            formulario.BackColor = Color.Purple;
+            pnl_Body.Controls.Add(formulario);
+            formulario.Show();
         }
 
         private void AbrirFormulario(IconMenuItem menu, Form formulario)
@@ -72,46 +88,76 @@ namespace Windows_Forms
             formulario.Show();
 
         }
+        
 
-        private void ofertasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void imi_ofertas_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(iconPrendas, new FrmOferta());
+            AbrirFormulario(imi_prendas, new FrmOferta());
         }
 
-        private void ropaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void msi_ropa_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(iconPrendas, new FrmRopa());
+            AbrirFormulario(imi_prendas, new FrmRopa());
         }
 
-        private void calzadoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void msi_calzado_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(iconPrendas, new FrmCalzado());
+            AbrirFormulario(imi_prendas, new FrmCalzado());
         }
 
-        private void accesoriosToolStripMenuItem_Click(object sender, EventArgs e)
+        private void msi_accesorios_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(iconPrendas, new FrmAccesorio());
+            AbrirFormulario(imi_prendas, new FrmAccesorio());
         }
 
-        private void iconInfo_Click(object sender, EventArgs e)
+        private void imi_info_Click(object sender, EventArgs e)
         {
             AbrirFormulario((IconMenuItem)sender, new FrmInfo());
         }
 
-        private void iconCarrito_Click(object sender, EventArgs e)
+        private void imi_carrito_Click(object sender, EventArgs e)
         {
             AbrirFormulario((IconMenuItem)sender, new FrmCarrito());
         }
 
-        private void misComprasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void msi_misCompras_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(iconMiCuenta, new FrmCompras());
+            AbrirFormulario(imi_miCuenta, new FrmCompras());
 
         }
 
-        private void miCuentaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void msi_miCuenta_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(iconMiCuenta, new FrmMiCuenta());
+            AbrirFormulario(imi_miCuenta, new FrmMiCuenta());
         }
+
+        private void VistaSegunUsuario()
+        {
+            switch (TipoDeUsuarioActual)
+            {
+                case TipoUsuario.Usuario:
+                    imi_usuarios.Dispose();
+                    imi_productos.Dispose();
+                    break;
+                case TipoUsuario.Administrador:
+                    imi_carrito.Dispose();
+                    imi_prendas.Dispose();
+                    imi_info.Dispose();
+                    msi_misCompras.Dispose();
+                    break;
+            }
+        }
+
+        private void msi_verProductos_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(imi_miCuenta, new FrmProductos("ver"));
+        }
+
+        private void msi_agrStock_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(imi_miCuenta, new FrmProductos(this,"agregar"));
+        }
+
+     
     }
 }
