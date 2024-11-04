@@ -38,6 +38,14 @@ namespace WebAPI.Controllers
                 return _mService;
             }
         }
+        private PrecioPrendaService _ppService = new PrecioPrendaService();
+        public PrecioPrendaService PPService
+        {
+            get
+            {
+                return _ppService;
+            }
+        }
 
         [HttpGet(Name = "GetPrendas")]
         public ActionResult<IEnumerable<Prenda>> GetAll()
@@ -66,7 +74,7 @@ namespace WebAPI.Controllers
             }
 
             var result = PrendaValidation.Parse(Service, prenda);
-            if(result != null)
+            if (result != null)
             {
                 return BadRequest(result);
             }
@@ -95,7 +103,7 @@ namespace WebAPI.Controllers
             }
 
             var result = PrendaValidation.Parse(Service, prenda);
-            if(result != null)
+            if (result != null)
             {
                 return BadRequest(result);
             }
