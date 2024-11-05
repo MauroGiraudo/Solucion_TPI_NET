@@ -24,7 +24,9 @@ namespace Domain
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Definimos la cadena de conexión a la base de datos
-            optionsBuilder.UseSqlServer(@"Server=MAUROG;Initial Catalog=Tienda_Ropa;Integrated Security=true;Trusted_Connection=true;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer(@"Server=MAUROG;Initial Catalog=Tienda_Ropa;Integrated Security=true;Trusted_Connection=true;TrustServerCertificate=True", 
+                b => b.MigrationsAssembly("WebAPI")    
+            );
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

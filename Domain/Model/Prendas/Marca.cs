@@ -15,6 +15,6 @@ namespace Domain.Model.Prendas
 
         public string DescripcionMarca { get; set; }
 
-        public List<Prenda> Prendas { get; set; }
+        public List<Prenda>? Prendas { get; set; }
     }
 }

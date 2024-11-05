@@ -35,16 +35,19 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public  Compra? GetOne(int IdOperacion)
+        public  Compra? GetOne(int IdUsu, int IdOperacion)
         {
             using var context = new TiendaRopaContext();
-            return context.Compras.Find(IdOperacion);
+            return context.Compras.Find(IdUsu, IdOperacion);
         }
 
-        public  IEnumerable<Compra> FindAll()
+        public  IEnumerable<Compra> FindAll(int IdUsu)
         {
             using var context = new TiendaRopaContext();
-            return context.Compras.ToList();
+            var compras = context.Compras.ToList();
+            return from c in compras
+                   where c.IdUsu == IdUsu
+                   select c;
         }
     }
 }

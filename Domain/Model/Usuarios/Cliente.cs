@@ -12,6 +12,6 @@ namespace Domain.Model.Usuarios
     public class Cliente : Usuario
     {
         [Key]
-        public List<Compra> Compras { get; set; }
+        public List<Compra>? Compras { get; set; }
     }
 }

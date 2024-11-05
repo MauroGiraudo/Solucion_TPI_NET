@@ -36,16 +36,19 @@ namespace Domain.Services
             
         }
 
-        public  Carga? GetOne(int IdOperacion)
+        public  Carga? GetOne(int IdUsu, int IdOperacion)
         {
             using var context = new TiendaRopaContext();
-            return context.Cargas.Find(IdOperacion);
+            return context.Cargas.Find(IdUsu, IdOperacion);
         }
 
-        public  IEnumerable<Carga> FindAll()
+        public  IEnumerable<Carga> FindAll(int IdUsu)
         {
             using var context = new TiendaRopaContext();
-            return context.Cargas.ToList();
+            var cargas = context.Cargas.ToList();
+            return from c in cargas
+                   where c.IdUsu == IdUsu
+                   select c;
         }
     }
 }

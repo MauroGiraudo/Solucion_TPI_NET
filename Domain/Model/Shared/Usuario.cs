@@ -28,6 +28,6 @@ namespace Domain.Model.Shared
         public string Contrasenia { get; set; }
 
         [NotMapped]
-        public string TipoUsuario { get; set; }
+        public string? TipoUsuario { get; set; }
     }
 }

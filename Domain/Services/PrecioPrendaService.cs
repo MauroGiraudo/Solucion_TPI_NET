@@ -17,7 +17,7 @@ namespace Domain.Services
         public void Update(PrecioPrenda precioPrenda)
         {
             using var context = new TiendaRopaContext();
-            PrecioPrenda? precioPrendaToUpdate = context.PreciosPrenda.Find(precioPrenda.Prenda.IdPrenda, precioPrenda.FecVigencia);
+            PrecioPrenda? precioPrendaToUpdate = context.PreciosPrenda.Find(precioPrenda.IdPrenda, precioPrenda.FecVigencia);
             if (precioPrendaToUpdate != null)
             {
                 precioPrendaToUpdate.Valor = precioPrenda.Valor;
@@ -55,7 +55,7 @@ namespace Domain.Services
                 from p in precios
                 where p.FecVigencia <= fecha
                 select p.FecVigencia;
-            if (preciosFiltrados.Count() == 0)
+            if (!preciosFiltrados.Any())
             {
                 return null;
             }

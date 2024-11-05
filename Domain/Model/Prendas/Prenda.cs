@@ -26,12 +26,12 @@ namespace Domain.Model.Prendas
         
         public int IdTipoPrenda { get; set; }
 
-        public TipoPrenda TipoDePrenda { get; set; }
+        public TipoPrenda? TipoDePrenda { get; set; }
 
         public int IdMarca { get; set; }
-        public Marca MarcaPrenda { get; set; }
+        public Marca? MarcaPrenda { get; set; }
 
-        public List<PrecioPrenda> PreciosPrenda { get; set; }
+        public List<PrecioPrenda>? PreciosPrenda { get; set; }
 
         public List<LineaCompra>? LineasCompra { get; set; }
 

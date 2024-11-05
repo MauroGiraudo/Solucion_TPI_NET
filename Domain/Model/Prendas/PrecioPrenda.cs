@@ -12,7 +12,7 @@ namespace Domain.Model.Prendas
     {
         [Key]
         public int IdPrenda { get; set; }
-        public Prenda Prenda { get; set; }
+        public Prenda? Prenda { get; set; }
 
         public DateTime FecVigencia { get; set; }
 

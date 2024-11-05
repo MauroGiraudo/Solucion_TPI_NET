@@ -38,14 +38,6 @@ namespace WebAPI.Controllers
                 return _mService;
             }
         }
-        private PrecioPrendaService _ppService = new PrecioPrendaService();
-        public PrecioPrendaService PPService
-        {
-            get
-            {
-                return _ppService;
-            }
-        }
 
         [HttpGet(Name = "GetPrendas")]
         public ActionResult<IEnumerable<Prenda>> GetAll()
@@ -85,9 +77,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("La marca y/o el tipo de prenda ingresados son incorrectos");
             }
+            //Probar a eliminar la asignación de tipo y marca y probar
 
-            prenda.TipoDePrenda = tipoPrenda;
-            prenda.MarcaPrenda = marca;
+            /*prenda.TipoDePrenda = tipoPrenda;
+            prenda.MarcaPrenda = marca;*/
             Service.Add(prenda);
             return CreatedAtAction(nameof(GetById), new { Id = prenda.IdPrenda }, prenda);
 
