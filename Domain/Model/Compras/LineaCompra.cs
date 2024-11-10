@@ -12,8 +12,10 @@ namespace Domain.Model.Compras
     {
         [Key]
         public int IdUsu { get; set; }
+
+        [Key]
         public int IdOperacion { get; set; }
 
-        public Compra Compra { get; set; }
+        public Compra? Compra { get; set; }
     }
 }

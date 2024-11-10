@@ -14,6 +14,6 @@ namespace Domain.Model.Shared
 
         public DateTime FecOperacion { get; set; }
 
-        public string EstadoOperacion { get; set; }
+        public string? EstadoOperacion { get; set; }
     }
 }

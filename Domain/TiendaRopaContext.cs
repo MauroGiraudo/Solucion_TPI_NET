@@ -24,7 +24,9 @@ namespace Domain
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //Definimos la cadena de conexión a la base de datos
-            optionsBuilder.UseSqlServer(@"Server=MAUROG;Initial Catalog=Tienda_Ropa;Integrated Security=true;Trusted_Connection=true;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer(@"Server=MAUROG;Initial Catalog=Tienda_Ropa;Integrated Security=true;Trusted_Connection=true;TrustServerCertificate=True", 
+                b => b.MigrationsAssembly("WebAPI")    
+            );
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,8 +49,8 @@ namespace Domain
 
             //Definimos las claves primarias compuestas
             modelBuilder.Entity<PrecioPrenda>().HasKey(pp => new { pp.IdPrenda, pp.FecVigencia });
-            modelBuilder.Entity<LineaCompra>().HasKey(lc => new { lc.IdOperacion, lc.NumeroLinea });
-            modelBuilder.Entity<LineaCarga>().HasKey(lc => new { lc.IdOperacion, lc.NumeroLinea });
+            modelBuilder.Entity<LineaCompra>().HasKey(lc => new { lc.IdUsu, lc.IdOperacion, lc.NumeroLinea });
+            modelBuilder.Entity<LineaCarga>().HasKey(lc => new { lc.IdUsu, lc.IdOperacion, lc.NumeroLinea });
             modelBuilder.Entity<Compra>().HasKey(c => new { c.IdUsu, c.IdOperacion });
             modelBuilder.Entity<Carga>().HasKey(c => new { c.IdUsu, c.IdOperacion });
 

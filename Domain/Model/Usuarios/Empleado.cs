@@ -11,7 +11,6 @@ namespace Domain.Model.Usuarios
 {
     public class Empleado : Usuario
     {
-        [Key]
-        public List<Carga> Cargas { get; set; }
+        public List<Carga>? Cargas { get; set; }
     }
 }

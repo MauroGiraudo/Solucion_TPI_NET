@@ -17,6 +17,6 @@ namespace Domain.Model.Shared
 
         public int IdPrenda { get; set; }
 
-        public Prenda Prenda { get; set; }
+        public Prenda? Prenda { get; set; }
     }
 }

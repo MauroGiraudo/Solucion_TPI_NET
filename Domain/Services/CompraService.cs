@@ -12,19 +12,24 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public  void Update(Compra compra)
+        /*public  void Update(Compra compra)
         {
             using var context = new TiendaRopaContext();
 
-            Compra? compraToUpdate = context.Compras.Find(compra.IdOperacion);
+            Compra? compraToUpdate = context.Compras.Find(compra.IdUsu, compra.IdOperacion);
 
             if (compraToUpdate != null)
             {
-                compraToUpdate.FecOperacion = compra.FecOperacion;
                 compraToUpdate.EstadoOperacion = compra.EstadoOperacion;
-                compraToUpdate.Cliente = compra.Cliente;
                 context.SaveChanges();
             }
+        }*/
+
+        public void Update(Compra compra)
+        {
+            using var context = new TiendaRopaContext();
+            context.Entry(compra).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public  void Delete(Compra compra)
@@ -35,16 +40,19 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public  Compra? GetOne(int IdOperacion)
+        public  Compra? GetOne(int IdUsu, int IdOperacion)
         {
             using var context = new TiendaRopaContext();
-            return context.Compras.Find(IdOperacion);
+            return context.Compras.Find(IdUsu, IdOperacion);
         }
 
-        public  IEnumerable<Compra> FindAll()
+        public  IEnumerable<Compra> FindAll(int IdUsu)
         {
             using var context = new TiendaRopaContext();
-            return context.Compras.ToList();
+            var compras = context.Compras.ToList();
+            return from c in compras
+                   where c.IdUsu == IdUsu
+                   select c;
         }
     }
 }

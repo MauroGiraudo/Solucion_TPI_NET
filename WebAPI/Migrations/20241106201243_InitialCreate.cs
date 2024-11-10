@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Domain.Migrations
+namespace WebAPI.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -32,13 +32,15 @@ namespace Domain.Migrations
                 {
                     IdUsu = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    MediosDePago = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FecNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoUsuario = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,7 +59,8 @@ namespace Domain.Migrations
                     Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FecNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TipoUsuario = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,14 +172,14 @@ namespace Domain.Migrations
                 {
                     NumeroLinea = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdOperacion = table.Column<int>(type: "int", nullable: false),
                     IdUsu = table.Column<int>(type: "int", nullable: false),
+                    IdOperacion = table.Column<int>(type: "int", nullable: false),
                     CantidadPrenda = table.Column<int>(type: "int", nullable: false),
                     IdPrenda = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LineasCarga", x => new { x.IdOperacion, x.NumeroLinea });
+                    table.PrimaryKey("PK_LineasCarga", x => new { x.IdUsu, x.IdOperacion, x.NumeroLinea });
                     table.ForeignKey(
                         name: "FK_LineasCarga_Cargas_IdUsu_IdOperacion",
                         columns: x => new { x.IdUsu, x.IdOperacion },
@@ -197,14 +200,14 @@ namespace Domain.Migrations
                 {
                     NumeroLinea = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdOperacion = table.Column<int>(type: "int", nullable: false),
                     IdUsu = table.Column<int>(type: "int", nullable: false),
+                    IdOperacion = table.Column<int>(type: "int", nullable: false),
                     CantidadPrenda = table.Column<int>(type: "int", nullable: false),
                     IdPrenda = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LineasCompra", x => new { x.IdOperacion, x.NumeroLinea });
+                    table.PrimaryKey("PK_LineasCompra", x => new { x.IdUsu, x.IdOperacion, x.NumeroLinea });
                     table.ForeignKey(
                         name: "FK_LineasCompra_Compras_IdUsu_IdOperacion",
                         columns: x => new { x.IdUsu, x.IdOperacion },
@@ -244,19 +247,9 @@ namespace Domain.Migrations
                 column: "IdPrenda");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LineasCarga_IdUsu_IdOperacion",
-                table: "LineasCarga",
-                columns: new[] { "IdUsu", "IdOperacion" });
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LineasCompra_IdPrenda",
                 table: "LineasCompra",
                 column: "IdPrenda");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LineasCompra_IdUsu_IdOperacion",
-                table: "LineasCompra",
-                columns: new[] { "IdUsu", "IdOperacion" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Prendas_IdMarca",

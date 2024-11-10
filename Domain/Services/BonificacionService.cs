@@ -27,19 +27,12 @@ namespace Domain.Services
             }
         }
 
-        public bool Delete(int IdBonificacion)
+        public void Delete(Bonificacion bonificacion)
         {
             using var context = new TiendaRopaContext();
 
-            Bonificacion? bonificacionToDelete = context.Bonificaciones.Find(IdBonificacion);
-
-            if (bonificacionToDelete == null)
-            {
-                return false;
-            }
-            context.Bonificaciones.Remove(bonificacionToDelete);
+            context.Bonificaciones.Remove(bonificacion);
             context.SaveChanges();
-            return true;
         }
 
         public Bonificacion? GetOne(int IdBonificacion)

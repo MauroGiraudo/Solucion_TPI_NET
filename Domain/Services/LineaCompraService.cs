@@ -1,4 +1,5 @@
 ﻿using Domain.Model.Compras;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain.Services
 {
@@ -12,19 +13,25 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public void Update(LineaCompra lineaCompra)
+        /*public void Update(LineaCompra lineaCompra)
         {
             using var context = new TiendaRopaContext();
 
-            LineaCompra? lineaCompraToUpdate = context.LineasCompra.Find(lineaCompra.NumeroLinea, lineaCompra.Compra.IdOperacion);
+            LineaCompra? lineaCompraToUpdate = context.LineasCompra.Find(lineaCompra.NumeroLinea, lineaCompra.IdOperacion, lineaCompra.IdUsu);
 
             if (lineaCompraToUpdate != null)
             {
                 lineaCompraToUpdate.CantidadPrenda = lineaCompra.CantidadPrenda;
-                lineaCompraToUpdate.Prenda = lineaCompra.Prenda;
-                lineaCompraToUpdate.Compra = lineaCompra.Compra;
                 context.SaveChanges();
             }
+        }*/
+
+        public void Update(LineaCompra lineaCompra)
+        {
+            using var context = new TiendaRopaContext();
+
+            context.Entry(lineaCompra).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(LineaCompra lineaCompra)
@@ -35,16 +42,19 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public LineaCompra? GetOne(int NumeroLinea, int IdOperacion)
+        public LineaCompra? GetOne(int IdUsu, int IdOperacion, int NumeroLinea)
         {
             using var context = new TiendaRopaContext();
-            return context.LineasCompra.Find(NumeroLinea, IdOperacion);
+            return context.LineasCompra.Find(IdUsu, IdOperacion, NumeroLinea);
         }
 
-        public IEnumerable<LineaCompra> FindAll()
+        public IEnumerable<LineaCompra> FindAll(int IdUsu, int IdOperacion)
         {
             using var context = new TiendaRopaContext();
-            return context.LineasCompra.ToList();
+            var lineasDeCompra = context.LineasCompra.ToList();
+            return from lc in lineasDeCompra
+                   where lc.IdUsu == IdUsu && lc.IdOperacion == IdOperacion
+                   select lc;
         }
     }
 }

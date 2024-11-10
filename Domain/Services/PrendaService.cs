@@ -20,7 +20,7 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public void Update(Prenda prenda)
+        /*public void Update(Prenda prenda)
         {
             using var context = new TiendaRopaContext();
 
@@ -36,6 +36,13 @@ namespace Domain.Services
                 prendaToUpdate.MarcaPrenda = prenda.MarcaPrenda;
                 context.SaveChanges();
             }
+        }*/
+
+        public void Update(Prenda prenda)
+        {
+            using var context = new TiendaRopaContext();
+            context.Entry(prenda).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public Prenda? GetOne(int idPrenda)

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Domain.Migrations
+namespace WebAPI.Migrations
 {
     [DbContext(typeof(TiendaRopaContext))]
     partial class TiendaRopaContextModelSnapshot : ModelSnapshot
@@ -47,6 +47,9 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Model.Cargas.LineaCarga", b =>
                 {
+                    b.Property<int>("IdUsu")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdOperacion")
                         .HasColumnType("int");
 
@@ -62,14 +65,9 @@ namespace Domain.Migrations
                     b.Property<int>("IdPrenda")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsu")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdOperacion", "NumeroLinea");
+                    b.HasKey("IdUsu", "IdOperacion", "NumeroLinea");
 
                     b.HasIndex("IdPrenda");
-
-                    b.HasIndex("IdUsu", "IdOperacion");
 
                     b.ToTable("LineasCarga");
                 });
@@ -121,6 +119,9 @@ namespace Domain.Migrations
 
             modelBuilder.Entity("Domain.Model.Compras.LineaCompra", b =>
                 {
+                    b.Property<int>("IdUsu")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdOperacion")
                         .HasColumnType("int");
 
@@ -136,14 +137,9 @@ namespace Domain.Migrations
                     b.Property<int>("IdPrenda")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsu")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdOperacion", "NumeroLinea");
+                    b.HasKey("IdUsu", "IdOperacion", "NumeroLinea");
 
                     b.HasIndex("IdPrenda");
-
-                    b.HasIndex("IdUsu", "IdOperacion");
 
                     b.ToTable("LineasCompra");
                 });
@@ -262,12 +258,18 @@ namespace Domain.Migrations
                     b.Property<DateTime>("FecNacimiento")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MediosDePago")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoUsuario")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -308,6 +310,9 @@ namespace Domain.Migrations
 
                     b.Property<string>("Telefono")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoUsuario")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")

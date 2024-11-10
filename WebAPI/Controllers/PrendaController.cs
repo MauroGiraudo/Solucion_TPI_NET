@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
             }
 
             var result = PrendaValidation.Parse(Service, prenda);
-            if(result != null)
+            if (result != null)
             {
                 return BadRequest(result);
             }
@@ -77,9 +77,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("La marca y/o el tipo de prenda ingresados son incorrectos");
             }
+            //Probar a eliminar la asignación de tipo y marca y probar
 
-            prenda.TipoDePrenda = tipoPrenda;
-            prenda.MarcaPrenda = marca;
+            /*prenda.TipoDePrenda = tipoPrenda;
+            prenda.MarcaPrenda = marca;*/
             Service.Add(prenda);
             return CreatedAtAction(nameof(GetById), new { Id = prenda.IdPrenda }, prenda);
 
@@ -95,7 +96,7 @@ namespace WebAPI.Controllers
             }
 
             var result = PrendaValidation.Parse(Service, prenda);
-            if(result != null)
+            if (result != null)
             {
                 return BadRequest(result);
             }
