@@ -10,11 +10,11 @@ namespace WebAPI.Validations
             var empleados = service.FindAll();
             foreach(Empleado e in empleados)
             {
-                if(empleado.Email == e.Email)
+                if(empleado.IdUsu != e.IdUsu && empleado.Email == e.Email)
                 {
                     return "El E-mail ingresado ya se encuentra en uso";
                 }
-                if(empleado.UserName == e.UserName)
+                if(empleado.IdUsu != e.IdUsu && empleado.UserName == e.UserName)
                 {
                     return "El nombre de usuario ya se encuentra en uso";
                 }

@@ -49,8 +49,8 @@ namespace Domain
 
             //Definimos las claves primarias compuestas
             modelBuilder.Entity<PrecioPrenda>().HasKey(pp => new { pp.IdPrenda, pp.FecVigencia });
-            modelBuilder.Entity<LineaCompra>().HasKey(lc => new { lc.IdOperacion, lc.NumeroLinea });
-            modelBuilder.Entity<LineaCarga>().HasKey(lc => new { lc.IdOperacion, lc.NumeroLinea });
+            modelBuilder.Entity<LineaCompra>().HasKey(lc => new { lc.IdUsu, lc.IdOperacion, lc.NumeroLinea });
+            modelBuilder.Entity<LineaCarga>().HasKey(lc => new { lc.IdUsu, lc.IdOperacion, lc.NumeroLinea });
             modelBuilder.Entity<Compra>().HasKey(c => new { c.IdUsu, c.IdOperacion });
             modelBuilder.Entity<Carga>().HasKey(c => new { c.IdUsu, c.IdOperacion });
 

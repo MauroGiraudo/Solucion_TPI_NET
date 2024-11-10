@@ -13,8 +13,8 @@ namespace Domain.Model.Cargas
     {
         [Key]
         public int IdUsu { get; set; }
-        public Empleado Empleado { get; set; }
+        public Empleado? Empleado { get; set; }
     
-        public List<LineaCarga> LineasCarga { get; set; }
+        public List<LineaCarga>? LineasCarga { get; set; }
     }
 }

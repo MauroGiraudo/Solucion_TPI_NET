@@ -39,16 +39,12 @@ namespace WebAPI.Controllers
         public ActionResult<PrecioPrenda> Post(int IdPrenda, PrecioPrenda precioPrenda)
         {
             precioPrenda.IdPrenda = IdPrenda;
-            var precio = PPService.GetOne(precioPrenda.IdPrenda, precioPrenda.FecVigencia);
-            if (precio != null)
-            {
-                return BadRequest("Ya existe un precio para esta prenda en la fecha ingresada");
-            }
             var result = PrecioPrendaValidation.Parse(PPService, precioPrenda);
             if (result != null)
             {
                 return BadRequest(result);
             }
+            precioPrenda.FecVigencia = DateTime.Now;
             PPService.Add(precioPrenda);
             return CreatedAtAction(nameof(GetCurrentPrice), new { IdPrenda = precioPrenda.IdPrenda, FecVigencia = precioPrenda.FecVigencia }, precioPrenda);
         }

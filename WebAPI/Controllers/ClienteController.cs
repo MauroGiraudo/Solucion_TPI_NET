@@ -37,16 +37,12 @@ namespace WebAPI.Controllers
         [HttpPost]
         public ActionResult<Cliente> Post(Cliente cliente)
         {
-            var cli = Service.GetOne(cliente.IdUsu);
-            if(cli != null)
-            {
-                return BadRequest();
-            }
             var result = ClienteValidation.Parse(Service, cliente);
             if(result != null)
             {
                 return BadRequest(result);
             }
+            cliente.TipoUsuario = "Cliente";
             Service.Add(cliente);
             return CreatedAtAction(nameof(GetById), new { IdUsu = cliente.IdUsu }, cliente);
         }

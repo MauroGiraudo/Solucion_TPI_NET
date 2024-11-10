@@ -12,19 +12,24 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public void Update(LineaCarga lineaCarga)
+        /*public void Update(LineaCarga lineaCarga)
         {
             using var context = new TiendaRopaContext();
 
-            LineaCarga? lineaCargaToUpdate = context.LineasCarga.Find(lineaCarga.NumeroLinea, lineaCarga.Carga.IdOperacion);
+            LineaCarga? lineaCargaToUpdate = context.LineasCarga.Find(lineaCarga.NumeroLinea, lineaCarga.IdOperacion, lineaCarga.IdUsu);
 
             if (lineaCargaToUpdate != null)
             {
                 lineaCargaToUpdate.CantidadPrenda = lineaCarga.CantidadPrenda;
-                lineaCargaToUpdate.Prenda = lineaCarga.Prenda;
-                lineaCargaToUpdate.Carga = lineaCarga.Carga;
                 context.SaveChanges();
             }
+        }*/
+
+        public void Update(LineaCarga lineaCarga)
+        {
+            using var context = new TiendaRopaContext();
+            context.Entry(lineaCarga).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(LineaCarga lineaCarga)
@@ -35,16 +40,19 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public LineaCarga? GetOne(int NumeroLinea, int IdOperacion)
+        public LineaCarga? GetOne(int IdUsu, int IdOperacion, int NumeroLinea)
         {
             using var context = new TiendaRopaContext();
-            return context.LineasCarga.Find(NumeroLinea, IdOperacion);
+            return context.LineasCarga.Find(IdUsu, IdOperacion, NumeroLinea);
         }
 
-        public IEnumerable<LineaCarga> FindAll()
+        public IEnumerable<LineaCarga> FindAll(int IdUsu, int IdOperacion)
         {
             using var context = new TiendaRopaContext();
-            return context.LineasCarga.ToList();
+            var lineasDeCarga = context.LineasCarga.ToList();
+            return from lc in lineasDeCarga
+                   where lc.IdUsu == IdUsu && lc.IdOperacion == IdOperacion
+                   select lc;
         }
     }
 }

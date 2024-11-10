@@ -1,4 +1,5 @@
 ﻿using Domain.Model.Compras;
+using Domain.Model.Prendas;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Validations;
@@ -24,6 +25,24 @@ namespace WebAPI.Controllers
             get
             {
                 return _cservice;
+            }
+        }
+
+        private LineaCompraService _lcservice = new LineaCompraService();
+        public LineaCompraService LCService
+        {
+            get
+            {
+                return _lcservice;
+            }
+        }
+
+        private PrendaService _pservice = new PrendaService();
+        public PrendaService PService
+        {
+            get
+            {
+                return _pservice;
             }
         }
 
@@ -58,19 +77,48 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+            compra.FecOperacion = DateTime.Now;
+            compra.EstadoOperacion = "En Proceso";
             Service.Add(compra);
             return CreatedAtAction(nameof(GetById), new { IdUsu = compra.IdUsu }, compra);
         }
 
         [HttpPut("{IdOperacion}")]
-        public ActionResult<Compra> Put(int IdUsu, int IdOperacion, Compra compra)
+        public ActionResult<Compra> PutFinalizar(int IdUsu, int IdOperacion, Compra compra)
         {
-            if(IdOperacion != compra.IdOperacion || IdUsu != compra.IdUsu)
+            if (IdOperacion != compra.IdOperacion || IdUsu != compra.IdUsu)
             {
                 return BadRequest();
             }
+            var cliente = CService.GetOne(compra.IdUsu);
+            if(cliente == null)
+            {
+                return NotFound("Error: No se reconoce al usuario asociado al pedido actual");
+            }
+            if(cliente.MedioDePago == null)
+            {
+                return BadRequest("Error: No se ha registrado un medio de pago");
+            }
+            compra.EstadoOperacion = "Finalizada";
+
+            var lineasCompra = LCService.FindAll(compra.IdUsu, compra.IdOperacion);
+            foreach (var lc in lineasCompra)
+            {
+                int IdPrenda = lc.IdPrenda;
+                Prenda? prenda = PService.GetOne(IdPrenda);
+                if (prenda == null)
+                {
+                    return NotFound("Error: Una de las prendas no pudo ser identificada");
+                }
+                if (prenda.Stock < lc.CantidadPrenda)
+                {
+                    return BadRequest("Error: No hay suficiente stock de la prenda: " + prenda.Descripcion);
+                }
+                prenda.Stock -= lc.CantidadPrenda;
+                PService.Update(prenda);
+            }
             Service.Update(compra);
-            return NoContent();
+            return Ok(compra);
         }
 
         [HttpDelete("{IdOperacion}")]

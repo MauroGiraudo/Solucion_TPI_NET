@@ -1,9 +1,12 @@
 ﻿using Domain.Model.Compras;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Validations;
 
 namespace WebAPI.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class BonificacionController : Controller
     {
         private BonificacionService _service = new BonificacionService();
@@ -32,10 +35,46 @@ namespace WebAPI.Controllers
             return Ok(bonif);
         }
 
-        /*[HttpPost]
+        [HttpPost]
         public ActionResult<Bonificacion> Post(Bonificacion bonificacion)
         {
+            var result = BonificacionValidation.Parse(Service, bonificacion);
+            if (result != null)
+            {
+                return BadRequest(result);
+            }
+            bonificacion.FecVigenciaBonificacion = DateTime.Now;
+            Service.Add(bonificacion);
+            return CreatedAtAction(nameof(GetById), new { IdBonificacion = bonificacion.IdBonificacion }, bonificacion);
+        }
 
-        }*/
+        [HttpPut("{IdBonificacion}")]
+        public ActionResult<Bonificacion> Put(int IdBonificacion, Bonificacion bonificacion)
+        {
+            if (IdBonificacion != bonificacion.IdBonificacion)
+            {
+                return BadRequest();
+            }
+            var result = BonificacionValidation.Parse(Service, bonificacion);
+            if (result != null)
+            {
+                return BadRequest(result);
+            }
+            bonificacion.FecVigenciaBonificacion = DateTime.Now;
+            Service.Update(bonificacion);
+            return NoContent();
+        }
+
+        [HttpDelete("{IdBonificacion}")]
+        public ActionResult<Bonificacion> Delete(int IdBonificacion)
+        {
+            var bonif = Service.GetOne(IdBonificacion);
+            if(bonif == null)
+            {
+                return NotFound();
+            }
+            Service.Delete(bonif);
+            return NoContent();
+        }
     }
 }

@@ -12,7 +12,9 @@ namespace Domain.Model.Cargas
     {
         [Key]
         public int IdUsu { get; set; }
+        
+        [Key]
         public int IdOperacion { get; set; }
-        public Carga Carga { get; set; }
+        public Carga? Carga { get; set; }
     }
 }

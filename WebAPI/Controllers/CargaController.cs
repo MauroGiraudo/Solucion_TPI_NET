@@ -2,6 +2,7 @@
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Validations;
+using Domain.Model.Prendas;
 
 namespace WebAPI.Controllers
 {
@@ -24,6 +25,24 @@ namespace WebAPI.Controllers
             get
             {
                 return _eservice;
+            }
+        }
+
+        private LineaCargaService _lcservice = new LineaCargaService();
+        public LineaCargaService LCService
+        {
+            get
+            {
+                return _lcservice;
+            }
+        }
+
+        private PrendaService _pservice = new PrendaService();
+        public PrendaService PService
+        {
+            get
+            {
+                return _pservice;
             }
         }
 
@@ -58,6 +77,8 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+            carga.FecOperacion = DateTime.Now;
+            carga.EstadoOperacion = "En Proceso";
             Service.Add(carga);
             return CreatedAtAction(nameof(GetById), new { IdUsu = carga.IdUsu, IdOperacion = carga.IdOperacion }, carga);
         }
@@ -69,6 +90,22 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
+            carga.EstadoOperacion = "Finalizada";
+
+            var lineasCarga = LCService.FindAll(IdUsu, IdOperacion);
+            
+            foreach(var lc in lineasCarga)
+            {
+                int idPrenda = lc.IdPrenda;
+                Prenda? prenda = PService.GetOne(idPrenda);
+                if(prenda == null)
+                {
+                    return NotFound("Error: Una de las prendas no pudo ser identificada");
+                }
+                prenda.Stock += lc.CantidadPrenda;
+                PService.Update(prenda);
+            }
+
             Service.Update(carga);
             return NoContent();
         }

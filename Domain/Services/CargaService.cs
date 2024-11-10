@@ -12,7 +12,7 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public  void Update(Carga carga)
+        /*public  void Update(Carga carga)
         {
             using var context = new TiendaRopaContext();
 
@@ -25,6 +25,13 @@ namespace Domain.Services
                 cargaToUpdate.Empleado = carga.Empleado;
                 context.SaveChanges();
             }
+        }*/
+
+        public void Update(Carga carga)
+        {
+            using var context = new TiendaRopaContext();
+            context.Entry(carga).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
         }
 
         public  void Delete(Carga carga)

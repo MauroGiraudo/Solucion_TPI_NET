@@ -47,6 +47,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result);
             }
+            empleado.TipoUsuario = "Empleado";
             Service.Add(empleado);
             return CreatedAtAction(nameof(GetById), new { IdUsu = empleado.IdUsu }, empleado);
         }

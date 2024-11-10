@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(TiendaRopaContext))]
-    [Migration("20241104210401_InitialCreate")]
+    [Migration("20241106201243_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -50,6 +50,9 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("Domain.Model.Cargas.LineaCarga", b =>
                 {
+                    b.Property<int>("IdUsu")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdOperacion")
                         .HasColumnType("int");
 
@@ -65,14 +68,9 @@ namespace WebAPI.Migrations
                     b.Property<int>("IdPrenda")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsu")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdOperacion", "NumeroLinea");
+                    b.HasKey("IdUsu", "IdOperacion", "NumeroLinea");
 
                     b.HasIndex("IdPrenda");
-
-                    b.HasIndex("IdUsu", "IdOperacion");
 
                     b.ToTable("LineasCarga");
                 });
@@ -124,6 +122,9 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("Domain.Model.Compras.LineaCompra", b =>
                 {
+                    b.Property<int>("IdUsu")
+                        .HasColumnType("int");
+
                     b.Property<int>("IdOperacion")
                         .HasColumnType("int");
 
@@ -139,14 +140,9 @@ namespace WebAPI.Migrations
                     b.Property<int>("IdPrenda")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdUsu")
-                        .HasColumnType("int");
-
-                    b.HasKey("IdOperacion", "NumeroLinea");
+                    b.HasKey("IdUsu", "IdOperacion", "NumeroLinea");
 
                     b.HasIndex("IdPrenda");
-
-                    b.HasIndex("IdUsu", "IdOperacion");
 
                     b.ToTable("LineasCompra");
                 });
@@ -265,12 +261,18 @@ namespace WebAPI.Migrations
                     b.Property<DateTime>("FecNacimiento")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MediosDePago")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoUsuario")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -311,6 +313,9 @@ namespace WebAPI.Migrations
 
                     b.Property<string>("Telefono")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoUsuario")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
