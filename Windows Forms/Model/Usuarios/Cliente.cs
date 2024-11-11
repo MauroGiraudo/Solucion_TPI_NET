@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Model.Shared;
-using Domain.Model.Compras;
+using Windows_Forms.Model.Shared;
+using Windows_Forms.Model.Compras;
 using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Model.Usuarios
+namespace Windows_Forms.Model.Usuarios
 {
     public class LoginData
     {

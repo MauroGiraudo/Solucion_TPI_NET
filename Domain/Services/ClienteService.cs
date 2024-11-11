@@ -12,7 +12,7 @@ namespace Domain.Services {
             context.SaveChanges();
         }
 
-        public void Update(Cliente cliente)
+        /*public void Update(Cliente cliente)
         {
             using var context = new TiendaRopaContext();
 
@@ -29,6 +29,14 @@ namespace Domain.Services {
                 clienteToUpdate.Contrasenia = cliente.Contrasenia;
                 context.SaveChanges();
             }
+        }*/
+
+        public void Update(Cliente cliente)
+        {
+            using var context = new TiendaRopaContext();
+
+            context.Entry(cliente).State = EntityState.Modified;
+            context.SaveChanges();
         }
 
         public void Delete(Cliente cliente)
@@ -44,6 +52,15 @@ namespace Domain.Services {
             using var context = new TiendaRopaContext();
 
             return context.Clientes.Find(IdUsu);
+        }
+
+        public IEnumerable<Cliente> GetOneByUser(string user)
+        {
+            using var context = new TiendaRopaContext();
+            var clientes = context.Clientes.ToList();
+            return from c in clientes
+                   where c.UserName == user
+                   select c;
         }
 
         public IEnumerable<Cliente> FindAll()

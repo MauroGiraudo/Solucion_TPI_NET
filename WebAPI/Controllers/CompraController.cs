@@ -63,6 +63,13 @@ namespace WebAPI.Controllers
             return Ok(compra);
         }
 
+        [HttpGet("EnProceso")]
+        public ActionResult<Compra> GetEnProceso(int IdUsu)
+        {
+            var compra = Service.GetEnProceso(IdUsu);
+            return Ok(compra);
+        }
+
         [HttpPost]
         public ActionResult<Compra> Post(int IdUsu, Compra compra)
         {
@@ -99,9 +106,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("Error: No se ha registrado un medio de pago");
             }
-            compra.EstadoOperacion = "Finalizada";
+            var comp = Service.GetOne(IdUsu, IdOperacion);
+            comp.EstadoOperacion = "Finalizada";
 
-            var lineasCompra = LCService.FindAll(compra.IdUsu, compra.IdOperacion);
+            var lineasCompra = LCService.FindAll(comp.IdUsu, comp.IdOperacion);
             foreach (var lc in lineasCompra)
             {
                 int IdPrenda = lc.IdPrenda;
@@ -117,8 +125,8 @@ namespace WebAPI.Controllers
                 prenda.Stock -= lc.CantidadPrenda;
                 PService.Update(prenda);
             }
-            Service.Update(compra);
-            return Ok(compra);
+            Service.Update(comp);
+            return Ok(comp);
         }
 
         [HttpDelete("{IdOperacion}")]
@@ -128,6 +136,11 @@ namespace WebAPI.Controllers
             if(c == null)
             {
                 return NotFound();
+            }
+            var result = CompraValidation.ParseDelete(IdUsu, IdOperacion, Service);
+            if(result != null)
+            {
+                return BadRequest(result);
             }
             Service.Delete(c);
             return NoContent();

@@ -1,5 +1,6 @@
 ﻿using Domain.Services;
 using Domain.Model.Usuarios;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Validations
 {
@@ -13,6 +14,10 @@ namespace WebAPI.Validations
                 if(cliente.IdUsu != c.IdUsu && cliente.Email == c.Email)
                 {
                     return "El E-mail ingresado ya se encuentra en uso";
+                }
+                if(!IsValidEmail(cliente.Email))
+                {
+                    return "El E-mail ingresado no es válido";
                 }
                 if(cliente.IdUsu != c.IdUsu && cliente.UserName == c.UserName)
                 {
@@ -32,10 +37,37 @@ namespace WebAPI.Validations
                 }
                 if(cliente.Contrasenia.Length > 50)
                 {
-                    return "La contraseña no debe contener más ded 50 caracteres";
+                    return "La contraseña no debe contener más de 50 caracteres";
                 }
             }
             return null;
+        }
+
+        public static bool IsValidEmail(string email)
+        {
+            if(string.IsNullOrWhiteSpace(email))
+                return false;
+
+            var emailAttribute = new EmailAddressAttribute();
+            return emailAttribute.IsValid(email);
+        }
+
+        public static bool IsValidUserName(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username) || username.Length > 50)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsValidPassword(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password) || password.Length > 50)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

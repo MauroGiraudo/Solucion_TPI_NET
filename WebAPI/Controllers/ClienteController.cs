@@ -47,6 +47,31 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { IdUsu = cliente.IdUsu }, cliente);
         }
 
+        [HttpPost("login")]
+        public ActionResult<Cliente> Login(LoginData login)
+        {
+            if (!ClienteValidation.IsValidUserName(login.UserName))
+            {
+                return BadRequest("El usuario ingresado no es válido");
+            }
+            if (!ClienteValidation.IsValidPassword(login.Contrasenia))
+            {
+                return BadRequest("La contraseña no debe contener más de 50 caracteres");
+            }
+            var clienteResultado = Service.GetOneByUser(login.UserName);
+
+            if (!clienteResultado.Any()) return NotFound("No existe un cliente con el usuario ingresado");
+
+            Cliente cliente = clienteResultado.Single();
+
+            if(cliente.Contrasenia != login.Contrasenia)
+            {
+                return BadRequest("La contraseña ingresada no es correcta");
+            }
+            IEnumerable<Cliente> client = new List<Cliente> { cliente };
+            return Ok(client);
+        }
+
         [HttpPut("{Id}")]
         public ActionResult<Cliente> Put(int Id, Cliente cliente)
         {
@@ -60,7 +85,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
             Service.Update(cliente);
-            return NoContent();
+            return Ok(cliente);
         }
 
         [HttpDelete("{Id}")]

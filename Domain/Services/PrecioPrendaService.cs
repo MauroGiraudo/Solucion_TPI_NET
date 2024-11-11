@@ -33,27 +33,30 @@ namespace Domain.Services
             context.SaveChanges();
         }
 
-        public IEnumerable<PrecioPrenda> FindAll()
+        public IEnumerable<PrecioPrenda> FindAll(int IdPrenda)
         {
             using var context = new TiendaRopaContext();
-            return context.PreciosPrenda.ToList();
+            var precios = context.PreciosPrenda.ToList();
+            return from p in precios
+                   where p.IdPrenda == IdPrenda
+                   select p;
         }
 
-        public PrecioPrenda? GetOne(int idPrenda, DateTime fecVigencia)
+        public PrecioPrenda? GetOne(int IdPrenda, DateTime fecVigencia)
         {
             using var context = new TiendaRopaContext();
-            return context.PreciosPrenda.Find(idPrenda, fecVigencia);
+            return context.PreciosPrenda.Find(IdPrenda, fecVigencia);
         }
 
         //LA IDEA ES QUE DEVUELVA LA MAYOR FECHA, LA CUAL SE UTILIZARÁ PARA OBTENER EL PRECIO ACTUAL
-        public DateTime? GetDate(DateTime fecha)
+        public DateTime? GetDate(int IdPrenda, DateTime fecha)
         {
             using var context = new TiendaRopaContext();
 
             List<PrecioPrenda> precios = context.PreciosPrenda.ToList();
             IEnumerable<DateTime> preciosFiltrados =  
                 from p in precios
-                where p.FecVigencia <= fecha
+                where p.FecVigencia <= fecha && p.IdPrenda == IdPrenda
                 select p.FecVigencia;
             if (!preciosFiltrados.Any())
             {
