@@ -6,7 +6,7 @@ using WebAPI.Validations;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/Cliente/{IdUsu}/Compra/{IdOperacion}/[controller]")]
+    [Route("api/Usuario/{IdUsu}/Compra/{IdOperacion}/[controller]")]
     public class LineaCompraController : Controller
     {
         private LineaCompraService _service = new LineaCompraService();
@@ -25,12 +25,12 @@ namespace WebAPI.Controllers
                 return _compraService;
             }
         }
-        private ClienteService _clienteService = new ClienteService();
-        public ClienteService ClienteService
+        private UsuarioService _usuarioService = new UsuarioService();
+        public UsuarioService UsuarioService
         {
             get
             {
-                return _clienteService;
+                return _usuarioService;
             }
         }
 

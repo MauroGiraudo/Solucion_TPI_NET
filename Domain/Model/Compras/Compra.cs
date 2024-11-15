@@ -13,7 +13,7 @@ namespace Domain.Model.Compras
     {
         [Key]
         public int IdUsu { get; set; }
-        public Cliente? Cliente { get; set; }
+        public Usuario? Usuario { get; set; }
         public List<LineaCompra>? LineasCompra { get; set; }
     }
 }

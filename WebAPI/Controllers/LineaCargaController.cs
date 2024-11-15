@@ -6,7 +6,7 @@ using WebAPI.Validations;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/Empleado/{IdUsu}/Carga/{IdOperacion}/[controller]")]
+    [Route("api/Usuario/{IdUsu}/Carga/{IdOperacion}/[controller]")]
     public class LineaCargaController : Controller
     {
         private LineaCargaService _service = new LineaCargaService();
@@ -25,12 +25,12 @@ namespace WebAPI.Controllers
                 return _cargaService;
             }
         }
-        private EmpleadoService _empleadoService = new EmpleadoService();
-        public EmpleadoService EmpleadoService
+        private UsuarioService _usuarioService = new UsuarioService();
+        public UsuarioService UsuarioService
         {
             get
             {
-                return _empleadoService;
+                return _usuarioService;
             }
         }
         [HttpGet(Name = "GetLineasDeCarga")]

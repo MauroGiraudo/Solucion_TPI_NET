@@ -7,7 +7,7 @@ using Domain.Model.Prendas;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/Empleado/{IdUsu}/[controller]")]
+    [Route("api/Usuario/{IdUsu}/[controller]")]
     public class CargaController : Controller
     {
         private CargaService _service = new CargaService();
@@ -19,12 +19,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        private EmpleadoService _eservice = new EmpleadoService();
-        public EmpleadoService EService
+        private UsuarioService _uservice = new UsuarioService();
+        public UsuarioService UService
         {
             get
             {
-                return _eservice;
+                return _uservice;
             }
         }
 
@@ -72,7 +72,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
             carga.IdUsu = IdUsu;
-            var empleado = EService.GetOne(IdUsu);
+            var empleado = UService.GetOne(IdUsu);
             if(empleado == null)
             {
                 return NotFound();

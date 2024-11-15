@@ -1,5 +1,5 @@
 ﻿using Windows_Forms.Model.Shared;
-using Domain.Model.Usuarios;
+using Windows_Forms.Model.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +13,7 @@ namespace Windows_Forms.Model.Cargas
     {
         [Key]
         public int IdUsu { get; set; }
-        public Empleado? Empleado { get; set; }
+        public Usuario? Usuario { get; set; }
     
         public List<LineaCarga>? LineasCarga { get; set; }
     }

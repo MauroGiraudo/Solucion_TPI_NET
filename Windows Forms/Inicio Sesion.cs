@@ -40,18 +40,18 @@ namespace Windows_Forms
         {
             LoginData login = new LoginData { UserName = txb_Usuario.Text, Contrasenia = txb_Contrasenia.Text };
             
-            var listaCliente = await ClienteNegocio.Login(login);
-            var cliente = listaCliente.First();
+            var usuario = await UsuarioNegocio.Login(login);
 
-            if(cliente != null)
+            if(usuario != null)
             {
                 MessageBox.Show("Sesión Iniciada Correctamente", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                ClienteNegocio.Cliente = cliente;
+                UsuarioNegocio.Usuario = usuario;
                 this.DialogResult = DialogResult.OK;
 
             } else
             {
-                MessageBox.Show("Usuario o contraseña incorrectos", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Join("\n", Errors.Errores), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Errors.Errores.Clear();
             }
         }
     }

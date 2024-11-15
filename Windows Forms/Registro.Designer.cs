@@ -48,6 +48,8 @@
             btn_Aceptar = new Button();
             btn_Cancelar = new Button();
             pnl_fondo = new Panel();
+            cb_medioDePago = new ComboBox();
+            lbl_medioDePago = new Label();
             cb_rol = new ComboBox();
             lbl_rol = new Label();
             pnl_logo = new Panel();
@@ -56,7 +58,7 @@
             // 
             // txb_userName
             // 
-            txb_userName.Location = new Point(104, 92);
+            txb_userName.Location = new Point(104, 122);
             txb_userName.Margin = new Padding(3, 4, 3, 4);
             txb_userName.Name = "txb_userName";
             txb_userName.Size = new Size(250, 27);
@@ -64,19 +66,22 @@
             // 
             // txb_contrasenia
             // 
-            txb_contrasenia.Location = new Point(104, 181);
+            txb_contrasenia.Location = new Point(105, 181);
             txb_contrasenia.Margin = new Padding(3, 4, 3, 4);
             txb_contrasenia.Name = "txb_contrasenia";
+            txb_contrasenia.PasswordChar = '*';
             txb_contrasenia.Size = new Size(250, 27);
             txb_contrasenia.TabIndex = 1;
             // 
             // txb_confirmarContrasenia
             // 
-            txb_confirmarContrasenia.Location = new Point(104, 280);
+            txb_confirmarContrasenia.Location = new Point(104, 245);
             txb_confirmarContrasenia.Margin = new Padding(3, 4, 3, 4);
             txb_confirmarContrasenia.Name = "txb_confirmarContrasenia";
+            txb_confirmarContrasenia.PasswordChar = '*';
             txb_confirmarContrasenia.Size = new Size(250, 27);
             txb_confirmarContrasenia.TabIndex = 2;
+            txb_confirmarContrasenia.TextChanged += txb_confirmarContrasenia_TextChanged;
             // 
             // txb_nombre
             // 
@@ -84,7 +89,7 @@
             txb_nombre.Margin = new Padding(3, 4, 3, 4);
             txb_nombre.Name = "txb_nombre";
             txb_nombre.Size = new Size(250, 27);
-            txb_nombre.TabIndex = 3;
+            txb_nombre.TabIndex = 4;
             // 
             // txb_apellido
             // 
@@ -92,7 +97,7 @@
             txb_apellido.Margin = new Padding(3, 4, 3, 4);
             txb_apellido.Name = "txb_apellido";
             txb_apellido.Size = new Size(250, 27);
-            txb_apellido.TabIndex = 4;
+            txb_apellido.TabIndex = 3;
             // 
             // txb_email
             // 
@@ -116,7 +121,7 @@
             lbl_Usuario.AutoSize = true;
             lbl_Usuario.BackColor = Color.Transparent;
             lbl_Usuario.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lbl_Usuario.Location = new Point(104, 68);
+            lbl_Usuario.Location = new Point(105, 84);
             lbl_Usuario.Name = "lbl_Usuario";
             lbl_Usuario.Size = new Size(150, 20);
             lbl_Usuario.TabIndex = 8;
@@ -127,7 +132,7 @@
             lbl_Contrasenia.AutoSize = true;
             lbl_Contrasenia.BackColor = Color.Transparent;
             lbl_Contrasenia.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lbl_Contrasenia.Location = new Point(104, 144);
+            lbl_Contrasenia.Location = new Point(105, 157);
             lbl_Contrasenia.Name = "lbl_Contrasenia";
             lbl_Contrasenia.Size = new Size(88, 20);
             lbl_Contrasenia.TabIndex = 9;
@@ -138,7 +143,7 @@
             lbl_ConfContrasenia.AutoSize = true;
             lbl_ConfContrasenia.BackColor = Color.Transparent;
             lbl_ConfContrasenia.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lbl_ConfContrasenia.Location = new Point(104, 245);
+            lbl_ConfContrasenia.Location = new Point(105, 221);
             lbl_ConfContrasenia.Name = "lbl_ConfContrasenia";
             lbl_ConfContrasenia.Size = new Size(167, 20);
             lbl_ConfContrasenia.TabIndex = 10;
@@ -152,7 +157,7 @@
             lbl_Nombre.Location = new Point(517, 157);
             lbl_Nombre.Name = "lbl_Nombre";
             lbl_Nombre.Size = new Size(85, 20);
-            lbl_Nombre.TabIndex = 11;
+            lbl_Nombre.TabIndex = 12;
             lbl_Nombre.Text = "Nombre/s:";
             // 
             // lbl_Apellido
@@ -163,7 +168,7 @@
             lbl_Apellido.Location = new Point(517, 84);
             lbl_Apellido.Name = "lbl_Apellido";
             lbl_Apellido.Size = new Size(85, 20);
-            lbl_Apellido.TabIndex = 12;
+            lbl_Apellido.TabIndex = 11;
             lbl_Apellido.Text = "Apellido/s:";
             // 
             // lbl_Email
@@ -205,7 +210,7 @@
             dtp_FechaNacimiento.Margin = new Padding(3, 4, 3, 4);
             dtp_FechaNacimiento.Name = "dtp_FechaNacimiento";
             dtp_FechaNacimiento.Size = new Size(250, 27);
-            dtp_FechaNacimiento.TabIndex = 16;
+            dtp_FechaNacimiento.TabIndex = 7;
             dtp_FechaNacimiento.ValueChanged += dateTimePicker1_ValueChanged;
             // 
             // btn_Aceptar
@@ -216,7 +221,7 @@
             btn_Aceptar.Margin = new Padding(3, 4, 3, 4);
             btn_Aceptar.Name = "btn_Aceptar";
             btn_Aceptar.Size = new Size(104, 37);
-            btn_Aceptar.TabIndex = 17;
+            btn_Aceptar.TabIndex = 16;
             btn_Aceptar.Text = "Aceptar";
             btn_Aceptar.UseVisualStyleBackColor = false;
             btn_Aceptar.Click += btn_Aceptar_Click;
@@ -230,7 +235,7 @@
             btn_Cancelar.Margin = new Padding(3, 4, 3, 4);
             btn_Cancelar.Name = "btn_Cancelar";
             btn_Cancelar.Size = new Size(104, 37);
-            btn_Cancelar.TabIndex = 18;
+            btn_Cancelar.TabIndex = 17;
             btn_Cancelar.Text = "Cancelar";
             btn_Cancelar.UseVisualStyleBackColor = false;
             btn_Cancelar.Click += btn_Cancelar_Click;
@@ -238,6 +243,8 @@
             // pnl_fondo
             // 
             pnl_fondo.BackgroundImage = (Image)resources.GetObject("pnl_fondo.BackgroundImage");
+            pnl_fondo.Controls.Add(cb_medioDePago);
+            pnl_fondo.Controls.Add(lbl_medioDePago);
             pnl_fondo.Controls.Add(cb_rol);
             pnl_fondo.Controls.Add(lbl_rol);
             pnl_fondo.Controls.Add(pnl_logo);
@@ -264,23 +271,43 @@
             pnl_fondo.Size = new Size(886, 537);
             pnl_fondo.TabIndex = 19;
             // 
+            // cb_medioDePago
+            // 
+            cb_medioDePago.FormattingEnabled = true;
+            cb_medioDePago.Location = new Point(105, 364);
+            cb_medioDePago.Name = "cb_medioDePago";
+            cb_medioDePago.Size = new Size(250, 28);
+            cb_medioDePago.TabIndex = 21;
+            // 
+            // lbl_medioDePago
+            // 
+            lbl_medioDePago.AutoSize = true;
+            lbl_medioDePago.BackColor = Color.Transparent;
+            lbl_medioDePago.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lbl_medioDePago.Location = new Point(105, 338);
+            lbl_medioDePago.Name = "lbl_medioDePago";
+            lbl_medioDePago.Size = new Size(115, 20);
+            lbl_medioDePago.TabIndex = 20;
+            lbl_medioDePago.Text = "Medio De Pago";
+            // 
             // cb_rol
             // 
             cb_rol.FormattingEnabled = true;
-            cb_rol.Location = new Point(104, 364);
+            cb_rol.Location = new Point(104, 303);
             cb_rol.Name = "cb_rol";
             cb_rol.Size = new Size(250, 28);
-            cb_rol.TabIndex = 21;
+            cb_rol.TabIndex = 19;
+            cb_rol.SelectedIndexChanged += cb_rol_SelectedIndexChanged;
             // 
             // lbl_rol
             // 
             lbl_rol.AutoSize = true;
             lbl_rol.BackColor = Color.Transparent;
             lbl_rol.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lbl_rol.Location = new Point(104, 338);
+            lbl_rol.Location = new Point(104, 280);
             lbl_rol.Name = "lbl_rol";
             lbl_rol.Size = new Size(32, 20);
-            lbl_rol.TabIndex = 20;
+            lbl_rol.TabIndex = 18;
             lbl_rol.Text = "Rol";
             // 
             // pnl_logo
@@ -337,5 +364,7 @@
         private Panel pnl_logo;
         private ComboBox cb_rol;
         private Label lbl_rol;
+        private ComboBox cb_medioDePago;
+        private Label lbl_medioDePago;
     }
 }

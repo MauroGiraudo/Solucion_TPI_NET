@@ -4,38 +4,38 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebAPI.Validations
 {
-    public class ClienteValidation
+    public class UsuarioValidation
     {
-        public static string? Parse(ClienteService service, Cliente cliente)
+        public static string? Parse(UsuarioService service, Usuario usuario)
         {
-            var clientes = service.FindAll();
-            foreach(Cliente c in clientes)
+            var usuarios = service.FindAll();
+            foreach(Usuario c in usuarios)
             {
-                if(cliente.IdUsu != c.IdUsu && cliente.Email == c.Email)
+                if(usuario.IdUsu != c.IdUsu && usuario.Email == c.Email)
                 {
                     return "El E-mail ingresado ya se encuentra en uso";
                 }
-                if(!IsValidEmail(cliente.Email))
+                if(!IsValidEmail(usuario.Email))
                 {
                     return "El E-mail ingresado no es válido";
                 }
-                if(cliente.IdUsu != c.IdUsu && cliente.UserName == c.UserName)
+                if(usuario.IdUsu != c.IdUsu && usuario.UserName == c.UserName)
                 {
                     return "El nombre de usuario ya se encuentra en uso";
                 }
-                if (cliente.Nombre.Length > 50)
+                if (usuario.Nombre.Length > 50)
                 {
                     return "El nombre no debe contener más de 50 caracteres";
                 }
-                if (cliente.Apellido.Length > 50)
+                if (usuario.Apellido.Length > 50)
                 {
                     return "El apellido no debe contener más de 50 caracteres";
                 }
-                if(cliente.UserName.Length > 50)
+                if(usuario.UserName.Length > 50)
                 {
                     return "El nombre de usuario no debe contener más de 50 caracteres";
                 }
-                if(cliente.Contrasenia.Length > 50)
+                if(usuario.Contrasenia.Length > 50)
                 {
                     return "La contraseña no debe contener más de 50 caracteres";
                 }

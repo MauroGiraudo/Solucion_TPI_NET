@@ -27,53 +27,12 @@ namespace WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Clientes",
-                columns: table => new
-                {
-                    IdUsu = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MediosDePago = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FecNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TipoUsuario = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Clientes", x => x.IdUsu);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Empleados",
-                columns: table => new
-                {
-                    IdUsu = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellido = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FecNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contrasenia = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TipoUsuario = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Empleados", x => x.IdUsu);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Marcas",
                 columns: table => new
                 {
                     IdMarca = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescripcionMarca = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DescripcionMarca = table.Column<string>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,7 +45,7 @@ namespace WebAPI.Migrations
                 {
                     IdTipoPrenda = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DescripcionTipoPrenda = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DescripcionTipoPrenda = table.Column<string>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,45 +53,24 @@ namespace WebAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Compras",
+                name: "Usuarios",
                 columns: table => new
                 {
-                    IdOperacion = table.Column<int>(type: "int", nullable: false)
+                    IdUsu = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IdUsu = table.Column<int>(type: "int", nullable: false),
-                    FecOperacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EstadoOperacion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nombre = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Apellido = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Email = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Telefono = table.Column<string>(type: "varchar(50)", nullable: false),
+                    FecNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    Contrasenia = table.Column<string>(type: "varchar(50)", nullable: false),
+                    TipoUsuario = table.Column<string>(type: "varchar(8)", nullable: false),
+                    MedioDePago = table.Column<string>(type: "varchar(25)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Compras", x => new { x.IdUsu, x.IdOperacion });
-                    table.ForeignKey(
-                        name: "FK_Compras_Clientes_IdUsu",
-                        column: x => x.IdUsu,
-                        principalTable: "Clientes",
-                        principalColumn: "IdUsu",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cargas",
-                columns: table => new
-                {
-                    IdOperacion = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    IdUsu = table.Column<int>(type: "int", nullable: false),
-                    FecOperacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EstadoOperacion = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cargas", x => new { x.IdUsu, x.IdOperacion });
-                    table.ForeignKey(
-                        name: "FK_Cargas_Empleados_IdUsu",
-                        column: x => x.IdUsu,
-                        principalTable: "Empleados",
-                        principalColumn: "IdUsu",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUsu);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,9 +81,8 @@ namespace WebAPI.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Stock = table.Column<int>(type: "int", nullable: false),
                     PuntoPedido = table.Column<int>(type: "int", nullable: false),
-                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "varchar(50)", nullable: false),
                     Talla = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Modelo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IdTipoPrenda = table.Column<int>(type: "int", nullable: false),
                     IdMarca = table.Column<int>(type: "int", nullable: false)
                 },
@@ -163,6 +100,67 @@ namespace WebAPI.Migrations
                         column: x => x.IdTipoPrenda,
                         principalTable: "TiposPrenda",
                         principalColumn: "IdTipoPrenda",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cargas",
+                columns: table => new
+                {
+                    IdOperacion = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdUsu = table.Column<int>(type: "int", nullable: false),
+                    FecOperacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstadoOperacion = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cargas", x => new { x.IdUsu, x.IdOperacion });
+                    table.ForeignKey(
+                        name: "FK_Cargas_Usuarios_IdUsu",
+                        column: x => x.IdUsu,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsu",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Compras",
+                columns: table => new
+                {
+                    IdOperacion = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdUsu = table.Column<int>(type: "int", nullable: false),
+                    FecOperacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstadoOperacion = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Compras", x => new { x.IdUsu, x.IdOperacion });
+                    table.ForeignKey(
+                        name: "FK_Compras_Usuarios_IdUsu",
+                        column: x => x.IdUsu,
+                        principalTable: "Usuarios",
+                        principalColumn: "IdUsu",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PreciosPrenda",
+                columns: table => new
+                {
+                    IdPrenda = table.Column<int>(type: "int", nullable: false),
+                    FecVigencia = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Valor = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PreciosPrenda", x => new { x.IdPrenda, x.FecVigencia });
+                    table.ForeignKey(
+                        name: "FK_PreciosPrenda_Prendas_IdPrenda",
+                        column: x => x.IdPrenda,
+                        principalTable: "Prendas",
+                        principalColumn: "IdPrenda",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -222,25 +220,6 @@ namespace WebAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PreciosPrenda",
-                columns: table => new
-                {
-                    IdPrenda = table.Column<int>(type: "int", nullable: false),
-                    FecVigencia = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Valor = table.Column<decimal>(type: "decimal(18,0)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PreciosPrenda", x => new { x.IdPrenda, x.FecVigencia });
-                    table.ForeignKey(
-                        name: "FK_PreciosPrenda_Prendas_IdPrenda",
-                        column: x => x.IdPrenda,
-                        principalTable: "Prendas",
-                        principalColumn: "IdPrenda",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_LineasCarga_IdPrenda",
                 table: "LineasCarga",
@@ -287,10 +266,7 @@ namespace WebAPI.Migrations
                 name: "Prendas");
 
             migrationBuilder.DropTable(
-                name: "Empleados");
-
-            migrationBuilder.DropTable(
-                name: "Clientes");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Marcas");

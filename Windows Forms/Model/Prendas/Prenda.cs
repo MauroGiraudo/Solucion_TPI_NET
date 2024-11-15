@@ -20,9 +20,7 @@ namespace Windows_Forms.Model.Prendas
 
         public string Descripcion { get; set; }
 
-        public List<string> Talla { get; set; }
-
-        public string Modelo { get; set; }
+        public string Talla { get; set; }
         
         public int IdTipoPrenda { get; set; }
 
@@ -42,8 +40,7 @@ namespace Windows_Forms.Model.Prendas
     {
         public int IdPrenda { get; set; }
         public string Descripcion { get; set; }
-        public List<string> Talla { get; set; }
-        public string Modelo { get; set; }
+        public string Talla { get; set; }
         public string TipoDePrenda { get; set; }
         public string Marca { get; set; }
         public float Precio { get; set; }

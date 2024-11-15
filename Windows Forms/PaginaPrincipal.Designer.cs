@@ -33,17 +33,21 @@
             editarCuentaToolStripMenuItem = new ToolStripMenuItem();
             mnuCerrarSesion = new ToolStripMenuItem();
             mnuSalir = new ToolStripMenuItem();
-            comprarToolStripMenuItem = new ToolStripMenuItem();
+            mnu_comprar = new ToolStripMenuItem();
             verPrendasToolStripMenuItem = new ToolStripMenuItem();
             verCarritoToolStripMenuItem = new ToolStripMenuItem();
             verMisComprasToolStripMenuItem = new ToolStripMenuItem();
+            mnu_operaciones = new ToolStripMenuItem();
+            mnu_prendas = new ToolStripMenuItem();
+            mnu_tiposDePrenda = new ToolStripMenuItem();
+            mnu_marcas = new ToolStripMenuItem();
             mnsPrincipal.SuspendLayout();
             SuspendLayout();
             // 
             // mnsPrincipal
             // 
             mnsPrincipal.ImageScalingSize = new Size(20, 20);
-            mnsPrincipal.Items.AddRange(new ToolStripItem[] { mnuArchivo, comprarToolStripMenuItem });
+            mnsPrincipal.Items.AddRange(new ToolStripItem[] { mnuArchivo, mnu_comprar, mnu_operaciones });
             mnsPrincipal.Location = new Point(0, 0);
             mnsPrincipal.MdiWindowListItem = mnuArchivo;
             mnsPrincipal.Name = "mnsPrincipal";
@@ -79,38 +83,65 @@
             mnuSalir.Text = "Salir";
             mnuSalir.Click += mnuSalir_Click;
             // 
-            // comprarToolStripMenuItem
+            // mnu_comprar
             // 
-            comprarToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verPrendasToolStripMenuItem, verCarritoToolStripMenuItem, verMisComprasToolStripMenuItem });
-            comprarToolStripMenuItem.Name = "comprarToolStripMenuItem";
-            comprarToolStripMenuItem.Size = new Size(81, 24);
-            comprarToolStripMenuItem.Text = "Comprar";
+            mnu_comprar.DropDownItems.AddRange(new ToolStripItem[] { verPrendasToolStripMenuItem, verCarritoToolStripMenuItem, verMisComprasToolStripMenuItem });
+            mnu_comprar.Name = "mnu_comprar";
+            mnu_comprar.Size = new Size(81, 24);
+            mnu_comprar.Text = "Comprar";
             // 
             // verPrendasToolStripMenuItem
             // 
             verPrendasToolStripMenuItem.Name = "verPrendasToolStripMenuItem";
-            verPrendasToolStripMenuItem.Size = new Size(224, 26);
+            verPrendasToolStripMenuItem.Size = new Size(203, 26);
             verPrendasToolStripMenuItem.Text = "Ver Prendas";
             verPrendasToolStripMenuItem.Click += verPrendasToolStripMenuItem_Click;
             // 
             // verCarritoToolStripMenuItem
             // 
             verCarritoToolStripMenuItem.Name = "verCarritoToolStripMenuItem";
-            verCarritoToolStripMenuItem.Size = new Size(224, 26);
+            verCarritoToolStripMenuItem.Size = new Size(203, 26);
             verCarritoToolStripMenuItem.Text = "Ver Carrito";
             verCarritoToolStripMenuItem.Click += verCarritoToolStripMenuItem_Click;
             // 
             // verMisComprasToolStripMenuItem
             // 
             verMisComprasToolStripMenuItem.Name = "verMisComprasToolStripMenuItem";
-            verMisComprasToolStripMenuItem.Size = new Size(224, 26);
+            verMisComprasToolStripMenuItem.Size = new Size(203, 26);
             verMisComprasToolStripMenuItem.Text = "Ver Mis Compras";
             verMisComprasToolStripMenuItem.Click += verMisComprasToolStripMenuItem_Click;
+            // 
+            // mnu_operaciones
+            // 
+            mnu_operaciones.DropDownItems.AddRange(new ToolStripItem[] { mnu_prendas, mnu_tiposDePrenda, mnu_marcas });
+            mnu_operaciones.Name = "mnu_operaciones";
+            mnu_operaciones.Size = new Size(106, 24);
+            mnu_operaciones.Text = "Operaciones";
+            // 
+            // mnu_prendas
+            // 
+            mnu_prendas.Name = "mnu_prendas";
+            mnu_prendas.Size = new Size(224, 26);
+            mnu_prendas.Text = "Prendas";
+            mnu_prendas.Click += mnu_prendas_Click;
+            // 
+            // mnu_tiposDePrenda
+            // 
+            mnu_tiposDePrenda.Name = "mnu_tiposDePrenda";
+            mnu_tiposDePrenda.Size = new Size(224, 26);
+            mnu_tiposDePrenda.Text = "TiposDePrenda";
+            // 
+            // mnu_marcas
+            // 
+            mnu_marcas.Name = "mnu_marcas";
+            mnu_marcas.Size = new Size(224, 26);
+            mnu_marcas.Text = "Marcas";
             // 
             // PaginaPrincipal
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             ClientSize = new Size(892, 510);
             Controls.Add(mnsPrincipal);
             IsMdiContainer = true;
@@ -132,9 +163,13 @@
         private ToolStripMenuItem mnuSalir;
         private ToolStripMenuItem mnuCerrarSesion;
         private ToolStripMenuItem editarCuentaToolStripMenuItem;
-        private ToolStripMenuItem comprarToolStripMenuItem;
+        private ToolStripMenuItem mnu_comprar;
         private ToolStripMenuItem verPrendasToolStripMenuItem;
         private ToolStripMenuItem verCarritoToolStripMenuItem;
         private ToolStripMenuItem verMisComprasToolStripMenuItem;
+        private ToolStripMenuItem mnu_operaciones;
+        private ToolStripMenuItem mnu_prendas;
+        private ToolStripMenuItem mnu_tiposDePrenda;
+        private ToolStripMenuItem mnu_marcas;
     }
 }

@@ -11,33 +11,67 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows_Forms.Negocio;
 using System.ComponentModel.DataAnnotations;
+using static Windows_Forms.form_Registro;
 
 namespace Windows_Forms
 {
     public partial class form_Registro : Form
     {
+        public class Rol
+        {
+            public string Nombre { get; set; }
+        }
+        public class MedioDePago
+        {
+            public string Nombre { get; set; }
+        }
         public form_Registro()
         {
             InitializeComponent();
-            List<string> roles = new List<string> { "Cliente", "Empleado" };
+            Rol rol1 = new Rol { Nombre = "Cliente" };
+            Rol rol2 = new Rol { Nombre = "Empleado" };
+            MedioDePago medioDePago1 = new MedioDePago { Nombre = "Tarjeta De Crédito" };
+            MedioDePago medioDePago2 = new MedioDePago { Nombre = "Tarjeta de Débito" };
+            MedioDePago medioDePago3 = new MedioDePago { Nombre = "Transferencia" };
+            List<Rol> roles = new List<Rol> { rol1, rol2 };
+            List<MedioDePago> mediosDePago = new List<MedioDePago> { medioDePago1, medioDePago2, medioDePago3 };
             cb_rol.DataSource = roles;
+            cb_rol.ValueMember = "Nombre";
+            cb_medioDePago.DataSource = mediosDePago;
+            cb_medioDePago.ValueMember = "Nombre";
         }
 
-        public form_Registro(Cliente cliente)
+        public form_Registro(Usuario usuario)
         {
             InitializeComponent();
-            List<string> roles = new List<string> { "Cliente", "Empleado" };
+            Rol rol1 = new Rol { Nombre = "Cliente" };
+            Rol rol2 = new Rol { Nombre = "Empleado" };
+            MedioDePago medioDePago1 = new MedioDePago { Nombre = "Tarjeta De Crédito" };
+            MedioDePago medioDePago2 = new MedioDePago { Nombre = "Tarjeta de Débito" };
+            MedioDePago medioDePago3 = new MedioDePago { Nombre = "Transferencia" };
+            List<Rol> roles = new List<Rol> { rol1, rol2 };
+            List<MedioDePago> mediosDePago = new List<MedioDePago> { medioDePago1, medioDePago2, medioDePago3 };
             cb_rol.DataSource = roles;
+            cb_rol.Enabled = false;
+            cb_medioDePago.DataSource = mediosDePago;
+            cb_rol.ValueMember = "Nombre";
+            cb_rol.SelectedValue = usuario.TipoUsuario;
+            if(usuario.TipoUsuario == "Cliente")
+            {
+                cb_medioDePago.ValueMember = "Nombre";
+                cb_medioDePago.SelectedValue = usuario.MedioDePago;
+
+            }
             btn_Aceptar.Text = "Actualizar";
             Text = "Actualizar Usuario";
-            txb_nombre.Text = cliente.Nombre;
-            txb_apellido.Text = cliente.Apellido;
-            txb_userName.Text = cliente.UserName;
-            txb_contrasenia.Text = cliente.Contrasenia;
-            txb_confirmarContrasenia.Text = cliente.Contrasenia;
-            txb_email.Text = cliente.Email;
-            txb_telefono.Text = cliente.Telefono;
-            dtp_FechaNacimiento.Value = cliente.FecNacimiento;
+            txb_nombre.Text = usuario.Nombre;
+            txb_apellido.Text = usuario.Apellido;
+            txb_userName.Text = usuario.UserName;
+            txb_contrasenia.Text = usuario.Contrasenia;
+            txb_confirmarContrasenia.Text = usuario.Contrasenia;
+            txb_email.Text = usuario.Email;
+            txb_telefono.Text = usuario.Telefono;
+            dtp_FechaNacimiento.Value = usuario.FecNacimiento;
         }
 
         private void textBox6_TextChanged(object sender, EventArgs e)
@@ -53,8 +87,8 @@ namespace Windows_Forms
         private async void btn_Aceptar_Click(object sender, EventArgs e)
         {
             List<string> errores = new List<string>();
-            Cliente usuario = new Cliente();
-            if (txb_nombre.Text == "")
+            var usuario = new Usuario();
+            if (txb_nombre.Text.Trim() == "")
             {
                 errores.Add("Debe ingresar su nombre");
             }
@@ -67,7 +101,7 @@ namespace Windows_Forms
                 usuario.Nombre = txb_nombre.Text;
             }
 
-            if (txb_apellido.Text == "")
+            if (txb_apellido.Text.Trim() == "")
             {
                 errores.Add("Debe ingresar su apellido");
             }
@@ -80,7 +114,7 @@ namespace Windows_Forms
                 usuario.Apellido = txb_apellido.Text;
             }
 
-            if (txb_userName.Text == "")
+            if (txb_userName.Text.Trim() == "")
             {
                 errores.Add("Debe ingresar su nombre de usuario");
             }
@@ -94,7 +128,7 @@ namespace Windows_Forms
             }
 
 
-            if (txb_contrasenia.Text == "")
+            if (txb_contrasenia.Text.Trim() == "")
             {
                 errores.Add("Debe ingresar la contraseña");
             }
@@ -127,7 +161,13 @@ namespace Windows_Forms
 
             usuario.Telefono = txb_telefono.Text;
 
-            //usuario.MedioDePago = txb_medioPago.Text;
+            usuario.TipoUsuario = cb_rol.SelectedValue.ToString();
+
+            if(usuario.TipoUsuario == "Cliente")
+            {
+                usuario.MedioDePago = cb_medioDePago.SelectedValue.ToString();
+            }
+
             if (errores.Any())
             {
                 MessageBox.Show(string.Join("\n", errores), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -135,19 +175,27 @@ namespace Windows_Forms
             }
             if (btn_Aceptar.Text == "Actualizar")
             {
-                usuario.IdUsu = ClienteNegocio.Cliente.IdUsu;
-                var cliente = await ClienteNegocio.Put(usuario);
-                if(cliente != null)
+                usuario.IdUsu = UsuarioNegocio.Usuario.IdUsu;
+
+                var cliente = await UsuarioNegocio.Put(usuario);
+                if (cliente != null)
                 {
-                    ClienteNegocio.Cliente = cliente;
+                    UsuarioNegocio.Usuario = cliente;
                     MessageBox.Show("Usuario actualizado correctamente", "Actualización", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                
+
             }
             else
             {
-                await ClienteNegocio.Post(usuario);
-                MessageBox.Show("Usuario creado correctamente", "Registro", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (await UsuarioNegocio.Post(usuario))
+                {
+                    MessageBox.Show("Usuario creado correctamente", "Registro", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Error al crear el usuario", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
             Dispose();
         }
@@ -155,6 +203,23 @@ namespace Windows_Forms
         private void btn_Cancelar_Click(object sender, EventArgs e)
         {
             this.Dispose();
+        }
+
+        private void txb_confirmarContrasenia_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cb_rol_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cb_rol.SelectedValue.ToString() == "Empleado")
+            {
+                cb_medioDePago.Enabled = false;
+            }
+            else
+            {
+                cb_medioDePago.Enabled = true;
+            }
         }
     }
 }

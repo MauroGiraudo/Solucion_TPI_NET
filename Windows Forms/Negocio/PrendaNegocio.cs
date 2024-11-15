@@ -42,7 +42,6 @@ namespace Windows_Forms.Negocio
                     IdPrenda = prenda.IdPrenda,
                     Descripcion = prenda.Descripcion,
                     Talla = prenda.Talla,
-                    Modelo = prenda.Modelo,
                     TipoDePrenda = tipoPrenda.DescripcionTipoPrenda,
                     Marca = marca.DescripcionMarca,
                     Precio = precio.Valor,

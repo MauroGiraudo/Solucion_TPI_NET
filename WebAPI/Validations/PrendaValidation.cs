@@ -5,7 +5,7 @@ namespace WebAPI.Validations
 {
     public class  PrendaValidation
     {
-        public static string[] tallas = ["S", "M", "L", "XL"];
+        public static string[] tallas = ["S", "M", "L", "XL"]; //Establecer en un combo box las tallas posibles al subir una nueva prenda
         public static string? Parse(PrendaService service, Prenda prenda)
         {
             var prendas = service.FindAll();
@@ -23,12 +23,9 @@ namespace WebAPI.Validations
                 {
                     return "El punto de pedido no puede ser negativo";
                 }
-                foreach(string talla in p.Talla)
+                if (!tallas.Contains(p.Talla))
                 {
-                    if (!tallas.Contains(talla))
-                    {
-                        return "Las tallas deben ser S, M, L o XL";
-                    }
+                    return "Las tallas deben ser S, M, L o XL";
                 }
             }
             return null;

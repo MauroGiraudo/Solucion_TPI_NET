@@ -5,10 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows_Forms.Model.Compras;
+using Windows_Forms.Model.Cargas;
 
-namespace Domain.Model.Shared
+namespace Windows_Forms.Model.Usuarios
 {
-    public abstract class Usuario
+    public class Usuario
     {
         [Key]
         public int IdUsu { get; set; }
@@ -27,6 +29,17 @@ namespace Domain.Model.Shared
        
         public string Contrasenia { get; set; }
 
-        public string? TipoUsuario { get; set; }
+        public string TipoUsuario { get; set; }
+
+        public string? MedioDePago { get; set; }
+
+        public List<Compra>? Compras { get; set; }
+
+        public List<Carga>? Cargas { get; set; }
+    }
+    public class LoginData
+    {
+        public string UserName { get; set; }
+        public string Contrasenia { get; set; }
     }
 }

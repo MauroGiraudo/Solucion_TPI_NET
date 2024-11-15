@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FontAwesome.Sharp" Version="6.6.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
   </ItemGroup>
 
@@ -31,10 +30,6 @@
 
   <ItemGroup>
     <Folder Include="ClientService\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WebAPI\WebAPI.csproj" />
   </ItemGroup>
 
 </Project>

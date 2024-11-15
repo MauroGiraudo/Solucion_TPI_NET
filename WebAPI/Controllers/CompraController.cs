@@ -7,7 +7,7 @@ using WebAPI.Validations;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/Cliente/{IdUsu}/[controller]")]
+    [Route("api/Usuario/{IdUsu}/[controller]")]
     public class CompraController : Controller
     {
         private CompraService _service = new CompraService();
@@ -19,17 +19,17 @@ namespace WebAPI.Controllers
             }
         }
 
-        private ClienteService _cservice = new ClienteService();
-        public ClienteService CService
+        private UsuarioService _uservice = new UsuarioService();
+        public UsuarioService UService
         {
             get
             {
-                return _cservice;
+                return _uservice;
             }
         }
 
         private LineaCompraService _lcservice = new LineaCompraService();
-        public LineaCompraService LCService
+        public LineaCompraService LUService
         {
             get
             {
@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
             compra.IdUsu = IdUsu;
-            var cliente = CService.GetOne(compra.IdUsu);
+            var cliente = UService.GetOne(compra.IdUsu);
             if(cliente == null)
             {
                 return NotFound();
@@ -97,7 +97,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
-            var cliente = CService.GetOne(compra.IdUsu);
+            var cliente = UService.GetOne(compra.IdUsu);
             if(cliente == null)
             {
                 return NotFound("Error: No se reconoce al usuario asociado al pedido actual");
@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
             var comp = Service.GetOne(IdUsu, IdOperacion);
             comp.EstadoOperacion = "Finalizada";
 
-            var lineasCompra = LCService.FindAll(comp.IdUsu, comp.IdOperacion);
+            var lineasCompra = LUService.FindAll(comp.IdUsu, comp.IdOperacion);
             foreach (var lc in lineasCompra)
             {
                 int IdPrenda = lc.IdPrenda;

@@ -36,13 +36,15 @@
             dtp_fecha = new DateTimePicker();
             dgv_compra = new DataGridView();
             btn_salir = new Button();
+            lbl_total = new Label();
+            txb_total = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgv_compra).BeginInit();
             SuspendLayout();
             // 
             // lbl_idOperacion
             // 
             lbl_idOperacion.AutoSize = true;
-            lbl_idOperacion.Location = new Point(84, 21);
+            lbl_idOperacion.Location = new Point(68, 21);
             lbl_idOperacion.Name = "lbl_idOperacion";
             lbl_idOperacion.Size = new Size(91, 20);
             lbl_idOperacion.TabIndex = 0;
@@ -51,7 +53,7 @@
             // lbl_fecha
             // 
             lbl_fecha.AutoSize = true;
-            lbl_fecha.Location = new Point(367, 21);
+            lbl_fecha.Location = new Point(358, 21);
             lbl_fecha.Name = "lbl_fecha";
             lbl_fecha.Size = new Size(47, 20);
             lbl_fecha.TabIndex = 1;
@@ -60,7 +62,7 @@
             // lbl_estado
             // 
             lbl_estado.AutoSize = true;
-            lbl_estado.Location = new Point(626, 21);
+            lbl_estado.Location = new Point(635, 21);
             lbl_estado.Name = "lbl_estado";
             lbl_estado.Size = new Size(54, 20);
             lbl_estado.TabIndex = 2;
@@ -70,35 +72,35 @@
             // 
             txb_idOperacion.Location = new Point(45, 57);
             txb_idOperacion.Name = "txb_idOperacion";
-            txb_idOperacion.Size = new Size(168, 27);
+            txb_idOperacion.Size = new Size(130, 27);
             txb_idOperacion.TabIndex = 3;
             // 
             // txb_estado
             // 
-            txb_estado.Location = new Point(569, 57);
+            txb_estado.Location = new Point(594, 57);
             txb_estado.Name = "txb_estado";
-            txb_estado.Size = new Size(168, 27);
+            txb_estado.Size = new Size(143, 27);
             txb_estado.TabIndex = 5;
             // 
             // dtp_fecha
             // 
-            dtp_fecha.Location = new Point(308, 57);
+            dtp_fecha.Location = new Point(245, 55);
             dtp_fecha.Name = "dtp_fecha";
-            dtp_fecha.Size = new Size(168, 27);
+            dtp_fecha.Size = new Size(281, 27);
             dtp_fecha.TabIndex = 4;
             // 
             // dgv_compra
             // 
             dgv_compra.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_compra.Location = new Point(45, 123);
+            dgv_compra.Location = new Point(126, 121);
             dgv_compra.Name = "dgv_compra";
             dgv_compra.RowHeadersWidth = 51;
-            dgv_compra.Size = new Size(692, 258);
+            dgv_compra.Size = new Size(553, 258);
             dgv_compra.TabIndex = 6;
             // 
             // btn_salir
             // 
-            btn_salir.Location = new Point(340, 410);
+            btn_salir.Location = new Point(358, 451);
             btn_salir.Name = "btn_salir";
             btn_salir.Size = new Size(94, 29);
             btn_salir.TabIndex = 7;
@@ -106,11 +108,30 @@
             btn_salir.UseVisualStyleBackColor = true;
             btn_salir.Click += btn_salir_Click;
             // 
+            // lbl_total
+            // 
+            lbl_total.AutoSize = true;
+            lbl_total.Font = new Font("Segoe UI", 11F);
+            lbl_total.Location = new Point(505, 397);
+            lbl_total.Name = "lbl_total";
+            lbl_total.Size = new Size(56, 25);
+            lbl_total.TabIndex = 8;
+            lbl_total.Text = "Total:";
+            // 
+            // txb_total
+            // 
+            txb_total.Location = new Point(567, 398);
+            txb_total.Name = "txb_total";
+            txb_total.Size = new Size(112, 27);
+            txb_total.TabIndex = 9;
+            // 
             // form_detalleCompra
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 466);
+            ClientSize = new Size(800, 492);
+            Controls.Add(txb_total);
+            Controls.Add(lbl_total);
             Controls.Add(btn_salir);
             Controls.Add(dgv_compra);
             Controls.Add(dtp_fecha);
@@ -136,5 +157,7 @@
         private DateTimePicker dtp_fecha;
         private DataGridView dgv_compra;
         private Button btn_salir;
+        private Label lbl_total;
+        private TextBox txb_total;
     }
 }

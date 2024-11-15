@@ -37,13 +37,26 @@ namespace Windows_Forms.Negocio
             }
         }
 
+        private static CompraMuestra? _compraMuestra = null;
+        public static CompraMuestra? CompraMuestra
+        {
+            get
+            {
+                return _compraMuestra;
+            }
+            set
+            {
+                _compraMuestra = value;
+            }
+        }
+
         public static async void NuevaCompra()
         {
             Compra compra = new Compra();
-            await CompraNegocio.Post(compra);
+            await Post(compra);
         }
 
-        static readonly string defaultURL = "http://localhost:5108/api/Cliente/" + Convert.ToString(ClienteNegocio.Cliente?.IdUsu) + "/Compra/";
+        static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/";
         public static async Task<IEnumerable<Compra>> GetAll()
         {
             var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL);

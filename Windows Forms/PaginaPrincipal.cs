@@ -25,21 +25,42 @@ namespace Windows_Forms
 
         private void PaginaPrincipal_Shown(object sender, EventArgs e)
         {
+            mnu_comprar.Visible = false;
+            mnu_operaciones.Visible = false;
             form_InicioSesion appLogin = new form_InicioSesion();
             if (appLogin.ShowDialog() != DialogResult.OK)
             {
                 this.Dispose();
             }
+            else
+            {
+                if (UsuarioNegocio.Usuario.TipoUsuario == "Empleado")
+                {
+                    mnu_comprar.Visible = false;
+                    mnu_operaciones.Visible = true;
+                }
+                else
+                {
+                    mnu_operaciones.Visible = false;
+                    mnu_comprar.Visible = true;
+                }
+                /*if(UsuarioNegocio.Usuario.TipoUsuario == "Cliente")
+                {
+                    
+                }*/
+            }
+
         }
 
         private void mnuCerrarSesion_Click(object sender, EventArgs e)
         {
-            ClienteNegocio.Logout();
+            UsuarioNegocio.Logout();
+            PaginaPrincipal_Shown(sender, e);
         }
 
         private void editarCuentaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            form_Registro registro = new form_Registro(ClienteNegocio.Cliente);
+            form_Registro registro = new form_Registro(UsuarioNegocio.Usuario);
             registro.ShowDialog();
         }
 
@@ -59,6 +80,12 @@ namespace Windows_Forms
         {
             form_comprasCliente compras = new form_comprasCliente();
             compras.ShowDialog();
+        }
+
+        private void mnu_prendas_Click(object sender, EventArgs e)
+        {
+            form_CRUD_prenda prendas = new form_CRUD_prenda();
+            prendas.ShowDialog();
         }
     }
 }

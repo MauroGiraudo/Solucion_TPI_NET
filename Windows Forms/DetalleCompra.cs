@@ -18,13 +18,19 @@ namespace Windows_Forms
             InitializeComponent();
         }
 
-        public form_detalleCompra(CompraMuestra compra, IEnumerable<PrendaPedido> prendas)
+        public form_detalleCompra(CompraMuestra compra, IEnumerable<PrendaPedido> prendas, float total)
         {
             InitializeComponent();
             txb_idOperacion.Text = compra.IdOperacion.ToString();
             txb_estado.Text = compra.EstadoOperacion;
             dtp_fecha.Value = compra.FechaOperacion;
             dgv_compra.DataSource = prendas;
+            txb_total.Text = total.ToString();
+            txb_idOperacion.Enabled = false;
+            txb_estado.Enabled = false;
+            dtp_fecha.Enabled = false;
+            dgv_compra.Enabled = false;
+            txb_total.Enabled = false;
         }
         private void btn_salir_Click(object sender, EventArgs e)
         {
