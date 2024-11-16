@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Windows_Forms.Model.Cargas;
 using Windows_Forms.Model.Prendas;
 using Newtonsoft.Json;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms.Negocio
 {
     public class LineaCargaNegocio
     {
-        static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/" + Convert.ToString(CargaNegocio.MiCarga?.IdOperacion) + "/LineaCarga/";
+        static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Carga/" + Convert.ToString(CargaNegocio.MiCarga?.IdOperacion) + "/LineaCarga/";
     
         public async static Task<IEnumerable<LineaCarga>> GetAll()
         {
@@ -64,7 +65,23 @@ namespace Windows_Forms.Negocio
         public async static Task<Boolean> Post(LineaCarga lineaCarga)
         {
             var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(defaultURL, lineaCarga);
-            return response.IsSuccessStatusCode;
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<Boolean>(await response.Content.ReadAsStringAsync());
+
+                } catch(Exception exc)
+                {
+                    var data = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+                    Errors.Errores.Add(data);
+                    return false;
+                }
+            }
         }
 
         public async static Task<Boolean> Delete(int NumeroLinea)

@@ -23,7 +23,7 @@ namespace Windows_Forms.Negocio
                     Task<IEnumerable<Carga>> task = new Task<IEnumerable<Carga>>(Cargar_Carga);
                     task.Start();
                     var cargaResult = task.Result;
-                    _miCarga = cargaResult.First();
+                    _miCarga = cargaResult.FirstOrDefault();
                 }
                 return _miCarga;
             }
@@ -46,7 +46,7 @@ namespace Windows_Forms.Negocio
             }
         }
 
-        public async static void NuevaCarga()
+        public async static Task NuevaCarga()
         {
             Carga carga = new Carga();
             await Post(carga);
@@ -56,8 +56,18 @@ namespace Windows_Forms.Negocio
         public async static Task<IEnumerable<Carga>> GetAll()
         {
             var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL);
-            var data = JsonConvert.DeserializeObject<List<Carga>>(response);
+            List<Carga> data = JsonConvert.DeserializeObject<List<Carga>>(response);
             return data;
+        }
+
+        public async static Task<Carga> GetOne(int IdOperacion)
+        {
+            var cargas = await GetAll();
+            var filtrado =
+                from c in cargas
+                where c.IdOperacion == IdOperacion
+                select c;
+            return filtrado.FirstOrDefault();
         }
 
         public static async Task<IEnumerable<CargaMuestra>> SetCargasMuestra()
@@ -77,11 +87,20 @@ namespace Windows_Forms.Negocio
             return cargasMuestra;
         }
 
-        public static async Task<IEnumerable<Carga>> GetEnProceso()
+        /*public static async Task<IEnumerable<Carga>> GetEnProceso()
         {
             var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL + "EnProceso");
             var data = JsonConvert.DeserializeObject<List<Carga>>(response);
             return data;
+        }*/
+
+        public static async Task<IEnumerable<Carga>> GetEnProceso()
+        {
+            var cargas = await GetAll();
+            return 
+                from c in cargas
+                where c.EstadoOperacion == "En Proceso"
+                select c;
         }
         public static async Task<Boolean> Post(Carga carga)
         {

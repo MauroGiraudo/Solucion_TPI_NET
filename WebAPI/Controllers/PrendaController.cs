@@ -65,7 +65,7 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            var result = PrendaValidation.Parse(Service, prenda);
+            var result = PrendaValidation.ParsePost(Service, prenda);
             if (result != null)
             {
                 return BadRequest(result);
@@ -95,12 +95,11 @@ namespace WebAPI.Controllers
                 return BadRequest();
             }
 
-            var result = PrendaValidation.Parse(Service, prenda);
+            var result = PrendaValidation.ParsePut(Service, prenda);
             if (result != null)
             {
                 return BadRequest(result);
             }
-
             Service.Update(prenda);
             return NoContent();
         }

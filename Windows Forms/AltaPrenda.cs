@@ -27,14 +27,17 @@ namespace Windows_Forms
         public form_altaPrenda(Prenda prenda, PrecioPrenda precio)
         {
             InitializeComponent();
+            lbl_idPrenda.Text = prenda.IdPrenda.ToString();
+            List<string> tallas = new List<string> { "S", "M", "L", "XL" };
+            cb_talla.DataSource = tallas;
+            Cargar_ComboBoxes(prenda);
             Text = "Modificar Prenda";
             btn_aceptar.Text = "Modificar";
             txb_descripcion.Text = prenda.Descripcion;
             nud_stock.Value = prenda.Stock;
+            nud_stock.Enabled = false;
             nud_puntoPedido.Value = prenda.PuntoPedido;
             cb_talla.SelectedItem = prenda.Talla;
-            cb_tipoPrenda.SelectedValue = prenda.IdTipoPrenda;
-            cb_marca.SelectedValue = prenda.IdMarca;
             txb_precio.Text = precio.Valor.ToString();
             txb_precio.Enabled = false;
         }
@@ -45,7 +48,7 @@ namespace Windows_Forms
             tiposDePrenda = TipoPrendaNegocio.GetAll();
             return tiposDePrenda.Result;
         }
-        private async void Carga_CBTiposPrenda()
+        private async Task Carga_CBTiposPrenda()
         {
             Task<IEnumerable<TipoPrenda>> task = new Task<IEnumerable<TipoPrenda>>(Carga_TiposPrenda);
             task.Start();
@@ -59,13 +62,21 @@ namespace Windows_Forms
             marcas = MarcaNegocio.GetAll();
             return marcas.Result;
         }
-        private async void Carga_CBMarcas()
+        private async Task Carga_CBMarcas()
         {
             Task<IEnumerable<Marca>> task = new Task<IEnumerable<Marca>>(Carga_Marcas);
             task.Start();
             cb_marca.DataSource = await task;
             cb_marca.DisplayMember = "DescripcionMarca";
             cb_marca.ValueMember = "IdMarca";
+        }
+
+        private async void Cargar_ComboBoxes(Prenda prenda)
+        {
+            await Carga_CBTiposPrenda();
+            await Carga_CBMarcas();
+            cb_tipoPrenda.SelectedValue = prenda.IdTipoPrenda;
+            cb_marca.SelectedValue = prenda.IdMarca;
         }
 
         private void btn_cancelar_Click(object sender, EventArgs e)
@@ -110,6 +121,7 @@ namespace Windows_Forms
             prenda.IdMarca = Convert.ToInt32(cb_marca.SelectedValue);
             if(btn_aceptar.Text == "Modificar")
             {
+                prenda.IdPrenda = Convert.ToInt32(lbl_idPrenda.Text);
                 if(await PrendaNegocio.Update(prenda))
                 {
                     MessageBox.Show("Prenda modificada con éxito", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -117,7 +129,8 @@ namespace Windows_Forms
                 }
                 else
                 {
-                    MessageBox.Show("Error al modificar la prenda", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Join("\n", Errors.Errores), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Errores.Clear();
                 }
             }
             else

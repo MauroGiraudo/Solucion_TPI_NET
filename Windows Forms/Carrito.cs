@@ -20,9 +20,12 @@ namespace Windows_Forms
             InitializeComponent();
             if(CompraNegocio.MiCompra == null)
             {
-                CompraNegocio.NuevaCompra();
+                Cargar_Grid_ConNuevaCompra();
             }
-            Cargar_Grid();
+            else
+            {
+                Cargar_Grid_Void();
+            }
             txb_total.Enabled = false;
         }
 
@@ -34,12 +37,26 @@ namespace Windows_Forms
             return lineasDeCompra.Result;
         }
 
-        private async void Cargar_Grid()
+        private async void Cargar_Grid_Void()
         {
             Task<IEnumerable<PrendaPedido>> task = new Task<IEnumerable<PrendaPedido>>(Cargar_LineasDeCompra);
             task.Start();
             dgv_carrito.DataSource = await task;
             txb_total.Text = await Cargar_Total() + " $";
+        }
+
+        private async Task Cargar_Grid()
+        {
+            Task<IEnumerable<PrendaPedido>> task = new Task<IEnumerable<PrendaPedido>>(Cargar_LineasDeCompra);
+            task.Start();
+            dgv_carrito.DataSource = await task;
+            txb_total.Text = await Cargar_Total() + " $";
+        }
+
+        private async void Cargar_Grid_ConNuevaCompra()
+        {
+            await CompraNegocio.NuevaCompra();
+            await Cargar_Grid();
         }
 
         private async Task<float> Cargar_Total()

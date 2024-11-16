@@ -160,6 +160,7 @@
             verCargasToolStripMenuItem1.Name = "verCargasToolStripMenuItem1";
             verCargasToolStripMenuItem1.Size = new Size(224, 26);
             verCargasToolStripMenuItem1.Text = "Ver Cargas";
+            verCargasToolStripMenuItem1.Click += verCargasToolStripMenuItem1_Click;
             // 
             // PaginaPrincipal
             // 

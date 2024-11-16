@@ -105,5 +105,11 @@ namespace Windows_Forms
             form_cargaActual carga = new form_cargaActual();
             carga.ShowDialog();
         }
+
+        private void verCargasToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            form_cargasEmpleado cargas = new form_cargasEmpleado();
+            cargas.ShowDialog();
+        }
     }
 }

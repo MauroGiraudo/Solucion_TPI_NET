@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using Windows_Forms.Model.Prendas;
 using Windows_Forms.Negocio;
 using Windows_Forms.Model.Cargas;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms
 {
@@ -106,15 +107,76 @@ namespace Windows_Forms
                 if (await LineaCargaNegocio.Post(lineaCarga))
                 {
                     CantidadPrenda = 0;
-                    MessageBox.Show("Prenda agregada al carrito exitosamente. Ingrese a la opción 'Operaciones/Ver Carga Actual' para registrar la carga", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    this.Dispose();
+                    MessageBox.Show("Prenda agregada al carrito exitosamente.\nIngrese a la opción 'Operaciones/Ver Carga Actual' para registrar la carga", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Error al agregar la prenda a la carga", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Join("\n", Errors.Errores), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Errores.Clear();
                 }
                 Cargar_Grid();
             }
+        }
+
+        private async void btn_modificar_Click(object sender, EventArgs e)
+        {
+            if (dgv_prendas.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione una prenda para modificar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int indicePrenda = dgv_prendas.SelectedRows[0].Index;
+            PrendaMuestra prendaMuestra = prendas.Result.ToList()[indicePrenda];
+            Prenda prenda = await PrendaNegocio.GetOne(prendaMuestra.IdPrenda);
+            PrecioPrenda precio = await PrecioPrendaNegocio.GetCurrentPrecio(prenda.IdPrenda);
+            form_altaPrenda modificar = new form_altaPrenda(prenda, precio);
+            modificar.ShowDialog();
+            Cargar_Grid();
+        }
+
+        private async void btn_buscar_Click(object sender, EventArgs e)
+        {
+            Task<IEnumerable<PrendaMuestra>> task = new Task<IEnumerable<PrendaMuestra>>(Cargar_Prendas);
+            task.Start();
+            var prendas = await task;
+            var filtro =
+                from p in prendas
+                where p.Descripcion.ToLower().Contains(txb_buscar.Text.ToLower())
+                select p;
+            dgv_prendas.DataSource = filtro.ToList();
+        }
+
+        private async void btn_eliminar_Click(object sender, EventArgs e)
+        {
+            if (dgv_prendas.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione una prenda para eliminar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int indicePrenda = dgv_prendas.SelectedRows[0].Index;
+            PrendaMuestra prendaMuestra = prendas.Result.ToList()[indicePrenda];
+            Prenda prenda = await PrendaNegocio.GetOne(prendaMuestra.IdPrenda);
+            if (MessageBox.Show($"¿Está seguro que desea eliminar la prenda {prenda.Descripcion}?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                await PrendaNegocio.Delete(prenda);
+                MessageBox.Show("Prenda eliminada exitosamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            Cargar_Grid();
+        }
+
+        private async void btn_cargaPrecio_Click(object sender, EventArgs e)
+        {
+            if (dgv_prendas.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione una prenda para cargar un nuevo precio", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            int indicePrenda = dgv_prendas.SelectedRows[0].Index;
+            PrendaMuestra prendaMuestra = prendas.Result.ToList()[indicePrenda];
+            Prenda prenda = await PrendaNegocio.GetOne(prendaMuestra.IdPrenda);
+            form_nuevoPrecio precio = new form_nuevoPrecio(prenda.IdPrenda);
+            precio.ShowDialog();
+            Cargar_Grid();
         }
     }
 }

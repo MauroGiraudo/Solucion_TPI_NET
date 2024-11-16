@@ -50,7 +50,7 @@ namespace Windows_Forms.Negocio
             }
         }
 
-        public static async void NuevaCompra()
+        public static async Task NuevaCompra()
         {
             Compra compra = new Compra();
             await Post(compra);

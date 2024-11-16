@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
+            txb_buscar = new TextBox();
             btn_buscar = new Button();
             dgv_prendas = new DataGridView();
             btn_alta = new Button();
@@ -40,12 +40,12 @@
             ((System.ComponentModel.ISupportInitialize)dgv_prendas).BeginInit();
             SuspendLayout();
             // 
-            // textBox1
+            // txb_buscar
             // 
-            textBox1.Location = new Point(276, 27);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(306, 27);
-            textBox1.TabIndex = 0;
+            txb_buscar.Location = new Point(276, 27);
+            txb_buscar.Name = "txb_buscar";
+            txb_buscar.Size = new Size(306, 27);
+            txb_buscar.TabIndex = 0;
             // 
             // btn_buscar
             // 
@@ -56,6 +56,7 @@
             btn_buscar.TabIndex = 1;
             btn_buscar.Text = "Buscar";
             btn_buscar.UseVisualStyleBackColor = true;
+            btn_buscar.Click += btn_buscar_Click;
             // 
             // dgv_prendas
             // 
@@ -97,6 +98,7 @@
             btn_cargaPrecio.TabIndex = 5;
             btn_cargaPrecio.Text = "Nuevo Precio";
             btn_cargaPrecio.UseVisualStyleBackColor = true;
+            btn_cargaPrecio.Click += btn_cargaPrecio_Click;
             // 
             // btn_modificar
             // 
@@ -107,6 +109,7 @@
             btn_modificar.TabIndex = 6;
             btn_modificar.Text = "Modificar Prenda";
             btn_modificar.UseVisualStyleBackColor = true;
+            btn_modificar.Click += btn_modificar_Click;
             // 
             // btn_eliminar
             // 
@@ -117,6 +120,7 @@
             btn_eliminar.TabIndex = 7;
             btn_eliminar.Text = "Eliminar Prenda";
             btn_eliminar.UseVisualStyleBackColor = true;
+            btn_eliminar.Click += btn_eliminar_Click;
             // 
             // btn_salir
             // 
@@ -142,7 +146,7 @@
             Controls.Add(btn_alta);
             Controls.Add(dgv_prendas);
             Controls.Add(btn_buscar);
-            Controls.Add(textBox1);
+            Controls.Add(txb_buscar);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -156,7 +160,7 @@
 
         #endregion
 
-        private TextBox textBox1;
+        private TextBox txb_buscar;
         private Button btn_buscar;
         private DataGridView dgv_prendas;
         private Button btn_alta;

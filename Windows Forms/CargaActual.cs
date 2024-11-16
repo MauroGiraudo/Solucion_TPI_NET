@@ -18,7 +18,14 @@ namespace Windows_Forms
         public form_cargaActual()
         {
             InitializeComponent();
-            Cargar_Grid();
+            if(CargaNegocio.MiCarga == null)
+            {
+                Cargar_Grid_ConNuevaCarga();
+            }
+            else
+            {
+                Cargar_Grid_Void();
+            }
         }
 
         private Task<IEnumerable<PrendaPedido>>? lineasDeCarga;
@@ -29,13 +36,25 @@ namespace Windows_Forms
             return lineasDeCarga.Result;
         }
 
-        public async void Cargar_Grid()
+        public async Task Cargar_Grid()
         {
             Task<IEnumerable<PrendaPedido>> task = new Task<IEnumerable<PrendaPedido>>(Cargar_PrendasPedido);
             task.Start();
             dgv_miCarga.DataSource = await task;
         }
 
+        public async void Cargar_Grid_Void()
+        {
+            Task<IEnumerable<PrendaPedido>> task = new Task<IEnumerable<PrendaPedido>>(Cargar_PrendasPedido);
+            task.Start();
+            dgv_miCarga.DataSource = await task;
+        }
+
+        private async void Cargar_Grid_ConNuevaCarga()
+        {
+            await CargaNegocio.NuevaCarga();
+            await Cargar_Grid();
+        }
         private void btn_salir_Click(object sender, EventArgs e)
         {
             this.Dispose();
@@ -69,12 +88,12 @@ namespace Windows_Forms
                 CargaNegocio.MiCarga = null;
                 lineasDeCarga = null;
                 dgv_miCarga.DataSource = null;
-                MessageBox.Show("Compra realizada con éxito", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Carga realizada con éxito", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             else
             {
-                MessageBox.Show("No ha iniciado ninguna compra aún", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No ha iniciado ninguna carga aún", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             this.Dispose();
         }

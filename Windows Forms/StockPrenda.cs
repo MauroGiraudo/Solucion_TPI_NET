@@ -28,7 +28,7 @@ namespace Windows_Forms
         {
             this.Dispose();
         }
-        private async void btn_aceptar_Click(object sender, EventArgs e)
+        private void btn_aceptar_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(txb_stock.Text, out int cantidad))
             {

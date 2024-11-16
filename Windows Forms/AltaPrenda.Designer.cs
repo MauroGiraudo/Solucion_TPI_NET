@@ -44,6 +44,7 @@
             lbl_marca = new Label();
             txb_precio = new TextBox();
             lbl_precio = new Label();
+            lbl_idPrenda = new Label();
             ((System.ComponentModel.ISupportInitialize)nud_stock).BeginInit();
             ((System.ComponentModel.ISupportInitialize)nud_puntoPedido).BeginInit();
             SuspendLayout();
@@ -102,7 +103,7 @@
             btn_aceptar.TabIndex = 6;
             btn_aceptar.Text = "Aceptar";
             btn_aceptar.UseVisualStyleBackColor = true;
-            btn_aceptar.Click += this.btn_aceptar_Click;
+            btn_aceptar.Click += btn_aceptar_Click;
             // 
             // btn_cancelar
             // 
@@ -185,11 +186,22 @@
             lbl_precio.TabIndex = 15;
             lbl_precio.Text = "Precio";
             // 
+            // lbl_idPrenda
+            // 
+            lbl_idPrenda.AutoSize = true;
+            lbl_idPrenda.Location = new Point(25, 310);
+            lbl_idPrenda.Name = "lbl_idPrenda";
+            lbl_idPrenda.Size = new Size(68, 20);
+            lbl_idPrenda.TabIndex = 16;
+            lbl_idPrenda.Text = "IdPrenda";
+            lbl_idPrenda.Visible = false;
+            // 
             // form_altaPrenda
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(635, 363);
+            Controls.Add(lbl_idPrenda);
             Controls.Add(lbl_precio);
             Controls.Add(txb_precio);
             Controls.Add(lbl_marca);
@@ -236,5 +248,6 @@
         private Label lbl_marca;
         private TextBox txb_precio;
         private Label lbl_precio;
+        private Label lbl_idPrenda;
     }
 }
