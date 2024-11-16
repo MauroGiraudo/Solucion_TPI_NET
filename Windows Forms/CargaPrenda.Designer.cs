@@ -1,6 +1,6 @@
 ﻿namespace Windows_Forms
 {
-    partial class form_cantidadPrenda
+    partial class form_cargaPrenda
     {
         /// <summary>
         /// Required designer variable.
@@ -28,32 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
-            txb_cantidad = new TextBox();
+            lbl_stock = new Label();
+            txb_stock = new TextBox();
             btn_aceptar = new Button();
             btn_cancelar = new Button();
+            lbl_idPrenda = new Label();
             SuspendLayout();
             // 
-            // label1
+            // lbl_stock
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(108, 32);
-            label1.Name = "label1";
-            label1.Size = new Size(214, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Ingrese la cantidad a comprar: ";
+            lbl_stock.AutoSize = true;
+            lbl_stock.Location = new Point(118, 35);
+            lbl_stock.Name = "lbl_stock";
+            lbl_stock.Size = new Size(198, 20);
+            lbl_stock.TabIndex = 0;
+            lbl_stock.Text = "Stock a cargar de la prenda: ";
             // 
-            // txb_cantidad
+            // txb_stock
             // 
-            txb_cantidad.Location = new Point(81, 84);
-            txb_cantidad.Name = "txb_cantidad";
-            txb_cantidad.Size = new Size(278, 27);
-            txb_cantidad.TabIndex = 1;
+            txb_stock.Location = new Point(86, 70);
+            txb_stock.Name = "txb_stock";
+            txb_stock.Size = new Size(258, 27);
+            txb_stock.TabIndex = 1;
             // 
             // btn_aceptar
             // 
             btn_aceptar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btn_aceptar.Location = new Point(108, 155);
+            btn_aceptar.Location = new Point(109, 157);
             btn_aceptar.Name = "btn_aceptar";
             btn_aceptar.Size = new Size(94, 29);
             btn_aceptar.TabIndex = 2;
@@ -64,7 +65,7 @@
             // btn_cancelar
             // 
             btn_cancelar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btn_cancelar.Location = new Point(228, 155);
+            btn_cancelar.Location = new Point(222, 157);
             btn_cancelar.Name = "btn_cancelar";
             btn_cancelar.Size = new Size(94, 29);
             btn_cancelar.TabIndex = 3;
@@ -72,29 +73,42 @@
             btn_cancelar.UseVisualStyleBackColor = true;
             btn_cancelar.Click += btn_cancelar_Click;
             // 
-            // form_cantidadPrenda
+            // lbl_idPrenda
+            // 
+            lbl_idPrenda.AutoSize = true;
+            lbl_idPrenda.Location = new Point(13, 108);
+            lbl_idPrenda.Name = "lbl_idPrenda";
+            lbl_idPrenda.Size = new Size(68, 20);
+            lbl_idPrenda.TabIndex = 4;
+            lbl_idPrenda.Text = "IdPrenda";
+            lbl_idPrenda.Visible = false;
+            // 
+            // form_cargaPrenda
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(429, 211);
+            Controls.Add(lbl_idPrenda);
             Controls.Add(btn_cancelar);
             Controls.Add(btn_aceptar);
-            Controls.Add(txb_cantidad);
-            Controls.Add(label1);
+            Controls.Add(txb_stock);
+            Controls.Add(lbl_stock);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             MinimizeBox = false;
-            Name = "form_cantidadPrenda";
+            Name = "form_cargaPrenda";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Cantidad";
+            Text = "Carga de Prenda";
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label1;
-        private TextBox txb_cantidad;
+        private Label lbl_stock;
+        private TextBox txb_stock;
         private Button btn_aceptar;
         private Button btn_cancelar;
+        private Label lbl_idPrenda;
     }
 }

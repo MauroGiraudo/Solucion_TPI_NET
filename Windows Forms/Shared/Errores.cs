@@ -1,6 +1,4 @@
-﻿
-
-namespace Windows_Forms.Negocio
+﻿namespace Windows_Forms.Shared
 {
     public class Errors
     {

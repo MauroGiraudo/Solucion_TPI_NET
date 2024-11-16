@@ -49,6 +49,17 @@ namespace Domain.Services
             return context.Cargas.Find(IdUsu, IdOperacion);
         }
 
+        public Carga? GetEnProceso(int IdUsu)
+        {
+            using var context = new TiendaRopaContext();
+            var cargas = FindAll(IdUsu);
+            var filtro =
+                from c in cargas
+                where c.EstadoOperacion == "En Proceso"
+                select c;
+            return filtro.FirstOrDefault();
+        }
+
         public  IEnumerable<Carga> FindAll(int IdUsu)
         {
             using var context = new TiendaRopaContext();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows_Forms.Model.Usuarios;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms.Negocio
 {

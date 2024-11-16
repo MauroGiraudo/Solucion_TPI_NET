@@ -9,7 +9,7 @@ namespace WebAPI.Validations
         {
             var cargas = service.FindAll(IdUsu);
             var cargasEnCurso = from c in cargas
-                                 where c.EstadoOperacion == "En Curso"
+                                 where c.EstadoOperacion == "En Proceso"
                                  select c;
             if (cargasEnCurso.Any())
             {

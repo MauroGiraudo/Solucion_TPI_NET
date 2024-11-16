@@ -11,22 +11,22 @@ namespace WebAPI.Validations
             var prendas = service.FindAll();
             foreach (Prenda p in prendas)
             {
-                if (p.Descripcion == prenda.Descripcion)
+                if (p.Descripcion == prenda.Descripcion && p.Talla == prenda.Talla)
                 {
                     return "La prenda ya existe";
                 }
-                if (p.Stock < 0)
-                {
-                    return "El stock no puede ser negativo";
-                }
-                if (p.PuntoPedido < 0)
-                {
-                    return "El punto de pedido no puede ser negativo";
-                }
-                if (!tallas.Contains(p.Talla))
-                {
-                    return "Las tallas deben ser S, M, L o XL";
-                }
+            }
+            if (prenda.Stock < 0)
+            {
+                return "El stock no puede ser negativo";
+            }
+            if (prenda.PuntoPedido < 0)
+            {
+                return "El punto de pedido no puede ser negativo";
+            }
+            if (!tallas.Contains(prenda.Talla))
+            {
+                return "Las tallas deben ser S, M, L o XL";
             }
             return null;
 

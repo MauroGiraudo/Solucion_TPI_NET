@@ -50,7 +50,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result);
             }
-            precioPrenda.FecVigencia = DateTime.Now;
+            if(precioPrenda.FecVigencia == null)
+            {
+                precioPrenda.FecVigencia = DateTime.Now;
+            }
             PPService.Add(precioPrenda);
             return CreatedAtAction(nameof(GetCurrentPrice), new { IdPrenda = precioPrenda.IdPrenda, FecVigencia = precioPrenda.FecVigencia }, precioPrenda);
         }

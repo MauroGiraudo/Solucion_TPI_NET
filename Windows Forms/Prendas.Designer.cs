@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_Prendas));
             dgv_prendas = new DataGridView();
             txb_buscar = new TextBox();
             btn_buscar = new Button();
@@ -47,14 +48,15 @@
             // 
             // txb_buscar
             // 
-            txb_buscar.Location = new Point(409, 24);
+            txb_buscar.Location = new Point(482, 24);
             txb_buscar.Name = "txb_buscar";
             txb_buscar.Size = new Size(333, 27);
             txb_buscar.TabIndex = 1;
             // 
             // btn_buscar
             // 
-            btn_buscar.Location = new Point(769, 24);
+            btn_buscar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btn_buscar.Location = new Point(849, 24);
             btn_buscar.Name = "btn_buscar";
             btn_buscar.Size = new Size(94, 27);
             btn_buscar.TabIndex = 2;
@@ -64,9 +66,10 @@
             // 
             // btn_agregar
             // 
-            btn_agregar.Location = new Point(252, 512);
+            btn_agregar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btn_agregar.Location = new Point(245, 512);
             btn_agregar.Name = "btn_agregar";
-            btn_agregar.Size = new Size(138, 29);
+            btn_agregar.Size = new Size(155, 29);
             btn_agregar.TabIndex = 3;
             btn_agregar.Text = "Agregar al Carrito";
             btn_agregar.UseVisualStyleBackColor = true;
@@ -74,6 +77,7 @@
             // 
             // btn_salir
             // 
+            btn_salir.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_salir.Location = new Point(914, 512);
             btn_salir.Name = "btn_salir";
             btn_salir.Size = new Size(94, 29);
@@ -86,6 +90,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(1272, 578);
             Controls.Add(btn_salir);
             Controls.Add(btn_agregar);

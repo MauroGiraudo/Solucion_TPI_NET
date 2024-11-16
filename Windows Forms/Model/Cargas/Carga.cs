@@ -17,4 +17,10 @@ namespace Windows_Forms.Model.Cargas
     
         public List<LineaCarga>? LineasCarga { get; set; }
     }
+    public class CargaMuestra
+    {
+        public int IdOperacion { get; set; }
+        public DateTime FechaOperacion { get; set; }
+        public string EstadoOperacion { get; set; }
+    }
 }

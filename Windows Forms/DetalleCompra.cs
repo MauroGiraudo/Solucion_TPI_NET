@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows_Forms.Model.Compras;
+using Windows_Forms.Model.Prendas;
 
 namespace Windows_Forms
 {

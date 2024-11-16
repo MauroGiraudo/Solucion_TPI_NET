@@ -41,6 +41,9 @@
             mnu_prendas = new ToolStripMenuItem();
             mnu_tiposDePrenda = new ToolStripMenuItem();
             mnu_marcas = new ToolStripMenuItem();
+            bonificacionesToolStripMenuItem = new ToolStripMenuItem();
+            verCargasToolStripMenuItem = new ToolStripMenuItem();
+            verCargasToolStripMenuItem1 = new ToolStripMenuItem();
             mnsPrincipal.SuspendLayout();
             SuspendLayout();
             // 
@@ -113,7 +116,7 @@
             // 
             // mnu_operaciones
             // 
-            mnu_operaciones.DropDownItems.AddRange(new ToolStripItem[] { mnu_prendas, mnu_tiposDePrenda, mnu_marcas });
+            mnu_operaciones.DropDownItems.AddRange(new ToolStripItem[] { mnu_prendas, mnu_tiposDePrenda, mnu_marcas, bonificacionesToolStripMenuItem, verCargasToolStripMenuItem, verCargasToolStripMenuItem1 });
             mnu_operaciones.Name = "mnu_operaciones";
             mnu_operaciones.Size = new Size(106, 24);
             mnu_operaciones.Text = "Operaciones";
@@ -130,12 +133,33 @@
             mnu_tiposDePrenda.Name = "mnu_tiposDePrenda";
             mnu_tiposDePrenda.Size = new Size(224, 26);
             mnu_tiposDePrenda.Text = "TiposDePrenda";
+            mnu_tiposDePrenda.Click += mnu_tiposDePrenda_Click;
             // 
             // mnu_marcas
             // 
             mnu_marcas.Name = "mnu_marcas";
             mnu_marcas.Size = new Size(224, 26);
             mnu_marcas.Text = "Marcas";
+            mnu_marcas.Click += mnu_marcas_Click;
+            // 
+            // bonificacionesToolStripMenuItem
+            // 
+            bonificacionesToolStripMenuItem.Name = "bonificacionesToolStripMenuItem";
+            bonificacionesToolStripMenuItem.Size = new Size(224, 26);
+            bonificacionesToolStripMenuItem.Text = "Bonificaciones";
+            // 
+            // verCargasToolStripMenuItem
+            // 
+            verCargasToolStripMenuItem.Name = "verCargasToolStripMenuItem";
+            verCargasToolStripMenuItem.Size = new Size(224, 26);
+            verCargasToolStripMenuItem.Text = "Ver Carga Actual";
+            verCargasToolStripMenuItem.Click += verCargasToolStripMenuItem_Click;
+            // 
+            // verCargasToolStripMenuItem1
+            // 
+            verCargasToolStripMenuItem1.Name = "verCargasToolStripMenuItem1";
+            verCargasToolStripMenuItem1.Size = new Size(224, 26);
+            verCargasToolStripMenuItem1.Text = "Ver Cargas";
             // 
             // PaginaPrincipal
             // 
@@ -171,5 +195,8 @@
         private ToolStripMenuItem mnu_prendas;
         private ToolStripMenuItem mnu_tiposDePrenda;
         private ToolStripMenuItem mnu_marcas;
+        private ToolStripMenuItem bonificacionesToolStripMenuItem;
+        private ToolStripMenuItem verCargasToolStripMenuItem;
+        private ToolStripMenuItem verCargasToolStripMenuItem1;
     }
 }

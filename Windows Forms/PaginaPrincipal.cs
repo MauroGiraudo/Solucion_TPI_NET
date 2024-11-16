@@ -87,5 +87,23 @@ namespace Windows_Forms
             form_CRUD_prenda prendas = new form_CRUD_prenda();
             prendas.ShowDialog();
         }
+
+        private void mnu_marcas_Click(object sender, EventArgs e)
+        {
+            form_CRUD_marca marcas = new form_CRUD_marca();
+            marcas.ShowDialog();
+        }
+
+        private void mnu_tiposDePrenda_Click(object sender, EventArgs e)
+        {
+            form_CRUD_tipoDePrenda tiposDePrenda = new form_CRUD_tipoDePrenda();
+            tiposDePrenda.ShowDialog();
+        }
+
+        private void verCargasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            form_cargaActual carga = new form_cargaActual();
+            carga.ShowDialog();
+        }
     }
 }

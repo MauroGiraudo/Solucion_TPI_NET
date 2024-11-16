@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows_Forms.Negocio;
 using Windows_Forms.Model.Compras;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms
 {
@@ -109,7 +110,7 @@ namespace Windows_Forms
             task.Start();
             var misPrendas = await task;
             var filteredPrendas = from p in misPrendas
-                                  where p.Descripcion.Contains(txb_buscar.Text)
+                                  where p.Descripcion.ToLower().Contains(txb_buscar.Text.ToLower())
                                   select p;
             dgv_prendas.DataSource = filteredPrendas.ToList();
         }
