@@ -172,6 +172,7 @@ namespace Windows_Forms
             {
                 MessageBox.Show(string.Join("\n", errores), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 errores.Clear();
+                return;
             }
             if (btn_Aceptar.Text == "Actualizar")
             {
@@ -197,7 +198,7 @@ namespace Windows_Forms
                 }
 
             }
-            Dispose();
+            this.Dispose();
         }
 
         private void btn_Cancelar_Click(object sender, EventArgs e)

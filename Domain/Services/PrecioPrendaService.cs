@@ -54,7 +54,7 @@ namespace Domain.Services
             using var context = new TiendaRopaContext();
 
             List<PrecioPrenda> precios = context.PreciosPrenda.ToList();
-            IEnumerable<DateTime> preciosFiltrados =  
+            IEnumerable<DateTime?> preciosFiltrados =  
                 from p in precios
                 where p.FecVigencia <= fecha && p.IdPrenda == IdPrenda
                 select p.FecVigencia;

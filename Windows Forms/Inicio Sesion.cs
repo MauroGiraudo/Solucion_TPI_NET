@@ -1,5 +1,6 @@
 using Windows_Forms.Model.Usuarios;
 using Windows_Forms.Negocio;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms
 {

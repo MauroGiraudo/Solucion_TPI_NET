@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Windows_Forms.Model.Compras;
 using Windows_Forms.Negocio;
+using Windows_Forms.Model.Prendas;
 
 namespace Windows_Forms
 {
@@ -17,11 +18,14 @@ namespace Windows_Forms
         public form_carrito()
         {
             InitializeComponent();
-            if(CompraNegocio.MiCompra == null)
+            if (CompraNegocio.MiCompra == null)
             {
-                CompraNegocio.NuevaCompra();
+                Cargar_Grid_ConNuevaCompra();
             }
-            Cargar_Grid();
+            else
+            {
+                Cargar_Grid_Void();
+            }
             txb_total.Enabled = false;
         }
 
@@ -33,12 +37,26 @@ namespace Windows_Forms
             return lineasDeCompra.Result;
         }
 
-        private async void Cargar_Grid()
+        private async void Cargar_Grid_Void()
         {
             Task<IEnumerable<PrendaPedido>> task = new Task<IEnumerable<PrendaPedido>>(Cargar_LineasDeCompra);
             task.Start();
             dgv_carrito.DataSource = await task;
             txb_total.Text = await Cargar_Total() + " $";
+        }
+
+        private async Task Cargar_Grid()
+        {
+            Task<IEnumerable<PrendaPedido>> task = new Task<IEnumerable<PrendaPedido>>(Cargar_LineasDeCompra);
+            task.Start();
+            dgv_carrito.DataSource = await task;
+            txb_total.Text = await Cargar_Total() + " $";
+        }
+
+        private async void Cargar_Grid_ConNuevaCompra()
+        {
+            await CompraNegocio.NuevaCompra();
+            await Cargar_Grid();
         }
 
         private async Task<float> Cargar_Total()
@@ -50,6 +68,17 @@ namespace Windows_Forms
             foreach (PrendaPedido p in prendas)
             {
                 total += p.Precio;
+            }
+            var bonif = await BonificacionNegocio.GetCurrent(Convert.ToInt32(total));
+            if(bonif != null)
+            {
+                total = total * (1 - bonif.ProporcionDescuento / 100);
+                lbl_descuento.Text = "¡Obtuvo un descuento del " + bonif.ProporcionDescuento + "%!";
+                lbl_descuento.Visible = true;
+            }
+            else
+            {
+                lbl_descuento.Visible = false;
             }
             return total;
         }
@@ -86,8 +115,6 @@ namespace Windows_Forms
             {
                 await CompraNegocio.Put(CompraNegocio.MiCompra);
                 CompraNegocio.MiCompra = null;
-                lineasDeCompra = null;
-                dgv_carrito.DataSource = null;
                 MessageBox.Show("Compra realizada con éxito", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
             } else

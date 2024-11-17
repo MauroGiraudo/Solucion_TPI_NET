@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
         }
 
         private LineaCompraService _lcservice = new LineaCompraService();
-        public LineaCompraService LUService
+        public LineaCompraService LCService
         {
             get
             {
@@ -109,7 +109,7 @@ namespace WebAPI.Controllers
             var comp = Service.GetOne(IdUsu, IdOperacion);
             comp.EstadoOperacion = "Finalizada";
 
-            var lineasCompra = LUService.FindAll(comp.IdUsu, comp.IdOperacion);
+            var lineasCompra = LCService.FindAll(comp.IdUsu, comp.IdOperacion);
             foreach (var lc in lineasCompra)
             {
                 int IdPrenda = lc.IdPrenda;

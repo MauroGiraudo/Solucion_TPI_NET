@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_comprasCliente));
             label1 = new Label();
             dgv_compras = new DataGridView();
             btn_compra = new Button();
@@ -38,10 +39,10 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 15F);
-            label1.Location = new Point(219, 9);
+            label1.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
+            label1.Location = new Point(219, -2);
             label1.Name = "label1";
-            label1.Size = new Size(161, 35);
+            label1.Size = new Size(168, 35);
             label1.TabIndex = 0;
             label1.Text = "Mis Compras";
             // 
@@ -56,6 +57,7 @@
             // 
             // btn_compra
             // 
+            btn_compra.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_compra.Location = new Point(84, 521);
             btn_compra.Name = "btn_compra";
             btn_compra.Size = new Size(103, 29);
@@ -66,6 +68,7 @@
             // 
             // btn_salir
             // 
+            btn_salir.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_salir.Location = new Point(417, 521);
             btn_salir.Name = "btn_salir";
             btn_salir.Size = new Size(94, 29);
@@ -78,6 +81,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(603, 600);
             Controls.Add(btn_salir);
             Controls.Add(btn_compra);
@@ -88,7 +92,7 @@
             MinimizeBox = false;
             Name = "form_comprasCliente";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Compras";
+            Text = "Registro de Compras";
             ((System.ComponentModel.ISupportInitialize)dgv_compras).EndInit();
             ResumeLayout(false);
             PerformLayout();

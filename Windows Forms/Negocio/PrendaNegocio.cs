@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows_Forms.Model.Prendas;
 using Newtonsoft.Json;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms.Negocio
 {
@@ -26,6 +27,16 @@ namespace Windows_Forms.Negocio
                          where p.IdPrenda == IdPrenda
                          select p;
             return result.First();
+        }
+
+        public async static Task<Prenda> GetOneByDescAndTalla(string descripcion, string talla)
+        {
+            var prendas = await GetAll();
+            var filtrado =
+                from p in prendas
+                where p.Descripcion == descripcion && p.Talla == talla
+                select p;
+            return filtrado.First();
         }
 
         public async static Task<IEnumerable<PrendaMuestra>> SetPrendasMuestra()
@@ -50,6 +61,73 @@ namespace Windows_Forms.Negocio
                 prendasMuestra.Add(prendaMuestra);
             }
             return prendasMuestra;
+        }
+
+        public async static Task<Boolean> Add(Prenda prenda)
+        {
+            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(defaultURL, prenda);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<Boolean>(await response.Content.ReadAsStringAsync());
+                } 
+                catch(Exception exc)
+                {
+                    var data = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+                    Errors.Errores.Add(data);
+                    return false;
+                }
+                
+            }
+        }
+
+        public async static Task<Boolean> Update(Prenda prenda)
+        {
+            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync(defaultURL + prenda.IdPrenda, prenda);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<Boolean>(await response.Content.ReadAsStringAsync());
+                }
+                catch (Exception exc)
+                {
+                    var data = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+                    Errors.Errores.Add(data);
+                    return false;
+                }
+            }
+        }
+
+        public async static Task<Boolean> Delete(Prenda prenda)
+        {
+            var response = await Conexion.Instancia.Cliente.DeleteAsync(defaultURL + prenda.IdPrenda);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                try
+                {
+                    return JsonConvert.DeserializeObject<Boolean>(await response.Content.ReadAsStringAsync());
+                }
+                catch (Exception exc)
+                {
+                    var data = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+                    Errors.Errores.Add(data);
+                    return false;
+                }
+            }
         }
     }
 }

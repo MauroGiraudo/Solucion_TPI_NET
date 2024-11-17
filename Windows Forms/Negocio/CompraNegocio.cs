@@ -50,16 +50,23 @@ namespace Windows_Forms.Negocio
             }
         }
 
-        public static async void NuevaCompra()
+        public static async Task NuevaCompra()
         {
             Compra compra = new Compra();
             await Post(compra);
+            var result = await GetEnProceso();
+            MiCompra = result.FirstOrDefault();
         }
 
-        static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/";
+        //static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/";
+        
+        private static string GetURL(int IdUsu)
+        {
+            return "http://localhost:5108/api/Usuario/" + Convert.ToString(IdUsu) + "/Compra/";
+        }
         public static async Task<IEnumerable<Compra>> GetAll()
         {
-            var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL);
+            var response = await Conexion.Instancia.Cliente.GetStringAsync(GetURL(UsuarioNegocio.Usuario.IdUsu));
             return JsonConvert.DeserializeObject<List<Compra>>(response);
         }
 
@@ -82,26 +89,26 @@ namespace Windows_Forms.Negocio
 
         public static async Task<IEnumerable<Compra>> GetEnProceso()
         {
-            var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL + "EnProceso");
+            var response = await Conexion.Instancia.Cliente.GetStringAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + "EnProceso");
             var data = JsonConvert.DeserializeObject<List<Compra>>(response);
             return data;
         }
 
         public static async Task<Boolean> Post(Compra compra)
         {
-            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(defaultURL, compra);
+            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(GetURL(UsuarioNegocio.Usuario.IdUsu), compra);
             return response.IsSuccessStatusCode;
         }
 
         public static async Task<Boolean> Put(Compra compra)
         {
-            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync(defaultURL + compra.IdOperacion, compra);
+            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + compra.IdOperacion, compra);
             return response.IsSuccessStatusCode;
         }
 
         public static async Task<Boolean> Delete(Compra compra)
         {
-            var response = await Conexion.Instancia.Cliente.DeleteAsync(defaultURL + compra.IdOperacion);
+            var response = await Conexion.Instancia.Cliente.DeleteAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + compra.IdOperacion);
             return response.IsSuccessStatusCode;
         }
     }

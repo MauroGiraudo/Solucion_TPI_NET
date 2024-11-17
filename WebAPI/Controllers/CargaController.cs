@@ -3,6 +3,7 @@ using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Validations;
 using Domain.Model.Prendas;
+using Domain.Model.Compras;
 
 namespace WebAPI.Controllers
 {
@@ -61,6 +62,13 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
             return Ok(carga);
+        }
+
+        [HttpGet("EnProceso")]
+        public ActionResult<Carga> GetEnProceso(int IdUsu)
+        {
+            var compra = Service.GetEnProceso(IdUsu);
+            return Ok(compra);
         }
 
         [HttpPost]

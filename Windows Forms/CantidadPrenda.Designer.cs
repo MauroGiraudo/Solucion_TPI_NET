@@ -52,6 +52,7 @@
             // 
             // btn_aceptar
             // 
+            btn_aceptar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_aceptar.Location = new Point(108, 155);
             btn_aceptar.Name = "btn_aceptar";
             btn_aceptar.Size = new Size(94, 29);
@@ -62,6 +63,7 @@
             // 
             // btn_cancelar
             // 
+            btn_cancelar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btn_cancelar.Location = new Point(228, 155);
             btn_cancelar.Name = "btn_cancelar";
             btn_cancelar.Size = new Size(94, 29);

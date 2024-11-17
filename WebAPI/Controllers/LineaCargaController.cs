@@ -71,8 +71,9 @@ namespace WebAPI.Controllers
                     }
                 }
             }
+            lineaCarga.IdUsu = IdUsu;
             Service.Add(lineaCarga);
-            return CreatedAtRoute(nameof(GetOne), new {IdUsu = IdUsu, IdOperacion = IdOperacion, NumeroLinea = lineaCarga.NumeroLinea}, lineaCarga);
+            return CreatedAtAction(nameof(GetOne), new {IdUsu = IdUsu, IdOperacion = IdOperacion, NumeroLinea = lineaCarga.NumeroLinea}, lineaCarga);
         }
 
         [HttpPut("{NumeroLinea}")]

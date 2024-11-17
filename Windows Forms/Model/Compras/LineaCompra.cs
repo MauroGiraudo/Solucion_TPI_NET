@@ -18,12 +18,4 @@ namespace Windows_Forms.Model.Compras
 
         public Compra? Compra { get; set; }
     }
-
-    public class PrendaPedido
-    {
-        public int NumeroLinea { get; set; }
-        public string Prenda { get; set; }
-        public int Cantidad { get; set; }
-        public float Precio { get; set; }
-    }
 }
