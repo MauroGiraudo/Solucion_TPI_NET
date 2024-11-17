@@ -65,6 +65,7 @@
             txb_Contrasenia.Location = new Point(132, 195);
             txb_Contrasenia.Margin = new Padding(3, 4, 3, 4);
             txb_Contrasenia.Name = "txb_Contrasenia";
+            txb_Contrasenia.PasswordChar = '*';
             txb_Contrasenia.Size = new Size(203, 27);
             txb_Contrasenia.TabIndex = 2;
             // 
@@ -78,6 +79,7 @@
             btn_IniciarSesion.TabIndex = 3;
             btn_IniciarSesion.Text = "Iniciar Sesion";
             btn_IniciarSesion.UseVisualStyleBackColor = true;
+            btn_IniciarSesion.Click += btn_IniciarSesion_Click;
             // 
             // lbl_Contrasenia
             // 
@@ -112,6 +114,7 @@
             lklb_Registro.TabIndex = 8;
             lklb_Registro.TabStop = true;
             lklb_Registro.Text = "Registrarse";
+            lklb_Registro.LinkClicked += lklb_Registro_LinkClicked;
             // 
             // pnl_fondo
             // 
@@ -141,12 +144,17 @@
             // 
             // form_InicioSesion
             // 
+            AcceptButton = btn_IniciarSesion;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(482, 481);
             Controls.Add(pnl_fondo);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Margin = new Padding(3, 4, 3, 4);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "form_InicioSesion";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Inicio Sesion";
             pnl_fondo.ResumeLayout(false);
             pnl_fondo.PerformLayout();

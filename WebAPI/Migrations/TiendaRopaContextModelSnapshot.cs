@@ -17,7 +17,7 @@ namespace WebAPI.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -34,7 +34,6 @@ namespace WebAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOperacion"));
 
                     b.Property<string>("EstadoOperacion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FecOperacion")
@@ -106,7 +105,6 @@ namespace WebAPI.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdOperacion"));
 
                     b.Property<string>("EstadoOperacion")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FecOperacion")
@@ -154,7 +152,7 @@ namespace WebAPI.Migrations
 
                     b.Property<string>("DescripcionMarca")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdMarca");
 
@@ -187,17 +185,13 @@ namespace WebAPI.Migrations
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("IdMarca")
                         .HasColumnType("int");
 
                     b.Property<int>("IdTipoPrenda")
                         .HasColumnType("int");
-
-                    b.Property<string>("Modelo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PuntoPedido")
                         .HasColumnType("int");
@@ -228,14 +222,14 @@ namespace WebAPI.Migrations
 
                     b.Property<string>("DescripcionTipoPrenda")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdTipoPrenda");
 
                     b.ToTable("TiposPrenda");
                 });
 
-            modelBuilder.Entity("Domain.Model.Usuarios.Cliente", b =>
+            modelBuilder.Entity("Domain.Model.Usuarios.Usuario", b =>
                 {
                     b.Property<int>("IdUsu")
                         .ValueGeneratedOnAdd()
@@ -245,94 +239,52 @@ namespace WebAPI.Migrations
 
                     b.Property<string>("Apellido")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Contrasenia")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("FecNacimiento")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("MediosDePago")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("MedioDePago")
+                        .HasColumnType("varchar(25)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("Telefono")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.Property<string>("TipoUsuario")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(8)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("IdUsu");
 
-                    b.ToTable("Clientes");
-                });
-
-            modelBuilder.Entity("Domain.Model.Usuarios.Empleado", b =>
-                {
-                    b.Property<int>("IdUsu")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdUsu"));
-
-                    b.Property<string>("Apellido")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Contrasenia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("FecNacimiento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TipoUsuario")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdUsu");
-
-                    b.ToTable("Empleados");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Domain.Model.Cargas.Carga", b =>
                 {
-                    b.HasOne("Domain.Model.Usuarios.Empleado", "Empleado")
+                    b.HasOne("Domain.Model.Usuarios.Usuario", "Usuario")
                         .WithMany("Cargas")
                         .HasForeignKey("IdUsu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Empleado");
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Domain.Model.Cargas.LineaCarga", b =>
@@ -356,13 +308,13 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("Domain.Model.Compras.Compra", b =>
                 {
-                    b.HasOne("Domain.Model.Usuarios.Cliente", "Cliente")
+                    b.HasOne("Domain.Model.Usuarios.Usuario", "Usuario")
                         .WithMany("Compras")
                         .HasForeignKey("IdUsu")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Domain.Model.Compras.LineaCompra", b =>
@@ -443,14 +395,11 @@ namespace WebAPI.Migrations
                     b.Navigation("Prendas");
                 });
 
-            modelBuilder.Entity("Domain.Model.Usuarios.Cliente", b =>
-                {
-                    b.Navigation("Compras");
-                });
-
-            modelBuilder.Entity("Domain.Model.Usuarios.Empleado", b =>
+            modelBuilder.Entity("Domain.Model.Usuarios.Usuario", b =>
                 {
                     b.Navigation("Cargas");
+
+                    b.Navigation("Compras");
                 });
 #pragma warning restore 612, 618
         }

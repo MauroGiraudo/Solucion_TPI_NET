@@ -10,6 +10,10 @@ namespace WebAPI.Validations
             var tiposPrenda = service.FindAll();
             foreach (TipoPrenda tp in tiposPrenda)
             {
+                if(tp.DescripcionTipoPrenda.Length > 50)
+                {
+                    return "La descripción del tipo de prenda no puede superar los 50 caracteres";
+                }
                 if (tp.DescripcionTipoPrenda == tipoPrenda.DescripcionTipoPrenda)
                 {
                     return "El tipo de prenda ya existe";

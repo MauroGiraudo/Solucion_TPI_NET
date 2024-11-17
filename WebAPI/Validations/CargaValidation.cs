@@ -9,8 +9,8 @@ namespace WebAPI.Validations
         {
             var cargas = service.FindAll(IdUsu);
             var cargasEnCurso = from c in cargas
-                                 where c.EstadoOperacion == "En Curso"
-                                 select c;
+                                 where c.EstadoOperacion == "En Proceso"
+                                select c;
             if (cargasEnCurso.Any())
             {
                 return "Ya cuenta con una carga en curso. Finalice la misma para comenzar una nueva carga.";

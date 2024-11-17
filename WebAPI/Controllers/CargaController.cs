@@ -3,11 +3,12 @@ using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Validations;
 using Domain.Model.Prendas;
+using Domain.Model.Compras;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("api/Empleado/{IdUsu}/[controller]")]
+    [Route("api/Usuario/{IdUsu}/[controller]")]
     public class CargaController : Controller
     {
         private CargaService _service = new CargaService();
@@ -19,12 +20,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        private EmpleadoService _eservice = new EmpleadoService();
-        public EmpleadoService EService
+        private UsuarioService _uservice = new UsuarioService();
+        public UsuarioService UService
         {
             get
             {
-                return _eservice;
+                return _uservice;
             }
         }
 
@@ -63,6 +64,13 @@ namespace WebAPI.Controllers
             return Ok(carga);
         }
 
+        [HttpGet("EnProceso")]
+        public ActionResult<Carga> GetEnProceso(int IdUsu)
+        {
+            var compra = Service.GetEnProceso(IdUsu);
+            return Ok(compra);
+        }
+
         [HttpPost]
         public ActionResult<Carga> Post(int IdUsu, Carga carga)
         {
@@ -72,7 +80,7 @@ namespace WebAPI.Controllers
                 return BadRequest(result);
             }
             carga.IdUsu = IdUsu;
-            var empleado = EService.GetOne(IdUsu);
+            var empleado = UService.GetOne(IdUsu);
             if(empleado == null)
             {
                 return NotFound();

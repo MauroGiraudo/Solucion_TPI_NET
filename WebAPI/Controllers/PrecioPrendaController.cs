@@ -18,10 +18,16 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet("All")]
+        public ActionResult<IEnumerable<PrecioPrenda>> GetAll(int IdPrenda)
+        {
+            return Ok(PPService.FindAll(IdPrenda));
+        }
+
         [HttpGet(Name = "GetCurrentPrice")]
         public ActionResult<PrecioPrenda> GetCurrentPrice(int IdPrenda)
         {
-            var fecha = PPService.GetDate(DateTime.Now);
+            var fecha = PPService.GetDate(IdPrenda, DateTime.Now);
             if (fecha == null)
             {
                 return BadRequest("No hay precios registrados para esta prenda");
@@ -44,7 +50,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result);
             }
-            precioPrenda.FecVigencia = DateTime.Now;
+            if(precioPrenda.FecVigencia == null)
+            {
+                precioPrenda.FecVigencia = DateTime.Now;
+            }
             PPService.Add(precioPrenda);
             return CreatedAtAction(nameof(GetCurrentPrice), new { IdPrenda = precioPrenda.IdPrenda, FecVigencia = precioPrenda.FecVigencia }, precioPrenda);
         }

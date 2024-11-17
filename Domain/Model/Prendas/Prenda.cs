@@ -20,9 +20,7 @@ namespace Domain.Model.Prendas
 
         public string Descripcion { get; set; }
 
-        public List<string> Talla { get; set; }
-
-        public string Modelo { get; set; }
+        public string Talla { get; set; }
         
         public int IdTipoPrenda { get; set; }
 

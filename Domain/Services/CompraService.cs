@@ -46,6 +46,15 @@ namespace Domain.Services
             return context.Compras.Find(IdUsu, IdOperacion);
         }
 
+        public IEnumerable<Compra> GetEnProceso(int IdUsu)
+        {
+            using var context = new TiendaRopaContext();
+            var compras = context.Compras.ToList();
+            return from c in compras
+                   where c.IdUsu == IdUsu && c.EstadoOperacion == "En Proceso"
+                   select c;
+        }
+
         public  IEnumerable<Compra> FindAll(int IdUsu)
         {
             using var context = new TiendaRopaContext();
