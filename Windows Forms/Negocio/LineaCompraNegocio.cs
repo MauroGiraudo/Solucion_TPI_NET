@@ -11,11 +11,16 @@ namespace Windows_Forms.Negocio
 {
     public class LineaCompraNegocio
     {
-        static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/" + Convert.ToString(CompraNegocio.MiCompra?.IdOperacion) + "/LineaCompra/";
+        //static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/" + Convert.ToString(CompraNegocio.MiCompra?.IdOperacion) + "/LineaCompra/";
     
+        private static string GetURL(int IdUsu, int IdOperacion)
+        {
+            return "http://localhost:5108/api/Usuario/" + Convert.ToString(IdUsu) + "/Compra/" + Convert.ToString(IdOperacion) + "/LineaCompra/";
+        }
         public async static Task<IEnumerable<LineaCompra>> GetAll()
         {
-            var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL);
+            //var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL));
+            var response = await Conexion.Instancia.Cliente.GetStringAsync(GetURL(UsuarioNegocio.Usuario.IdUsu, CompraNegocio.MiCompra.IdOperacion));
             return JsonConvert.DeserializeObject<List<LineaCompra>>(response);
         }
 
@@ -39,10 +44,11 @@ namespace Windows_Forms.Negocio
             return prendasPedido;
         }
 
-        static readonly string detalleCompraURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/";
+        //static readonly string detalleCompraURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Compra/";
         public async static Task<IEnumerable<PrendaPedido>> SetPrendasPedido_CompraMuestra()
         {
-            var response = await Conexion.Instancia.Cliente.GetStringAsync(detalleCompraURL + Convert.ToString(CompraNegocio.CompraMuestra?.IdOperacion) + "/LineaCompra/");
+            //var response = await Conexion.Instancia.Cliente.GetStringAsync(detalleCompraURL + Convert.ToString(CompraNegocio.CompraMuestra?.IdOperacion) + "/LineaCompra/");
+            var response = await Conexion.Instancia.Cliente.GetStringAsync(GetURL(UsuarioNegocio.Usuario.IdUsu, CompraNegocio.CompraMuestra.IdOperacion));
             IEnumerable<LineaCompra>? lineas = JsonConvert.DeserializeObject<List<LineaCompra>>(response);
             List<PrendaPedido> prendasPedido = new List<PrendaPedido>();
             foreach (var linea in lineas)
@@ -63,13 +69,13 @@ namespace Windows_Forms.Negocio
 
         public async static Task<Boolean> Post(LineaCompra lineaCompra)
         {
-            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(defaultURL, lineaCompra);
+            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(GetURL(UsuarioNegocio.Usuario.IdUsu, CompraNegocio.MiCompra.IdOperacion), lineaCompra);
             return response.IsSuccessStatusCode;
         }
 
         public async static Task<Boolean> Delete(int NumeroLinea)
         {
-            var response = await Conexion.Instancia.Cliente.DeleteAsync(defaultURL + NumeroLinea);
+            var response = await Conexion.Instancia.Cliente.DeleteAsync(GetURL(UsuarioNegocio.Usuario.IdUsu, CompraNegocio.MiCompra.IdOperacion) + NumeroLinea);
             return response.IsSuccessStatusCode;
         }
     }

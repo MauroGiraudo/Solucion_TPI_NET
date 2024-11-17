@@ -67,7 +67,7 @@ namespace Windows_Forms
         {
             if (CompraNegocio.MiCompra == null)
             {
-               var comp = Cargar_CompraActual().First();
+               /*var comp = Cargar_CompraActual().First();
                if ( comp == null)
                {
                   Compra compra = new Compra();
@@ -82,7 +82,8 @@ namespace Windows_Forms
                       return;
                   }
                }
-                CompraNegocio.MiCompra = comp;
+                CompraNegocio.MiCompra = comp;*/
+               await CompraNegocio.NuevaCompra();
             }
             if (dgv_prendas.SelectedRows.Count == 0)
             {
@@ -94,6 +95,11 @@ namespace Windows_Forms
             form_cantidadPrenda formCantidad = new form_cantidadPrenda();
             if (formCantidad.ShowDialog() == DialogResult.OK)
             {
+                if(CantidadPrenda > prenda.Stock)
+                {
+                    MessageBox.Show("No hay suficiente stock de la prenda seleccionada", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 LineaCompra lineaCompra = new LineaCompra();
                 lineaCompra.IdPrenda = prenda.IdPrenda;
                 lineaCompra.IdOperacion = CompraNegocio.MiCompra.IdOperacion;

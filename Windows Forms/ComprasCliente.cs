@@ -58,6 +58,11 @@ namespace Windows_Forms
             {
                 total += p.Precio;
             }
+            var bonif = await BonificacionNegocio.GetCurrent(Convert.ToInt32(total));
+            if(bonif != null)
+            {
+                total = total * (1 - bonif.ProporcionDescuento / 100);
+            }
             return total;
         }
 
@@ -74,7 +79,8 @@ namespace Windows_Forms
             prendas.Start();
             var misPrendas = await prendas;
             float total = await Cargar_Total();
-            form_detalleCompra detalle = new form_detalleCompra(CompraNegocio.CompraMuestra, misPrendas, total);
+            var bonif = await BonificacionNegocio.GetCurrent(Convert.ToInt32(total));
+            form_detalleCompra detalle = new form_detalleCompra(CompraNegocio.CompraMuestra, misPrendas, total, bonif);
             detalle.ShowDialog();
         }
     }

@@ -36,6 +36,7 @@
             btn_purchase = new Button();
             label2 = new Label();
             txb_total = new TextBox();
+            lbl_descuento = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_carrito).BeginInit();
             SuspendLayout();
             // 
@@ -113,12 +114,26 @@
             txb_total.Size = new Size(125, 27);
             txb_total.TabIndex = 6;
             // 
+            // lbl_descuento
+            // 
+            lbl_descuento.AutoSize = true;
+            lbl_descuento.BackColor = Color.Transparent;
+            lbl_descuento.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lbl_descuento.ForeColor = Color.Red;
+            lbl_descuento.Location = new Point(90, 593);
+            lbl_descuento.Name = "lbl_descuento";
+            lbl_descuento.Size = new Size(51, 20);
+            lbl_descuento.TabIndex = 7;
+            lbl_descuento.Text = "label3";
+            lbl_descuento.Visible = false;
+            // 
             // form_carrito
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(733, 721);
+            Controls.Add(lbl_descuento);
             Controls.Add(txb_total);
             Controls.Add(label2);
             Controls.Add(btn_purchase);
@@ -145,5 +160,6 @@
         private Button btn_purchase;
         private Label label2;
         private TextBox txb_total;
+        private Label lbl_descuento;
     }
 }

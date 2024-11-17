@@ -50,12 +50,19 @@ namespace Windows_Forms.Negocio
         {
             Carga carga = new Carga();
             await Post(carga);
+            var result = await GetEnProceso();
+            MiCarga = result.FirstOrDefault();
         }
 
-        static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Carga/";
+        //static readonly string defaultURL = "http://localhost:5108/api/Usuario/" + Convert.ToString(UsuarioNegocio.Usuario?.IdUsu) + "/Carga/";
+
+        public static string GetURL(int IdUsu)
+        {
+            return "http://localhost:5108/api/Usuario/" + Convert.ToString(IdUsu) + "/Carga/";
+        }
         public async static Task<IEnumerable<Carga>> GetAll()
         {
-            var response = await Conexion.Instancia.Cliente.GetStringAsync(defaultURL);
+            var response = await Conexion.Instancia.Cliente.GetStringAsync(GetURL(UsuarioNegocio.Usuario.IdUsu));
             List<Carga> data = JsonConvert.DeserializeObject<List<Carga>>(response);
             return data;
         }
@@ -104,19 +111,19 @@ namespace Windows_Forms.Negocio
         }
         public static async Task<Boolean> Post(Carga carga)
         {
-            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(defaultURL, carga);
+            var response = await Conexion.Instancia.Cliente.PostAsJsonAsync(GetURL(UsuarioNegocio.Usuario.IdUsu), carga);
             return response.IsSuccessStatusCode;
         }
 
         public static async Task<Boolean> Put(Carga carga)
         {
-            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync(defaultURL + carga.IdOperacion, carga);
+            var response = await Conexion.Instancia.Cliente.PutAsJsonAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + carga.IdOperacion, carga);
             return response.IsSuccessStatusCode;
         }
 
         public static async Task<Boolean> Delete(Carga carga)
         {
-            var response = await Conexion.Instancia.Cliente.DeleteAsync(defaultURL + carga.IdOperacion);
+            var response = await Conexion.Instancia.Cliente.DeleteAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + carga.IdOperacion);
             return response.IsSuccessStatusCode;
         }
     }

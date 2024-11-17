@@ -39,6 +39,7 @@
             btn_salir = new Button();
             lbl_total = new Label();
             txb_total = new TextBox();
+            lbl_descuento = new Label();
             ((System.ComponentModel.ISupportInitialize)dgv_compra).BeginInit();
             SuspendLayout();
             // 
@@ -142,12 +143,25 @@
             txb_total.Size = new Size(112, 27);
             txb_total.TabIndex = 9;
             // 
+            // lbl_descuento
+            // 
+            lbl_descuento.AutoSize = true;
+            lbl_descuento.BackColor = Color.Transparent;
+            lbl_descuento.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lbl_descuento.ForeColor = Color.Red;
+            lbl_descuento.Location = new Point(126, 401);
+            lbl_descuento.Name = "lbl_descuento";
+            lbl_descuento.Size = new Size(51, 20);
+            lbl_descuento.TabIndex = 10;
+            lbl_descuento.Text = "label1";
+            // 
             // form_detalleCompra
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(800, 492);
+            Controls.Add(lbl_descuento);
             Controls.Add(txb_total);
             Controls.Add(lbl_total);
             Controls.Add(btn_salir);
@@ -177,5 +191,6 @@
         private Button btn_salir;
         private Label lbl_total;
         private TextBox txb_total;
+        private Label lbl_descuento;
     }
 }

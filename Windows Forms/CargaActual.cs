@@ -86,8 +86,6 @@ namespace Windows_Forms
             {
                 await CargaNegocio.Put(CargaNegocio.MiCarga);
                 CargaNegocio.MiCarga = null;
-                lineasDeCarga = null;
-                dgv_miCarga.DataSource = null;
                 MessageBox.Show("Carga realizada con éxito", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }

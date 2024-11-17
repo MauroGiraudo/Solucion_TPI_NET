@@ -58,25 +58,25 @@ namespace Windows_Forms
             PaginaPrincipal_Shown(sender, e);
         }
 
-        private void editarCuentaToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnu_editarCuenta_Click(object sender, EventArgs e)
         {
             form_Registro registro = new form_Registro(UsuarioNegocio.Usuario);
             registro.ShowDialog();
         }
 
-        private void verPrendasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnu_verPrendas_Click(object sender, EventArgs e)
         {
             form_Prendas formPrendas = new form_Prendas();
             formPrendas.ShowDialog();
         }
 
-        private void verCarritoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnu_verCarrito_Click(object sender, EventArgs e)
         {
             form_carrito carrito = new form_carrito();
             carrito.ShowDialog();
         }
 
-        private void verMisComprasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnu_verMisCompras_Click(object sender, EventArgs e)
         {
             form_comprasCliente compras = new form_comprasCliente();
             compras.ShowDialog();
@@ -100,16 +100,22 @@ namespace Windows_Forms
             tiposDePrenda.ShowDialog();
         }
 
-        private void verCargasToolStripMenuItem_Click(object sender, EventArgs e)
+        private void mnu_verCargaActual_Click(object sender, EventArgs e)
         {
             form_cargaActual carga = new form_cargaActual();
             carga.ShowDialog();
         }
 
-        private void verCargasToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void mnu_verCargas_Click(object sender, EventArgs e)
         {
             form_cargasEmpleado cargas = new form_cargasEmpleado();
             cargas.ShowDialog();
+        }
+
+        private void mnu_bonificaciones_Click(object sender, EventArgs e)
+        {
+            form_CRUD_Bonificacion bonif = new form_CRUD_Bonificacion();
+            bonif.ShowDialog();
         }
     }
 }

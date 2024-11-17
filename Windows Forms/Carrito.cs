@@ -18,7 +18,7 @@ namespace Windows_Forms
         public form_carrito()
         {
             InitializeComponent();
-            if(CompraNegocio.MiCompra == null)
+            if (CompraNegocio.MiCompra == null)
             {
                 Cargar_Grid_ConNuevaCompra();
             }
@@ -69,6 +69,17 @@ namespace Windows_Forms
             {
                 total += p.Precio;
             }
+            var bonif = await BonificacionNegocio.GetCurrent(Convert.ToInt32(total));
+            if(bonif != null)
+            {
+                total = total * (1 - bonif.ProporcionDescuento / 100);
+                lbl_descuento.Text = "¡Obtuvo un descuento del " + bonif.ProporcionDescuento + "%!";
+                lbl_descuento.Visible = true;
+            }
+            else
+            {
+                lbl_descuento.Visible = false;
+            }
             return total;
         }
 
@@ -104,8 +115,6 @@ namespace Windows_Forms
             {
                 await CompraNegocio.Put(CompraNegocio.MiCompra);
                 CompraNegocio.MiCompra = null;
-                lineasDeCompra = null;
-                dgv_carrito.DataSource = null;
                 MessageBox.Show("Compra realizada con éxito", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
             } else
