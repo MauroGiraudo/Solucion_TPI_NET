@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_cargasEmpleado));
             label1 = new Label();
             dgv_cargas = new DataGridView();
             btn_detalleCarga = new Button();
@@ -38,8 +39,9 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.WhiteSmoke;
             label1.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            label1.Location = new Point(216, 9);
+            label1.Location = new Point(216, -1);
             label1.Name = "label1";
             label1.Size = new Size(172, 41);
             label1.TabIndex = 0;
@@ -80,6 +82,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(603, 600);
             Controls.Add(btn_salir);
             Controls.Add(btn_detalleCarga);

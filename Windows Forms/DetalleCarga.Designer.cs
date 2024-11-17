@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_detalleCarga));
             txb_idOperacion = new TextBox();
             dtp_fecha = new DateTimePicker();
             txb_estado = new TextBox();
@@ -90,6 +91,7 @@
             // lbl_idOperacion
             // 
             lbl_idOperacion.AutoSize = true;
+            lbl_idOperacion.BackColor = Color.Transparent;
             lbl_idOperacion.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lbl_idOperacion.Location = new Point(50, 24);
             lbl_idOperacion.Name = "lbl_idOperacion";
@@ -100,6 +102,7 @@
             // lbl_fecha
             // 
             lbl_fecha.AutoSize = true;
+            lbl_fecha.BackColor = Color.Transparent;
             lbl_fecha.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lbl_fecha.Location = new Point(360, 24);
             lbl_fecha.Name = "lbl_fecha";
@@ -110,6 +113,7 @@
             // lbl_estado
             // 
             lbl_estado.AutoSize = true;
+            lbl_estado.BackColor = Color.Transparent;
             lbl_estado.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lbl_estado.Location = new Point(653, 24);
             lbl_estado.Name = "lbl_estado";
@@ -121,6 +125,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(800, 492);
             Controls.Add(lbl_estado);
             Controls.Add(lbl_fecha);

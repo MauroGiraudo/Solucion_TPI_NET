@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_CRUD_Bonificacion));
             dgv_bonificaciones = new DataGridView();
             btn_alta = new Button();
             btn_modificar = new Button();
@@ -93,6 +94,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(845, 406);
             Controls.Add(btn_salir);
             Controls.Add(btn_eliminar);

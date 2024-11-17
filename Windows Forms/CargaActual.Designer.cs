@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_cargaActual));
             label1 = new Label();
             dgv_miCarga = new DataGridView();
             btn_cargar = new Button();
@@ -92,6 +93,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(593, 532);
             Controls.Add(btn_salir);
             Controls.Add(btn_eliminar);

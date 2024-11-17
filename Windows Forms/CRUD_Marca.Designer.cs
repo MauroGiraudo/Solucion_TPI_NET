@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_CRUD_marca));
             dgv_marcas = new DataGridView();
             btn_alta = new Button();
             txb_buscar = new TextBox();
@@ -115,6 +116,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(560, 566);
             Controls.Add(btn_salir);
             Controls.Add(btn_eliminar);
