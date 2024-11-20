@@ -1,0 +1,31 @@
+﻿@page "/NotAuthorizedError"
+@using System.Diagnostics
+
+<PageTitle>Error</PageTitle>
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">Ocurrió un error mientras procesábamos tu solicitud</h2>
+
+@if (ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@RequestId</code>
+    </p>
+}
+
+<h3>Error: Usted no está autorizado para acceder a este recurso</h3>
+<p>
+    Las funcionalidades a las que usted está autorizado se encuentran en la barra de navegación.
+</p>
+
+
+@code{
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

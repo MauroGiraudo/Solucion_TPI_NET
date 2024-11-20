@@ -1,0 +1,70 @@
+﻿@page "/operaciones/bonificaciones"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Operaciones Bonificacion</PageTitle>
+
+<h1 class="title">Bonificaciones</h1>
+
+<div class="itemListContainer">
+    <div>
+        <a class="itemLink" href="operaciones/bonificaciones/alta">
+            <span>Nueva Bonificacion</span>        
+            <i class="bi bi-plus-square-fill" style="font-size: 1.5rem; color: black;"></i>
+        </a>
+    </div>
+    @if(bonificaciones == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (Bonificacion b in bonificacionesFiltradas)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleBonificacionURL(b.IdBonificacion)">
+                        <span class="itemName">$@b.CantidadParaDescuento - @b.ProporcionDescuento%</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+
+@code {
+
+    string descripcionParcial = "";
+    public IEnumerable<Bonificacion>? bonificaciones;
+    public IEnumerable<Bonificacion>? bonificacionesFiltradas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        bonificaciones = await BonificacionNegocio.GetAll();
+        bonificacionesFiltradas = bonificaciones;
+    }
+
+    private string detalleBonificacionURL(int IdBonificacion)
+    {
+        return "operaciones/bonificaciones/" + IdBonificacion;
+    }
+
+    /*  <button class="formButton" @onclick="Filtrar">Buscar</button>  */
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/operaciones");
+    }
+}
+

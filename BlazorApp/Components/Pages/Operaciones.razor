@@ -1,0 +1,45 @@
+﻿@page "/operaciones"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Operaciones</PageTitle>
+
+<h1 class="title">Operaciones</h1>
+
+<ul class="itemContainer">
+    <li class="item">
+        <a class="itemLink" href="operaciones/prendas">
+            <span class="itemName">Prendas</span>
+        </a>
+    </li>
+    <li class="item">
+        <a class="itemLink" href="operaciones/tiposDePrenda">
+            <span class="itemName">Tipos de Prenda</span>
+        </a>
+    </li>
+    <li class="item">
+        <a class="itemLink" href="operaciones/marcas">
+            <span class="itemName">Marcas</span>
+        </a>
+    </li>
+    <li class="item">
+        <a class="itemLink" href="operaciones/bonificaciones">
+            <span class="itemName">Bonificaciones</span>
+        </a>
+    </li>
+</ul>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if(UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("NotLoggedInError");
+        }
+        if(UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+    }
+}

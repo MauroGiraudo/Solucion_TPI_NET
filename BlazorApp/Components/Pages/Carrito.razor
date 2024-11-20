@@ -1,0 +1,116 @@
+﻿@page "/carrito/{IdUsu}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Carrito de Compras</PageTitle>
+
+<h1 class="title">Carrito de Compras</h1>
+
+<div class="itemListContainer">
+    @if(CompraNegocio.MiCompra == null)
+    {
+        <p><em>No se ha iniciado ninguna compra</em></p>
+    }
+    else if (PrendasPedido == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else if (!PrendasPedido.Any())
+    {
+        <p><em>La compra actualmente se encuentra vacía</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (PrendaPedido pp in PrendasPedido)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleLineaCompraURL(pp.NumeroLinea)">
+                        <span class="itemName">@pp.Prenda</span>     -     <span class="itemName">@pp.Cantidad Unidades</span>
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <p><strong>Total: $@Total</strong></p>
+
+        @if(Bonificacion != null)
+        {
+            <p style="color: red;"><strong>¡Obtuvo un descuento del @Bonificacion.ProporcionDescuento%!</strong></p>
+        }
+
+        <button class="formButton" @onclick="Comprar" style="margin-top: 1rem;">Comprar</button>
+
+        <p style="margin-top: 1rem;"><em>@resultado</em></p>
+    }
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    public string resultado = "";
+
+    public IEnumerable<PrendaPedido>? PrendasPedido { get; set; } = null;
+
+    public float Total { get; set; } = 0;
+
+    public Bonificacion? Bonificacion { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if(UsuarioNegocio.Usuario?.TipoUsuario != "Cliente")
+        {
+            NavigationManager.NavigateTo("/NotAuthorizedError");
+        }
+        if(CompraNegocio.MiCompra != null)
+        {
+            PrendasPedido = await LineaCompraNegocio.SetPrendasPedido();
+            await GetTotal();
+        }
+    }
+
+    private string detalleLineaCompraURL(int NumeroLinea)
+    {
+        return "carrito/" + IdUsu + "/prenda/" + NumeroLinea;
+    }
+
+    private async Task GetTotal()
+    {
+        float total = 0;
+        foreach(PrendaPedido pp in PrendasPedido)
+        {
+            total += pp.Precio;
+        }
+        Bonificacion = await BonificacionNegocio.GetCurrent(Convert.ToInt32(total));
+        if(Bonificacion != null)
+        {
+            total = total * (1 - Bonificacion.ProporcionDescuento / 100);
+        }
+        Total = total;
+    }
+
+    private async void Comprar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        var compra = CompraNegocio.MiCompra;
+        if(await CompraNegocio.Put(compra))
+        {
+            resultado = "Compra registrada correctamente";
+            CompraNegocio.MiCompra = null;
+            PrendasPedido = null;
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            resultado = "Error al registrar la Compra";
+        }
+    }
+}
+

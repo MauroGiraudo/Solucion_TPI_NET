@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -62,7 +62,7 @@ namespace WebAPI.Migrations
                     Apellido = table.Column<string>(type: "varchar(50)", nullable: false),
                     Email = table.Column<string>(type: "varchar(50)", nullable: false),
                     Telefono = table.Column<string>(type: "varchar(50)", nullable: false),
-                    FecNacimiento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FecNacimiento = table.Column<DateTime>(type: "date", nullable: false),
                     UserName = table.Column<string>(type: "varchar(50)", nullable: false),
                     Contrasenia = table.Column<string>(type: "varchar(50)", nullable: false),
                     TipoUsuario = table.Column<string>(type: "varchar(8)", nullable: false),

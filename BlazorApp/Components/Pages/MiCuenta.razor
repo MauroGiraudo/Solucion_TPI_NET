@@ -1,0 +1,144 @@
+﻿@page "/usuario/{IdUsu}/cuenta"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Mi Cuenta</h3>
+
+        <EditForm method="post" Model="User" FormName="formActualizarUsuario" OnValidSubmit="OnSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="nombre">Nombre: </label>
+                <InputText id="nombre" @bind-Value="User.Nombre" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="apellido">Apellido: </label>
+                <InputText id="apellido" @bind-Value="User.Apellido" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="email">Email: </label>
+                <InputText id="email" @bind-Value="User.Email" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="fecha">Fecha de Nacimiento: </label>
+                <InputDate id="fecha" @bind-Value="User.FecNacimiento" class="form-control"></InputDate>
+            </div>
+            <div class="mb-3">
+                <label for="telefono">Teléfono: </label>
+                <InputText id="telefono" @bind-Value="User.Telefono" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="userName">Nombre de Usuario: </label>
+                <InputText id="userName" @bind-Value="User.UserName" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="contrasenia">Contraseña: </label>
+                <InputText id="contrasenia" @bind-Value="User.Contrasenia" type="password" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="confirmarContrasenia">Confirmar Contraseña: </label>
+                <InputText id="confirmarContrasenia" @bind-Value="@confirmarContrasenia" type="password" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="tipoUsuario">Tipo de Usuario: </label>
+                <InputText id="tipoUsuario" @bind-Value="User.TipoUsuario" class="form-control" disabled />
+            </div>
+            @if (User.TipoUsuario != "Empleado")
+            {
+                <div class="mb-3">
+                    <label for="medioDePago">Medio de Pago: </label>
+                    <select id="medioDePago" @bind="User.MedioDePago" class="form-select">
+                        <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+                        <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+                        <option value="Trasferencia">Transferencia</option>
+                    </select>
+                </div>
+            }
+
+            <div class="buttonContainer">
+                <button class="formButton" type="submit">Actualizar</button>
+            </div>
+
+        </EditForm>
+
+        <div class="buttonContainer">
+            <button class="buttonLogout" @onclick="Logout">Cerrar Sesión</button>
+        </div>
+
+    </div>
+</div>
+
+<p><em>@resultado</em></p>
+
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    private string resultado = "Sin Actualizar";
+
+    [SupplyParameterFromForm(FormName = "formActualizarUsuario")]
+    private Usuario User { get; set; } = new();
+
+    private string? confirmarContrasenia;
+
+    protected override void OnInitialized()
+    {
+        if(UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        User.IdUsu = int.Parse(IdUsu);
+        User.Nombre = UsuarioNegocio.Usuario.Nombre;
+        User.Apellido = UsuarioNegocio.Usuario.Apellido;
+        User.Email = UsuarioNegocio.Usuario.Email;
+        User.FecNacimiento = UsuarioNegocio.Usuario.FecNacimiento;
+        User.Telefono = UsuarioNegocio.Usuario.Telefono;
+        User.UserName = UsuarioNegocio.Usuario.UserName;
+        User.Contrasenia = UsuarioNegocio.Usuario.Contrasenia;
+        confirmarContrasenia = UsuarioNegocio.Usuario.Contrasenia;
+        User.TipoUsuario = UsuarioNegocio.Usuario.TipoUsuario;
+        if(User.TipoUsuario != "Empleado")
+        {
+            User.MedioDePago = UsuarioNegocio.Usuario.MedioDePago;
+        }
+        User.FecNacimiento = UsuarioNegocio.Usuario.FecNacimiento;
+    }
+
+    private async Task OnSubmit()
+    {
+        if (User.Contrasenia != confirmarContrasenia)
+        {
+            resultado = "Las contraseñas no coinciden";
+        }
+        else
+        {
+            User.IdUsu = int.Parse(IdUsu);
+            resultado = "Cargando...";
+            if (User.TipoUsuario == "Empleado")
+            {
+                User.MedioDePago = null;
+            }
+            var usuario = await UsuarioNegocio.Put(User);
+            if (usuario != null)
+            {
+                UsuarioNegocio.Usuario = usuario;
+                resultado = "Usuario actualizado correctamente";
+            }
+            else
+            {
+                resultado = "Error al actualizar usuario";
+            }
+        }
+    }
+    private void Logout(MouseEventArgs e)
+    {
+        UsuarioNegocio.Usuario = null;
+        NavigationManager.NavigateTo("/login");
+    }
+}

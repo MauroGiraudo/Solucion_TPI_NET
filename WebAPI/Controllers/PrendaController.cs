@@ -39,16 +39,36 @@ namespace WebAPI.Controllers
             }
         }
 
+        private LineaCompraService _lcService = new LineaCompraService();
+
+        public LineaCompraService LCService
+        {
+            get
+            {
+                return _lcService;
+            }
+        }
+
+        private PrecioPrendaService _ppService = new PrecioPrendaService();
+
+        public PrecioPrendaService PPService
+        {
+            get
+            {
+                return _ppService;
+            }
+        }
+
         [HttpGet(Name = "GetPrendas")]
         public ActionResult<IEnumerable<Prenda>> GetAll()
         {
             return Ok(Service.FindAll());
         }
 
-        [HttpGet("{Id}")]
-        public ActionResult<Prenda> GetById(int Id)
+        [HttpGet("{IdPrenda}")]
+        public ActionResult<Prenda> GetById(int IdPrenda)
         {
-            var m = Service.GetOne(Id);
+            var m = Service.GetOne(IdPrenda);
             if (m == null)
             {
                 return NotFound();
@@ -59,43 +79,37 @@ namespace WebAPI.Controllers
         [HttpPost]
         public ActionResult<Prenda> Post(Prenda prenda)
         {
-            var m = Service.GetOne(prenda.IdPrenda);
-            if (m != null)
-            {
-                return BadRequest();
-            }
-
-            var result = PrendaValidation.ParsePost(Service, prenda);
+            var result = PrendaValidation.Parse(Service, prenda);
             if (result != null)
             {
                 return BadRequest(result);
             }
 
-            var tipoPrenda = TPService.GetOne(prenda.IdTipoPrenda);
+            /*var tipoPrenda = TPService.GetOne(prenda.IdTipoPrenda);
             var marca = MService.GetOne(prenda.IdMarca);
             if (tipoPrenda == null || marca == null)
             {
                 return BadRequest("La marca y/o el tipo de prenda ingresados son incorrectos");
-            }
-            //Probar a eliminar la asignación de tipo y marca y probar
+            }*/
+            //Probar a eliminar la asignación de tipo y marca
 
             /*prenda.TipoDePrenda = tipoPrenda;
             prenda.MarcaPrenda = marca;*/
             Service.Add(prenda);
-            return CreatedAtAction(nameof(GetById), new { Id = prenda.IdPrenda }, prenda);
+            return CreatedAtAction(nameof(GetById), new { IdPrenda = prenda.IdPrenda }, prenda);
 
 
         }
 
-        [HttpPut("{Id}")]
-        public ActionResult<Prenda> Put(int Id, Prenda prenda)
+        [HttpPut("{IdPrenda}")]
+        public ActionResult<Prenda> Put(int IdPrenda, Prenda prenda)
         {
-            if (Id != prenda.IdPrenda)
+            if (IdPrenda != prenda.IdPrenda)
             {
                 return BadRequest();
             }
 
-            var result = PrendaValidation.ParsePut(Service, prenda);
+            var result = PrendaValidation.Parse(Service, prenda);
             if (result != null)
             {
                 return BadRequest(result);
@@ -104,15 +118,25 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{Id}")]
-        public ActionResult<Prenda> Delete(int Id)
+        [HttpDelete("{IdPrenda}")]
+        public ActionResult<Prenda> Delete(int IdPrenda)
         {
-            var m = Service.GetOne(Id);
-            if (m == null)
+            var prenda = Service.GetOne(IdPrenda);
+            if (prenda == null)
             {
                 return NotFound();
             }
-            Service.Delete(m);
+            var result = PrendaValidation.ParseDelete(Service, LCService, prenda);
+            if(result != null)
+            {
+                return BadRequest(result);
+            }
+            var precios = PPService.FindAll(IdPrenda);
+            foreach (PrecioPrenda pp in precios)
+            {
+                PPService.Delete(pp);
+            }
+            Service.Delete(prenda);
             return NoContent();
         }
     }

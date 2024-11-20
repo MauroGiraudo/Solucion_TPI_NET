@@ -1,0 +1,84 @@
+﻿@page "/operaciones/bonificaciones/{IdBonificacion}/modificar"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Modificar Bonificacion</PageTitle>
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Modificar Marca</h3>
+
+        <EditForm method="post" FormName="formModificarBonificacion" Model="BonificacionModified" OnValidSubmit="ModificarBonificacionSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="cantidad">Modificar monto a partir del cual aplica la bonificación: </label>
+                <InputNumber id="cantidad" @bind-Value="BonificacionModified.CantidadParaDescuento" class="form-control"></InputNumber>
+            </div>
+
+            <div class="mb-3">
+                <label for="porcentaje">Modificar porcentaje de Bonificación: </label>
+                <InputNumber id="porcentaje" @bind-Value="BonificacionModified.ProporcionDescuento" class="form-control"></InputNumber>
+            </div>
+
+            <button class="formButton" type="submit">Modificar</button>
+        </EditForm>
+
+        <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+    </div>
+</div>
+
+<p style="margin-top: 1rem;"><em>@resultado</em></p>
+
+<p><em></em></p>
+
+@code {
+    [Parameter]
+    public string IdBonificacion { get; set; }
+
+    public Bonificacion? Bonificacion { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        Bonificacion = await BonificacionNegocio.GetOne(Convert.ToInt32(IdBonificacion));
+        BonificacionModified.IdBonificacion = Bonificacion.IdBonificacion;
+        BonificacionModified.CantidadParaDescuento = Bonificacion.CantidadParaDescuento;
+        BonificacionModified.ProporcionDescuento = Bonificacion.ProporcionDescuento;
+    }
+
+    [SupplyParameterFromForm(FormName = "formModificarBonificacion")]
+    public Bonificacion BonificacionModified { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task ModificarBonificacionSubmit()
+    {
+        resultado = "Cargando...";
+        if(await BonificacionNegocio.Put(BonificacionModified))
+        {
+            resultado = "Bonificación modificada exitosamente";
+            NavigationManager.NavigateTo("/operaciones/bonificaciones/" + IdBonificacion);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/bonificaciones/" + IdBonificacion);
+    }
+}
+

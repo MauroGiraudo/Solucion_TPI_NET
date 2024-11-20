@@ -1,0 +1,93 @@
+﻿@page "/operaciones/prendas"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Operaciones Prenda</PageTitle>
+
+<h1 class="title">Prendas</h1>
+
+<div class="buscarContainer">
+    
+    <input class="buscarInput" id="buscar" @bind="descripcionParcial" @bind:event="oninput" @bind:after="Filtrar" />
+
+    <button class="formButton" @onclick="Limpiar">Limpiar</button>
+
+</div>
+
+<div class="itemListContainer">
+    <div>
+        <a class="itemLink" href="operaciones/prendas/alta">
+            <span>Nueva Prenda</span>        
+            <i class="bi bi-plus-square-fill" style="font-size: 1.5rem; color: black;"></i>
+        </a>
+    </div>
+    @if(prendas == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (Prenda p in prendasFiltradas)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detallePrendaURL(p.IdPrenda)">
+                        <span class="itemName">@p.Descripcion    -    Talla "@p.Talla"</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+
+@code {
+
+    string descripcionParcial = "";
+    public IEnumerable<Prenda>? prendas;
+    public IEnumerable<Prenda>? prendasFiltradas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if(UsuarioNegocio.Usuario?.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        prendas = await PrendaNegocio.GetAll();
+        prendasFiltradas = prendas;
+    }
+
+
+
+    private void Limpiar(MouseEventArgs e)
+    {
+        descripcionParcial = "";
+        prendasFiltradas = prendas;
+    }
+    private void Filtrar()
+    {
+        if(prendas != null)
+        {
+            prendasFiltradas = prendas.Where(p => p.Descripcion.Contains(descripcionParcial, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private string detallePrendaURL(int IdPrenda)
+    {
+        return "prendas/" + IdPrenda;
+    }
+
+    /*  <button class="formButton" @onclick="Filtrar">Buscar</button>  */
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/operaciones");
+    }
+}
+

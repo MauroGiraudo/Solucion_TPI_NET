@@ -1,0 +1,67 @@
+﻿@page "/operaciones/marcas/{IdMarca}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Marca</PageTitle>
+
+<h1 class="title">Detalle de Marca</h1>
+
+@if (Marca == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <h3>@Marca.DescripcionMarca</h3>
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Modificar" style="margin-right: 0.3rem;">Modificar</button>
+        <button class="formButton" @onclick="Eliminar" style="margin-left: 0.3rem; margin-right: 0.3rem;">Eliminar</button>
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdMarca { get; set; }
+
+    public Marca? Marca { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        Marca = await MarcaNegocio.GetOne(Convert.ToInt32(IdMarca));
+    }
+    private void Modificar(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/marcas/" + IdMarca + "/modificar");
+    }
+    private async void Eliminar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if(await MarcaNegocio.Delete(Marca))
+        {
+            resultado = "Marca eliminada exitosamente";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/operaciones/marcas");
+        }
+        else
+        {
+            resultado = "Error al eliminar la marca";
+        }
+    }
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/marcas");
+    }
+}
+

@@ -1,0 +1,90 @@
+﻿@page "/cargaActual/{IdUsu}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Carga Actual</PageTitle>
+
+<h1 class="title">Carga Actual</h1>
+
+<div class="itemListContainer">
+    @if(CargaNegocio.MiCarga == null)
+    {
+        <p><em>No se ha iniciado ninguna carga</em></p>
+    }
+    else if (PrendasPedido == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else if (!PrendasPedido.Any())
+    {
+        <p><em>La carga actualmente se encuentra vacía</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (PrendaPedido pp in PrendasPedido)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleLineaCargaURL(pp.NumeroLinea)">
+                        <span class="itemName">@pp.Prenda     -     Cantidad a Cargar: @pp.Cantidad</span>
+                    </a>
+                </li>
+            }
+        </ul>
+
+        <button class="formButton" @onclick="Registrar" style="margin-top: 1rem;">Registrar Carga</button>
+
+        <p style="margin-top: 1rem;"><em>@resultado</em></p>
+    }
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    public string resultado = "";
+
+    public IEnumerable<PrendaPedido>? PrendasPedido { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        if(CargaNegocio.MiCarga != null)
+        {
+            PrendasPedido = await LineaCargaNegocio.SetPrendasPedido();
+        }
+    }
+
+    private string detalleLineaCargaURL(int NumeroLinea)
+    {
+        return "cargaActual/" + IdUsu + "/prenda/" + NumeroLinea;
+    }
+
+    /*  <button class="formButton" @onclick="Filtrar">Buscar</button>  */
+    private async void Registrar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        var carga = CargaNegocio.MiCarga;
+        if(await CargaNegocio.Put(carga))
+        {
+            resultado = "Carga registrada correctamente";
+            CargaNegocio.MiCarga = null;
+            PrendasPedido = null;
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            resultado = "Error al registrar la Carga";
+        }
+    }
+}
+

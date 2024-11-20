@@ -1,0 +1,67 @@
+﻿@page "/cargasEmpleado/{IdUsu}/detalle/{IdOperacion}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Carga</PageTitle>
+
+<h1 class="title">Detalle de la Carga</h1>
+
+@if (Carga == null || PrendasPedido == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        <li>ID: @Carga.IdOperacion</li>
+        <li>Fecha: @Carga.FecOperacion</li>
+        <li>Estado: @Carga.EstadoOperacion</li>
+    </ul>
+
+    <ul class="itemContainer">
+        @foreach(PrendaPedido pp in PrendasPedido)
+        {
+            <li class="item">
+                <span class="itemName">@pp.Prenda</span>     -     <span class="itemName">Cantidad Cargada: @pp.Cantidad</span>
+            </li>
+        }
+    </ul>
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    [Parameter]
+    public string IdOperacion { get; set; }
+
+    public Carga? Carga { get; set; }
+
+    public IEnumerable<PrendaPedido>? PrendasPedido { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        Carga = await CargaNegocio.GetOne(int.Parse(IdOperacion));
+        CargaNegocio.CargaMuestra = CargaNegocio.SetOneCargaMuestra(Carga);
+        PrendasPedido = await LineaCargaNegocio.SetPrendasPedido_CargaMuestra();
+    }
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/cargasEmpleado/" + IdUsu);
+    }
+}
+

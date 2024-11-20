@@ -1,0 +1,70 @@
+﻿@page "/operaciones/bonificaciones/{IdBonificacion}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Bonificación</PageTitle>
+
+<h1 class="title">Detalle de Bonificación</h1>
+
+@if (Bonificacion == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        <li>Monto al que aplica el descuento: $@Bonificacion.CantidadParaDescuento</li>
+        <li>Porcentaje de descuento: @Bonificacion.ProporcionDescuento%</li>
+    </ul>
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Modificar" style="margin-right: 0.3rem;">Modificar</button>
+        <button class="formButton" @onclick="Eliminar" style="margin-left: 0.3rem; margin-right: 0.3rem;">Eliminar</button>
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdBonificacion { get; set; }
+
+    public Bonificacion? Bonificacion { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        Bonificacion = await BonificacionNegocio.GetOne(Convert.ToInt32(IdBonificacion));
+    }
+    private void Modificar(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/bonificaciones/" + IdBonificacion + "/modificar");
+    }
+    private async void Eliminar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if (await BonificacionNegocio.Delete(Bonificacion))
+        {
+            resultado = "Bonificación eliminada exitosamente";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/operaciones/bonificaciones");
+        }
+        else
+        {
+            resultado = "Error al eliminar la bonificación";
+        }
+    }
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/bonificaciones");
+    }
+}
+

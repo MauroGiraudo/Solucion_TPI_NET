@@ -1,0 +1,64 @@
+﻿@page "/comprasCliente/{IdUsu}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Mis Compras</PageTitle>
+
+<h1 class="title">Mis Compras</h1>
+
+<div class="itemListContainer">
+    @if(compras == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else if (!compras.Any())
+    {
+        <p><em>Actualmente no cuenta con compras registradas</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (Compra c in compras)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleCompraURL(c.IdOperacion)">
+                        <span class="itemName">
+                            @c.FecOperacion   -   
+                            @c.EstadoOperacion
+                        </span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    public string resultado = "";
+
+    public IEnumerable<Compra>? compras { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if(UsuarioNegocio.Usuario?.TipoUsuario != "Cliente")
+        {
+            NavigationManager.NavigateTo("/NotAuthorizedError");
+        }
+        compras = await CompraNegocio.GetAll();
+    }
+
+    private string detalleCompraURL(int IdOperacion)
+    {
+        return "comprasCliente/" + IdUsu + "/detalle/" + IdOperacion;
+    }
+}
+

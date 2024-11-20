@@ -54,6 +54,10 @@ namespace Domain
             modelBuilder.Entity<Usuario>().Property(c => c.TipoUsuario).HasColumnType("varchar(8)");
             modelBuilder.Entity<Usuario>().Property(c => c.MedioDePago).HasColumnType("varchar(25)");
 
+            //Defino las columnas de tipo "DateTime" como "Date"
+            modelBuilder.Entity<Usuario>().Property(c => c.FecNacimiento).HasColumnType("date");
+            //modelBuilder.Entity<PrecioPrenda>().Property(pp => pp.FecVigencia).HasColumnType("date");
+
             modelBuilder.Entity<TipoPrenda>().Property(tp => tp.DescripcionTipoPrenda).HasColumnType("varchar(50)");
 
             modelBuilder.Entity<Marca>().Property(m => m.DescripcionMarca).HasColumnType("varchar(50)");

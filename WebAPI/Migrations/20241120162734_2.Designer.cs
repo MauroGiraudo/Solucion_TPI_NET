@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(TiendaRopaContext))]
-    [Migration("20241114121122_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241120162734_2")]
+    partial class _2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,7 +253,7 @@ namespace WebAPI.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("FecNacimiento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("MedioDePago")
                         .HasColumnType("varchar(25)");

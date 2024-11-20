@@ -1,0 +1,75 @@
+﻿@page "/cargaActual/{IdUsu}/prenda/{NumeroLinea}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Prenda</PageTitle>
+
+<h1 class="title">Detalle de Prenda</h1>
+
+@if (LineaCarga == null || PrendaPedido == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        <li>Prenda: @PrendaPedido.Prenda</li>
+        <li>Cantidad a Cargar: @PrendaPedido.Cantidad</li>
+    </ul>
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Eliminar" style="margin-right: 0.3rem;">Eliminar</button>
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    [Parameter]
+    public string NumeroLinea { get; set; }
+
+    public LineaCarga? LineaCarga { get; set; }
+
+    public PrendaPedido? PrendaPedido { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        var lineasCarga = await LineaCargaNegocio.GetAll();
+        var filtrado = lineasCarga.Where(lc => lc.NumeroLinea == Convert.ToInt32(NumeroLinea));
+        LineaCarga = filtrado.FirstOrDefault();
+        PrendaPedido = await LineaCargaNegocio.SetOnePrendaPedido(LineaCarga);
+    }
+    private async void Eliminar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if (await LineaCargaNegocio.Delete(LineaCarga.NumeroLinea))
+        {
+            resultado = "Prenda eliminada exitosamente de la Carga";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/cargaActual/" + IdUsu);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/cargaActual/" + IdUsu);
+    }
+}
+

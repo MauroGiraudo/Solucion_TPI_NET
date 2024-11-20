@@ -1,0 +1,72 @@
+﻿@page "/operaciones/tiposDePrenda/{IdTipoPrenda}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle del Tipo de Prenda</PageTitle>
+
+<h1 class="title">Detalle del Tipo de Prenda</h1>
+
+@if (TipoPrenda == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <!-- Agregá todos los atributos de las entidades en cuestión. En este caso ingresamos sólo la descripción -->
+    <h3>@TipoPrenda.DescripcionTipoPrenda</h3>
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Modificar" style="margin-right: 0.3rem;">Modificar</button>
+        <button class="formButton" @onclick="Eliminar" style="margin-left: 0.3rem; margin-right: 0.3rem;">Eliminar</button>
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdTipoPrenda { get; set; }
+
+    public TipoPrenda? TipoPrenda { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        TipoPrenda = await TipoPrendaNegocio.GetOne(Convert.ToInt32(IdTipoPrenda));
+    }
+    private void Modificar(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/tiposDePrenda/" + IdTipoPrenda + "/modificar");
+    }
+    private async void Eliminar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if(await TipoPrendaNegocio.Delete(TipoPrenda))
+        {
+            resultado = "Tipo de Prenda eliminado exitosamente";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/operaciones/tiposDePrenda");
+        }
+        else
+        {
+            resultado = "Error al eliminar el Tipo de Prenda";
+        }
+    }
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/tiposDePrenda");
+    }
+}
+
