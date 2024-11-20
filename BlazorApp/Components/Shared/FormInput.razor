@@ -1,0 +1,34 @@
+﻿<label for="@Id">@Label: </label>
+@if(Type == "text")
+{
+    <InputText id="@Id" @bind-Value="@UserAttribute" @bind-Value:event="oninput"/>
+}
+else
+{
+    if (Type == "date")
+    {
+        <input id="@Id" type="@Type" @bind="@Date" @bind:event="oninput"/>
+    }
+    else
+    {
+        <input id="@Id" type="@Type" @bind="@UserAttribute" @bind:event="oninput"/>
+    }
+}
+
+
+@code {
+    [Parameter]
+    public string Label { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
+
+    [Parameter]
+    public string? UserAttribute { get; set; }
+
+    [Parameter]
+    public DateTime? Date { get; set; }
+}

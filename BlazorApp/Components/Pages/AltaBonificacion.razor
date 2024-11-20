@@ -1,0 +1,73 @@
+﻿@page "/operaciones/bonificaciones/alta"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Alta Bonificacion</PageTitle>
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Nueva Bonificacion</h3>
+
+        <EditForm method="post" FormName="formAltaBonificacion" Model="Bonificacion" OnValidSubmit="NuevaBonificacionSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="cantidad">Monto a partir del cual aplica la bonificación: </label>
+                <InputNumber id="cantidad" @bind-Value="Bonificacion.CantidadParaDescuento" class="form-control"></InputNumber>
+            </div>
+
+            <div class="mb-3">
+                <label for="porcentaje">Porcentaje de Bonificación: </label>
+                <InputNumber id="porcentaje" @bind-Value="Bonificacion.ProporcionDescuento" class="form-control"></InputNumber>
+            </div>
+
+            <button class="formButton" type="submit">Agregar</button>
+        </EditForm>
+
+        <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+    </div>
+</div>
+
+<p style="margin-top: 1rem;"><em>@resultado</em></p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+    }
+
+    [SupplyParameterFromForm(FormName = "formAltaBonificacion")]
+    public Bonificacion Bonificacion { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task NuevaBonificacionSubmit()
+    {
+        resultado = "Cargando...";
+        if(await BonificacionNegocio.Post(Bonificacion))
+        {
+            resultado = "Bonificación agregada exitosamente";
+            NavigationManager.NavigateTo("/operaciones/bonificaciones");
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/bonificaciones");
+    }
+}
+

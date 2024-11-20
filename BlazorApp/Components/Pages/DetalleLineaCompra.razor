@@ -1,0 +1,80 @@
+﻿@page "/carrito/{IdUsu}/prenda/{NumeroLinea}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Prenda</PageTitle>
+
+<h1 class="title">Detalle de Prenda</h1>
+
+@if (LineaCompra == null || PrendaPedido == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        <li>Prenda: @PrendaPedido.Prenda</li>
+        <li>Cantidad a Cargar: @PrendaPedido.Cantidad</li>
+        <li>Costo: $@PrendaPedido.Precio</li>
+    </ul>
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Eliminar" style="margin-right: 0.3rem;">Eliminar</button>
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    [Parameter]
+    public string NumeroLinea { get; set; }
+
+    public LineaCompra? LineaCompra { get; set; }
+
+    public PrendaPedido? PrendaPedido { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if(UsuarioNegocio.Usuario?.TipoUsuario != "Cliente")
+        {
+            NavigationManager.NavigateTo("/NotAuthorizedError");
+        }
+        var lineasCompra = await LineaCompraNegocio.GetAll();
+        var filtrado = lineasCompra.Where(lc => lc.NumeroLinea == Convert.ToInt32(NumeroLinea));
+        LineaCompra = filtrado.FirstOrDefault();
+        PrendaPedido = await LineaCompraNegocio.SetOnePrendaPedido(LineaCompra);
+    }
+    private async void Eliminar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if (await LineaCompraNegocio.Delete(LineaCompra.NumeroLinea))
+        {
+            resultado = "Prenda eliminada exitosamente de la Compra";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/carrito/" + IdUsu);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/carrito/" + IdUsu);
+    }
+}
+

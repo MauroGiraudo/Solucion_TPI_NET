@@ -1,0 +1,78 @@
+﻿@page "/operaciones/tiposDePrenda/{IdTipoPrenda}/modificar"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Modificar Tipo de Prenda</PageTitle>
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Modificar Tipo de Prenda</h3>
+
+        <EditForm method="post" FormName="formModificarTipoPrenda" Model="TipoPrendaModified" OnValidSubmit="ModificarTipoPrendaSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="descripcion">Nombre: </label>
+                <InputText id="descripcion" @bind-Value="TipoPrendaModified.DescripcionTipoPrenda" class="form-control"></InputText>
+            </div>
+
+            <button class="formButton" type="submit">Modificar</button>
+        </EditForm>
+
+        <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+    </div>
+</div>
+
+<p style="margin-top: 1rem;"><em>@resultado</em></p>
+
+<p><em></em></p>
+
+@code {
+    [Parameter]
+    public string IdTipoPrenda { get; set; }
+
+    public TipoPrenda? TipoPrenda { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        TipoPrenda = await TipoPrendaNegocio.GetOne(Convert.ToInt32(IdTipoPrenda));
+        TipoPrendaModified.IdTipoPrenda = TipoPrenda.IdTipoPrenda;
+        TipoPrendaModified.DescripcionTipoPrenda = TipoPrenda.DescripcionTipoPrenda;
+    }
+
+    [SupplyParameterFromForm(FormName = "formModificarTipoPrenda")]
+    public TipoPrenda TipoPrendaModified { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task ModificarTipoPrendaSubmit()
+    {
+        resultado = "Cargando...";
+        if(await TipoPrendaNegocio.Update(TipoPrendaModified))
+        {
+            resultado = "Tipo de Prenda modificado exitosamente";
+            NavigationManager.NavigateTo("/operaciones/tiposDePrenda/" + IdTipoPrenda);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/tiposDePrenda/" + IdTipoPrenda);
+    }
+}
+

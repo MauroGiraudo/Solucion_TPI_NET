@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public ActionResult<Bonificacion> Post(Bonificacion bonificacion)
         {
-            var result = BonificacionValidation.ParsePost(Service, bonificacion);
+            var result = BonificacionValidation.Parse(Service, bonificacion);
             if (result != null)
             {
                 return BadRequest(result);
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest();
             }
-            var result = BonificacionValidation.ParsePut(Service, bonificacion);
+            var result = BonificacionValidation.Parse(Service, bonificacion);
             if (result != null)
             {
                 return BadRequest(result);

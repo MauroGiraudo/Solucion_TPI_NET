@@ -1,0 +1,93 @@
+﻿@page "/operaciones/marcas"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Operaciones Marca</PageTitle>
+
+<h1 class="title">Marcas</h1>
+
+<div class="buscarContainer">
+    
+    <input class="buscarInput" id="buscar" @bind="descripcionParcial" @bind:event="oninput" @bind:after="Filtrar" />
+
+    <button class="formButton" @onclick="Limpiar">Limpiar</button>
+
+</div>
+
+<div class="itemListContainer">
+    <div>
+        <a class="itemLink" href="operaciones/marcas/alta">
+            <span>Nueva Marca</span>        
+            <i class="bi bi-plus-square-fill" style="font-size: 1.5rem; color: black;"></i>
+        </a>
+    </div>
+    @if(marcas == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (Marca m in marcasFiltradas)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleMarcaURL(m.IdMarca)">
+                        <span class="itemName">@m.DescripcionMarca</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+
+@code {
+
+    string descripcionParcial = "";
+    public IEnumerable<Marca>? marcas;
+    public IEnumerable<Marca>? marcasFiltradas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        marcas = await MarcaNegocio.GetAll();
+        marcasFiltradas = marcas;
+    }
+
+
+
+    private void Limpiar(MouseEventArgs e)
+    {
+        descripcionParcial = "";
+        marcasFiltradas = marcas;
+    }
+    private void Filtrar()
+    {
+        if(marcas != null)
+        {
+            marcasFiltradas = marcas.Where(m => m.DescripcionMarca.Contains(descripcionParcial, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private string detalleMarcaURL(int IdMarca)
+    {
+        return "operaciones/marcas/" + IdMarca;
+    }
+
+    /*  <button class="formButton" @onclick="Filtrar">Buscar</button>  */
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/operaciones");
+    }
+}
+

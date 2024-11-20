@@ -49,3 +49,119 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.top {
+    background-color: lightgray;
+    border-block-color: lightslategrey;
+    border: 2px;
+    justify-content: center;
+    display: flex;
+}
+
+.optionsList {
+    list-style: none;
+}
+
+.formTitle {
+    margin-bottom: 1rem;
+}
+
+.formContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 3rem;
+}
+
+.login {
+    display: flex;
+    justify-content: center;
+}
+
+h3 {
+    margin-top: 2rem;
+}
+
+.buttonLogout {
+    width: 8.5rem;
+    height: 2.5rem;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: darkred;
+    color: white;
+}
+
+.buttonContainer {
+    display:flex;
+    justify-content: center;
+    margin: 2rem;
+}
+
+.formButton {
+    width: 8.5rem;
+    height: 2.5rem;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: darkblue;
+    color: white;
+}
+
+.title {
+    margin-top: 2rem;
+}
+
+.optionsContainer {
+    border: 2px solid grey;
+    height: 4rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: gainsboro;    
+}
+
+.buscarContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.buscarInput {
+    width: 20rem;
+    height: 2.5rem;
+    padding: 4px;
+    border-radius: 8px;
+    margin-right: 0.5rem;
+}
+
+.itemListContainer {
+    margin-top: 2rem;
+
+}
+
+.itemLink {
+    text-decoration: none;
+    color: inherit;
+    font-weight: normal;
+}
+
+.itemContainer {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    border-radius: 8px;
+}
+
+.item {
+    border: 2px solid grey;
+    background-color: lightgray;
+    margin: 0.3px 0;
+    padding: 0.5rem;
+    width: 100%;
+}
+
+.itemName {
+    cursor: pointer;
+    margin: 0 0.6rem;
+}

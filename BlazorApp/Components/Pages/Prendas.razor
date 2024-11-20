@@ -1,0 +1,77 @@
+﻿@page "/prendas"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<h1 class="title">Prendas</h1>
+
+<div class="buscarContainer">
+
+    <input class="buscarInput" id="buscar" @bind="descripcionParcial" @bind:event="oninput" @bind:after="Filtrar" />
+
+    <button class="formButton" @onclick="Limpiar">Limpiar</button>
+
+</div>
+
+@if (prendasMuestra == null || prendasMuestraFiltradas == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="itemListContainer">
+        <ul class="itemContainer">
+            @foreach (var prenda in prendasMuestraFiltradas)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@DetallePrendaURL(prenda.IdPrenda)">
+                        <span class="itemName">@prenda.Descripcion</span>   -   <span class="itemName">Talla "@prenda.Talla"</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code{
+    protected override void OnInitialized()
+    {
+        if(UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Cliente")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+    }
+
+    public string descripcionParcial = "";
+
+    private void Limpiar(MouseEventArgs e)
+    {
+        descripcionParcial = "";
+        prendasMuestraFiltradas = prendasMuestra;
+    }
+    private void Filtrar()
+    {
+        if (prendasMuestra != null)
+        {
+            prendasMuestraFiltradas = prendasMuestra.Where(p => p.Descripcion.Contains(descripcionParcial, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private IEnumerable<PrendaMuestra>? prendasMuestra;
+
+    private IEnumerable<PrendaMuestra>? prendasMuestraFiltradas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        prendasMuestra = await PrendaNegocio.SetPrendasMuestra();
+        prendasMuestraFiltradas = prendasMuestra;
+    }
+
+    public string DetallePrendaURL(int IdPrenda)
+    {
+        return "prendas/" + IdPrenda;
+    }
+}

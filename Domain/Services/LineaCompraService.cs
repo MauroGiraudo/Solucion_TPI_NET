@@ -56,5 +56,11 @@ namespace Domain.Services
                    where lc.IdUsu == IdUsu && lc.IdOperacion == IdOperacion
                    select lc;
         }
+
+        public IEnumerable<LineaCompra> FindAny()
+        {
+            using var context = new TiendaRopaContext();
+            return context.LineasCompra.ToList();
+        }
     }
 }

@@ -1,0 +1,93 @@
+﻿@page "/operaciones/tiposDePrenda"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+@inject NavigationManager NavigationManager
+
+<PageTitle>Operaciones Tipo De Prenda</PageTitle>
+
+<h1 class="title">Tipos De Prenda</h1>
+
+<div class="buscarContainer">
+    
+    <input class="buscarInput" id="buscar" @bind="descripcionParcial" @bind:event="oninput" @bind:after="Filtrar" />
+
+    <button class="formButton" @onclick="Limpiar">Limpiar</button>
+
+</div>
+
+<div class="itemListContainer">
+    <div>
+        <a class="itemLink" href="operaciones/tiposDePrenda/alta">
+            <span>Nuevo Tipo de Prenda</span>        
+            <i class="bi bi-plus-square-fill" style="font-size: 1.5rem; color: black;"></i>
+        </a>
+    </div>
+    @if(tiposDePrenda == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (TipoPrenda tp in tiposDePrendaFiltrados)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleTipoPrendaURL(tp.IdTipoPrenda)">
+                        <span class="itemName">@tp.DescripcionTipoPrenda</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+<button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+
+@code {
+
+    string descripcionParcial = "";
+    public IEnumerable<TipoPrenda>? tiposDePrenda;
+    public IEnumerable<TipoPrenda>? tiposDePrendaFiltrados;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        tiposDePrenda = await TipoPrendaNegocio.GetAll();
+        tiposDePrendaFiltrados = tiposDePrenda;
+    }
+
+
+
+    private void Limpiar(MouseEventArgs e)
+    {
+        descripcionParcial = "";
+        tiposDePrendaFiltrados = tiposDePrenda;
+    }
+    private void Filtrar()
+    {
+        if(tiposDePrenda != null)
+        {
+            tiposDePrendaFiltrados = tiposDePrenda.Where(m => m.DescripcionTipoPrenda.Contains(descripcionParcial, StringComparison.OrdinalIgnoreCase));
+        }
+    }
+
+    private string detalleTipoPrendaURL(int IdTipoPrenda)
+    {
+        return "operaciones/tiposDePrenda/" + IdTipoPrenda;
+    }
+
+    /*  <button class="formButton" @onclick="Filtrar">Buscar</button>  */
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/operaciones");
+    }
+}
+

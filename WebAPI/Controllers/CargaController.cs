@@ -115,7 +115,7 @@ namespace WebAPI.Controllers
             }
 
             Service.Update(carga);
-            return NoContent();
+            return Ok(carga);
         }
 
         [HttpDelete("{IdOperacion}")]

@@ -1,0 +1,90 @@
+﻿@page "/operaciones/prendas/{IdPrenda}/stock"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Alta Stock</PageTitle>
+
+@if(Prenda == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="formContainer">
+        <div>
+            <h3 class="formTitle">Cargar Stock de la Prenda: @Prenda.Descripcion</h3>
+
+            <EditForm method="post" FormName="formCargaStock" Model="LineaCarga" OnValidSubmit="NuevaLineaCargaSubmit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="cantidadPrenda">Cantidad: </label>
+                    <InputNumber id="cantidadPrenda" @bind-Value="LineaCarga.CantidadPrenda" class="form-control"></InputNumber>
+                </div>
+
+                <button class="formButton" type="submit">Agregar</button>
+            </EditForm>
+
+            <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+        </div>
+    </div>
+
+    <p style="margin-top: 1rem;"><em>@resultado</em></p>
+}
+
+
+
+@code {
+    [Parameter]
+    public string IdPrenda { get; set; }
+
+    public Prenda? Prenda { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        Prenda = await PrendaNegocio.GetOne(Convert.ToInt32(IdPrenda));
+    }
+
+    [SupplyParameterFromForm(FormName = "formCargaStock")]
+    public LineaCarga LineaCarga { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task NuevaLineaCargaSubmit()
+    {
+        resultado = "Cargando...";
+        if(CargaNegocio.MiCarga == null)
+        {
+            await CargaNegocio.NuevaCarga();
+        }
+        LineaCarga.IdUsu = UsuarioNegocio.Usuario.IdUsu;
+        LineaCarga.IdOperacion = CargaNegocio.MiCarga.IdOperacion;
+        LineaCarga.IdPrenda = Prenda.IdPrenda;
+        if(await LineaCargaNegocio.Post(LineaCarga))
+        {
+            resultado = "Carga agregada exitosamente";
+            NavigationManager.NavigateTo("/prendas/" + IdPrenda);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/prendas/" + IdPrenda);
+    }
+}
+

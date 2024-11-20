@@ -1,0 +1,62 @@
+﻿@page "/login"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Iniciar Sesión</h3>
+
+        <EditForm method="post" FormName="formLogin" Model="LoginData" OnValidSubmit="LoginSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="userName">Nombre de Usuario: </label>
+                <InputText id="userName" @bind-Value="LoginData.UserName" class="form-control"></InputText>
+            </div>
+            <div class="mb-3">
+                <label for="contrasenia">Contraseña: </label>
+                <InputText id="contrasenia" @bind-Value="LoginData.Contrasenia" type="password" class="form-control"></InputText>
+            </div>
+
+            <div class="buttonContainer">
+                <button class="formButton" type="submit">Iniciar Sesión</button>
+            </div>
+
+        </EditForm>
+        <br />
+        <div class="login">
+            <div>
+                <p>¿Aún no tiene una cuenta?</p> &nbsp;
+                <a href="/registro">
+                    <strong>Regístrese aquí</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<p><em>@resultado</em></p>
+
+
+@code {
+    [SupplyParameterFromForm(FormName = "formLogin")]
+    private LoginData LoginData { get; set; } = new();
+
+    private string resultado = "Sesión sin iniciar";
+
+    private async Task LoginSubmit()
+    {
+        resultado = "Cargando...";
+        UsuarioNegocio.Usuario = await UsuarioNegocio.Login(LoginData);
+        if(UsuarioNegocio.Usuario != null)
+        {
+            resultado = "Sesión iniciada exitosamente";
+            NavigationManager.NavigateTo("/");
+        }
+        else
+        {
+            resultado = "Error al iniciar sesión";
+        }
+    }
+}

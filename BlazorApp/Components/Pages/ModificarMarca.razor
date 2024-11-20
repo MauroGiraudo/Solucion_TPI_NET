@@ -1,0 +1,78 @@
+﻿@page "/operaciones/marcas/{IdMarca}/modificar"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Modificar Marca</PageTitle>
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Modificar Marca</h3>
+
+        <EditForm method="post" FormName="formModificarMarca" Model="MarcaModified" OnValidSubmit="ModificarMarcaSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="descripcion">Nombre: </label>
+                <InputText id="descripcion" @bind-Value="MarcaModified.DescripcionMarca" class="form-control"></InputText>
+            </div>
+
+            <button class="formButton" type="submit">Modificar</button>
+        </EditForm>
+
+        <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+    </div>
+</div>
+
+<p style="margin-top: 1rem;"><em>@resultado</em></p>
+
+<p><em></em></p>
+
+@code {
+    [Parameter]
+    public string IdMarca { get; set; }
+
+    public Marca? Marca { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        Marca = await MarcaNegocio.GetOne(Convert.ToInt32(IdMarca));
+        MarcaModified.IdMarca = Marca.IdMarca;
+        MarcaModified.DescripcionMarca = Marca.DescripcionMarca;
+    }
+
+    [SupplyParameterFromForm(FormName = "formModificarMarca")]
+    public Marca MarcaModified { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task ModificarMarcaSubmit()
+    {
+        resultado = "Cargando...";
+        if(await MarcaNegocio.Update(MarcaModified))
+        {
+            resultado = "Marca modificada exitosamente";
+            NavigationManager.NavigateTo("/operaciones/marcas/" + IdMarca);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/marcas/" + IdMarca);
+    }
+}
+

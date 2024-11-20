@@ -1,0 +1,99 @@
+﻿@page "/comprasCliente/{IdUsu}/detalle/{IdOperacion}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Compra</PageTitle>
+
+<h1 class="title">Detalle de la Compra</h1>
+
+@if (Compra == null || PrendasPedido == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        <li>ID: @Compra.IdOperacion</li>
+        <li>Fecha: @Compra.FecOperacion</li>
+        <li>Estado: @Compra.EstadoOperacion</li>
+    </ul>
+
+    <ul class="itemContainer">
+        @foreach(PrendaPedido pp in PrendasPedido)
+        {
+            <li class="item">
+                <span class="itemName">Prenda: @pp.Prenda</span>     -     <span class="itemName">Cantidad Comprada: @pp.Cantidad</span>     -     <span class="itenName">Costo: $@pp.Precio</span>
+            </li>
+        }
+    </ul>
+
+    <p><strong>Total: $@Total</strong></p>
+
+    @if (Bonificacion != null)
+    {
+        <p style="color: red;"><strong>¡Obtuvo un descuento del @Bonificacion.ProporcionDescuento%!</strong></p>
+    }
+
+    <div class="buscarContainer">
+
+        <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    [Parameter]
+    public string IdOperacion { get; set; }
+
+    public Compra? Compra { get; set; }
+
+    public IEnumerable<PrendaPedido>? PrendasPedido { get; set; } = null;
+
+    string resultado = "";
+
+    public float Total { get; set; } = 0;
+
+    public Bonificacion? Bonificacion { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if(UsuarioNegocio.Usuario?.TipoUsuario != "Cliente")
+        {
+            NavigationManager.NavigateTo("/NotAuthorizedError");
+        }
+        Compra = await CompraNegocio.GetOne(int.Parse(IdOperacion));
+        CompraNegocio.CompraMuestra = CompraNegocio.SetOneCompraMuestra(Compra);
+        PrendasPedido = await LineaCompraNegocio.SetPrendasPedido_CompraMuestra();
+        await GetTotal();
+    }
+
+    private async Task GetTotal()
+    {
+        float total = 0;
+        foreach (PrendaPedido pp in PrendasPedido)
+        {
+            total += pp.Precio;
+        }
+        Bonificacion = await BonificacionNegocio.GetCurrent(Convert.ToInt32(total));
+        if (Bonificacion != null)
+        {
+            total = total * (1 - Bonificacion.ProporcionDescuento / 100);
+        }
+        Total = total;
+    }
+
+    private void Volver(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/comprasCliente/" + IdUsu);
+    }
+}
+

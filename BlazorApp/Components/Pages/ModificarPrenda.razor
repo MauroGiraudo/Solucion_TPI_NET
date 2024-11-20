@@ -1,0 +1,138 @@
+﻿@page "/operaciones/prendas/{IdPrenda}/modificar"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Modificar Prenda</PageTitle>
+
+@if(Prenda == null || Precio == null || marcas == null || tiposDePrenda == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="formContainer">
+        <div>
+            <h3 class="formTitle">Modificar Prenda</h3>
+
+            <EditForm method="post" FormName="formModificarPrenda" Model="PrendaModified" OnValidSubmit="ModificarPrendaSubmit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="descripcion">Descripcion: </label>
+                    <InputText id="descripcion" @bind-Value="PrendaModified.Descripcion" class="form-control"></InputText>
+                </div>
+                <div class="mb-3">
+                    <label for="precio">Precio: </label>
+                    <InputNumber id="precio" @bind-Value="@Precio.Valor" class="form-control" disabled></InputNumber>
+                </div>
+                <div class="mb-3">
+                    <label for="stock">Stock: </label>
+                    <InputNumber id="stock" @bind-Value="PrendaModified.Stock" class="form-control" disabled ></InputNumber>
+                </div>
+                <div class="mb-3">
+                    <label for="puntoPedido">Punto de Pedido: </label>
+                    <InputNumber id="puntoPedido" @bind-Value="PrendaModified.PuntoPedido" class="form-control"></InputNumber>
+                </div>
+                <div class="mb-3">
+                    <label for="talla">Talla: </label>
+                    <select id="talla" @bind="PrendaModified.Talla" class="form-select">
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tipoPrenda">Tipo de Prenda: </label>
+                    <select id="tipoPrenda" @bind="PrendaModified.IdTipoPrenda" class="form-select">
+                        @foreach (TipoPrenda tipoPrenda in tiposDePrenda)
+                        {
+                            <option value="@tipoPrenda.IdTipoPrenda">@tipoPrenda.DescripcionTipoPrenda</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="marca">Marca: </label>
+                    <select id="marca" @bind="PrendaModified.IdMarca" class="form-select">
+                        @foreach (Marca marca in marcas)
+                        {
+                            <option value="@marca.IdMarca">@marca.DescripcionMarca</option>
+                        }
+                    </select>
+                </div>
+
+                <button class="formButton" type="submit">Modificar</button>
+            </EditForm>
+
+            <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+        </div>
+    </div>
+
+    <p style="margin-top: 1rem;"><em>@resultado</em></p>
+}
+
+
+
+@code {
+    [Parameter]
+    public string IdPrenda { get; set; }
+
+    public Prenda? Prenda { get; set; } = null;
+
+    public PrecioPrenda Precio { get; set; }
+
+    private IEnumerable<TipoPrenda>? tiposDePrenda;
+
+    private IEnumerable<Marca>? marcas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if(UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        tiposDePrenda = await TipoPrendaNegocio.GetAll();
+        marcas = await MarcaNegocio.GetAll();
+        Prenda = await PrendaNegocio.GetOne(Convert.ToInt32(IdPrenda));
+        Precio = await PrecioPrendaNegocio.GetCurrentPrecio(Prenda.IdPrenda);
+        PrendaModified.IdPrenda = Prenda.IdPrenda;
+        PrendaModified.Descripcion = Prenda.Descripcion;
+        PrendaModified.Stock = Prenda.Stock;
+        PrendaModified.PuntoPedido = Prenda.PuntoPedido;
+        PrendaModified.Talla = Prenda.Talla;
+        PrendaModified.IdTipoPrenda = Prenda.IdTipoPrenda;
+        PrendaModified.IdMarca = Prenda.IdMarca;
+    }
+
+    [SupplyParameterFromForm(FormName = "formModificarPrenda")]
+    public Prenda PrendaModified { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task ModificarPrendaSubmit()
+    {
+        resultado = "Cargando...";
+        if(await PrendaNegocio.Update(PrendaModified))
+        {
+            resultado = "Prenda modificada exitosamente";
+            NavigationManager.NavigateTo("/prendas/" + IdPrenda);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/prendas/" + IdPrenda);
+    }
+}
+

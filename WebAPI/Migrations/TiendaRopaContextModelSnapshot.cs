@@ -250,7 +250,7 @@ namespace WebAPI.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<DateTime>("FecNacimiento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("MedioDePago")
                         .HasColumnType("varchar(25)");

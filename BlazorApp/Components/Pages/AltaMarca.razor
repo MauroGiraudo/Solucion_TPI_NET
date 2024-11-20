@@ -1,0 +1,68 @@
+﻿@page "/operaciones/marcas/alta"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Alta Marca</PageTitle>
+
+<div class="formContainer">
+    <div>
+        <h3 class="formTitle">Nueva Marca</h3>
+
+        <EditForm method="post" FormName="formAltaMarca" Model="Marca" OnValidSubmit="NuevaMarcaSubmit" Enhance>
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label for="descripcion">Nombre: </label>
+                <InputText id="descripcion" @bind-Value="Marca.DescripcionMarca" class="form-control"></InputText>
+            </div>
+
+            <button class="formButton" type="submit">Agregar</button>
+        </EditForm>
+
+        <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+    </div>
+</div>
+
+<p style="margin-top: 1rem;"><em>@resultado</em></p>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+    }
+
+    [SupplyParameterFromForm(FormName = "formAltaMarca")]
+    public Marca Marca { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task NuevaMarcaSubmit()
+    {
+        resultado = "Cargando...";
+        if(await MarcaNegocio.Add(Marca))
+        {
+            resultado = "Marca agregada exitosamente";
+            NavigationManager.NavigateTo("/operaciones/marcas");
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/marcas");
+    }
+}
+

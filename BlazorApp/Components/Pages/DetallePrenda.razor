@@ -1,0 +1,115 @@
+﻿@page "/prendas/{IdPrenda}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Detalle de Prenda</PageTitle>
+
+<h1 class="title">Detalle de Prenda</h1>
+
+@if (Prenda == null || TipoPrenda == null || Marca == null || PrecioPrenda == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <ul>
+        <li>Nombre: @Prenda.Descripcion</li>
+        <li>Precio: $@PrecioPrenda.Valor</li>
+        <li>Stock: @Prenda.Stock</li>
+        @if(UsuarioNegocio.Usuario.TipoUsuario == "Empleado")
+        {
+            <li>Punto de Pedido: @Prenda.PuntoPedido</li>
+        }
+        <li>Talla: @Prenda.Talla</li>
+        <li>Tipo de Prenda: @TipoPrenda.DescripcionTipoPrenda</li>
+        <li>Marca: @Marca.DescripcionMarca</li>
+    </ul>
+
+    <div class="buscarContainer">
+        
+        @if (UsuarioNegocio.Usuario.TipoUsuario == "Empleado")
+        {
+            <button class="formButton" @onclick="CargarStock" style="margin-right: 0.3rem;">Cargar Stock</button>
+            <button class="formButton" @onclick="NuevoPrecio" style="margin-left: 0.3rem; margin-right: 0.3rem;">Nuevo Precio</button>
+            <button class="formButton" @onclick="Modificar" style="margin-left: 0.3rem; margin-right: 0.3rem;">Modificar</button>
+            <button class="formButton" @onclick="Eliminar" style="margin-left: 0.3rem; margin-right: 0.3rem;">Eliminar</button>
+            <button class="formButton" @onclick="VolverEmpleado" style="margin-left: 0.3rem;">Volver</button>
+        }
+        else
+        {
+            <button class="formButton" @onclick="AgregarAlCarrito" style="margin-right: 0.3rem;">Agregar</button>
+            <button class="formButton" @onclick="VolverCliente" style="margin-left: 0.3rem;">Volver</button>
+        }
+
+    </div>
+
+    <p><em>@resultado</em></p>
+}
+
+@code {
+    [Parameter]
+    public string IdPrenda { get; set; }
+
+    public Prenda? Prenda { get; set; } = null;
+
+    public TipoPrenda? TipoPrenda { get; set; } = null;
+
+    public Marca? Marca { get; set; } = null;
+
+    public PrecioPrenda? PrecioPrenda { get; set; } = null;
+
+    string resultado = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        Prenda = await PrendaNegocio.GetOne(Convert.ToInt32(IdPrenda));
+        TipoPrenda = await TipoPrendaNegocio.GetOne(Prenda.IdTipoPrenda);
+        Marca = await MarcaNegocio.GetOne(Prenda.IdMarca);
+        PrecioPrenda = await PrecioPrendaNegocio.GetCurrentPrecio(Convert.ToInt32(IdPrenda));
+    }
+    private void Modificar(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/prendas/" + IdPrenda + "/modificar");
+    }
+    private async void Eliminar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if (await PrendaNegocio.Delete(Prenda))
+        {
+            resultado = "Prenda eliminada exitosamente";
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/operaciones/prendas");
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+    private void CargarStock(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/prendas/" + IdPrenda + "/stock");
+    }
+    private void NuevoPrecio(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/prendas/" + IdPrenda + "/precios/alta");
+    }
+    private void VolverEmpleado(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/prendas");
+    }
+    private void VolverCliente(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/prendas");
+    }
+    private void AgregarAlCarrito(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/prendas/" + IdPrenda + "/agregarAlCarrito");
+    }
+}
+

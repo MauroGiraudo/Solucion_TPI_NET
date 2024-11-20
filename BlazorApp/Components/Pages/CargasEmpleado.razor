@@ -1,0 +1,64 @@
+﻿@page "/cargasEmpleado/{IdUsu}"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Mis Cargas</PageTitle>
+
+<h1 class="title">Mis Cargas</h1>
+
+<div class="itemListContainer">
+    @if(cargas == null)
+    {
+        <p><em>Cargando...</em></p>
+    }
+    else if (!cargas.Any())
+    {
+        <p><em>Actualmente no cuenta con cargas registradas</em></p>
+    }
+    else
+    {
+        <ul class="itemContainer">
+            @foreach (Carga c in cargas)
+            {
+                <li class="item">
+                    <a class="itemLink" href="@detalleCargaURL(c.IdOperacion)">
+                        <span class="itemName">
+                            @c.FecOperacion     -     
+                            @c.EstadoOperacion
+                        </span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+
+
+
+@code {
+    [Parameter]
+    public string IdUsu { get; set; }
+
+    public string resultado = "";
+
+    public IEnumerable<Carga>? cargas { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        if (UsuarioNegocio.Usuario.TipoUsuario != "Empleado")
+        {
+            NavigationManager.NavigateTo("NotAuthorizedError");
+        }
+        cargas = await CargaNegocio.GetAll();
+    }
+
+    private string detalleCargaURL(int IdOperacion)
+    {
+        return "cargasEmpleado/" + IdUsu + "/detalle/" + IdOperacion;
+    }
+}
+

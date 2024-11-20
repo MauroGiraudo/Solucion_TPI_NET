@@ -1,5 +1,8 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
+@attribute [StreamRendering]
+@using BlazorApp.Model.Prendas;
+@using BlazorApp.Negocio;
 
 <PageTitle>Counter</PageTitle>
 
@@ -9,11 +12,50 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<input @bind="texto" @oninput="Filtrar"/>
+
+<p>@texto</p>
+
+@if (marcas == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var marca in marcasFiltradas)
+        {
+            <li>@marca.DescripcionMarca</li>
+        }
+    </ul>
+}
+
 @code {
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    string texto = "";
+
+    private IEnumerable<Marca>? marcas;
+    private IEnumerable<Marca>? marcasFiltradas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        marcas = await MarcaNegocio.GetAll();
+        marcasFiltradas = marcas;
+    }
+    private void Filtrar(ChangeEventArgs e)
+    {
+        if(marcas != null)
+        {
+            marcasFiltradas =
+                from m in marcas
+                where m.DescripcionMarca.ToLower().Contains(texto.ToLower())
+                select m;
+        }
     }
 }

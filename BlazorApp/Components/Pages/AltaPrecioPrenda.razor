@@ -1,0 +1,85 @@
+﻿@page "/operaciones/prendas/{IdPrenda}/precios/alta"
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager
+
+<PageTitle>Alta Precio Prenda</PageTitle>
+
+@if(Prenda == null)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <div class="formContainer">
+        <div>
+            <h3 class="formTitle">Nuevo Precio de la Prenda: @Prenda.Descripcion</h3>
+
+            <EditForm method="post" FormName="formAltaPrecioPrenda" Model="PrecioPrenda" OnValidSubmit="NuevoPrecioPrendaSubmit" Enhance>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <div class="mb-3">
+                    <label for="cantidad">Importe: </label>
+                    <InputNumber id="cantidad" @bind-Value="PrecioPrenda.Valor" class="form-control"></InputNumber>
+                </div>
+
+                <div class="mb-3">
+                    <label for="fecha">Fecha de Vigencia: </label>
+                    <InputDate id="fecha" @bind-Value="PrecioPrenda.FecVigencia" class="form-control"></InputDate>
+                </div>
+
+                <button class="formButton" type="submit">Agregar</button>
+            </EditForm>
+
+            <button class="formButton" @onclick="GoBack" style="margin-top: 1rem;">Salir</button>
+        </div>
+    </div>
+
+    <p style="margin-top: 1rem;"><em>@resultado</em></p>
+}
+
+
+
+@code {
+    [Parameter]
+    public string IdPrenda { get; set; }
+
+    public Prenda? Prenda { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (UsuarioNegocio.Usuario == null)
+        {
+            NavigationManager.NavigateTo("/NotLoggedInError");
+        }
+        Prenda = await PrendaNegocio.GetOne(Convert.ToInt32(IdPrenda));
+    }
+
+    [SupplyParameterFromForm(FormName = "formAltaPrecioPrenda")]
+    public PrecioPrenda PrecioPrenda { get; set; } = new();
+
+    public string resultado = "";
+
+    private async Task NuevoPrecioPrendaSubmit()
+    {
+        PrecioPrenda.IdPrenda = Convert.ToInt32(IdPrenda);
+        resultado = "Cargando...";
+        if(await PrecioPrendaNegocio.Add(PrecioPrenda))
+        {
+            resultado = "Nuevo precio agregado exitosamente";
+            NavigationManager.NavigateTo("prendas/" + IdPrenda);
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+    }
+
+    private void GoBack(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/operaciones/prendas/" + IdPrenda);
+    }
+}
+
