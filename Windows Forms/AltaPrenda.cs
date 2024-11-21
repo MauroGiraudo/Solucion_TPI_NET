@@ -114,7 +114,7 @@ namespace Windows_Forms
                 return;
             }
             Prenda prenda = new Prenda();
-            prenda.Descripcion = Format.Capitalizar(txb_descripcion.Text);
+            prenda.Descripcion = txb_descripcion.Text;
             prenda.Stock = Convert.ToInt32(nud_stock.Value);
             prenda.PuntoPedido = Convert.ToInt32(nud_puntoPedido.Value);
             prenda.Talla = cb_talla.SelectedItem.ToString();

@@ -74,7 +74,7 @@ namespace Windows_Forms
         {
             if (CargaNegocio.MiCarga == null)
             {
-                var car = Cargar_CargaActual().First();
+                /*var car = Cargar_CargaActual().First();
                 if (car == null)
                 {
                     Carga carga = new Carga();
@@ -88,7 +88,8 @@ namespace Windows_Forms
                         return;
                     }
                 }
-                CargaNegocio.MiCarga = car;
+                CargaNegocio.MiCarga = car;*/
+                await CargaNegocio.NuevaCarga();
             }
             if (dgv_prendas.SelectedRows.Count == 0)
             {
