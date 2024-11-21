@@ -22,6 +22,11 @@
                 <InputNumber id="porcentaje" @bind-Value="BonificacionModified.ProporcionDescuento" class="form-control"></InputNumber>
             </div>
 
+            <div class="mb-3">
+                <label for="fecha">Fecha de Vigencia: </label>
+                <InputDate id="fecha" @bind-Value="BonificacionModified.FecVigenciaBonificacion" class="form-control"></InputDate>
+            </div>
+
             <button class="formButton" type="submit">Modificar</button>
         </EditForm>
 
@@ -53,6 +58,7 @@
         BonificacionModified.IdBonificacion = Bonificacion.IdBonificacion;
         BonificacionModified.CantidadParaDescuento = Bonificacion.CantidadParaDescuento;
         BonificacionModified.ProporcionDescuento = Bonificacion.ProporcionDescuento;
+        BonificacionModified.FecVigenciaBonificacion = Bonificacion.FecVigenciaBonificacion;
     }
 
     [SupplyParameterFromForm(FormName = "formModificarBonificacion")]

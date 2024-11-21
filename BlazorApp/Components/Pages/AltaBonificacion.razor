@@ -22,6 +22,11 @@
                 <InputNumber id="porcentaje" @bind-Value="Bonificacion.ProporcionDescuento" class="form-control"></InputNumber>
             </div>
 
+            <div class="mb-3">
+                <label for="fecha">Fecha de Vigencia: </label>
+                <InputDate id="fecha" @bind-Value="Bonificacion.FecVigenciaBonificacion" class="form-control"></InputDate>
+            </div>
+
             <button class="formButton" type="submit">Agregar</button>
         </EditForm>
 
