@@ -18,6 +18,7 @@ namespace Windows_Forms
         public form_altaPrenda()
         {
             InitializeComponent();
+            nud_stock.Enabled = false;
             List<string> tallas = new List<string> { "S", "M", "L", "XL" };
             cb_talla.DataSource = tallas;
             cb_talla.SelectedItem = "S";

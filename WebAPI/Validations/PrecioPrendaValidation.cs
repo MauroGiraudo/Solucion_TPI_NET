@@ -12,7 +12,7 @@ namespace WebAPI.Validations
             var precios = service.FindAll(precioPrenda.IdPrenda);
             foreach(PrecioPrenda p in precios)
             {
-                if(p.IdPrenda == precioPrenda.IdPrenda && p.FecVigencia == precioPrenda.FecVigencia)
+                if(p.IdPrenda == precioPrenda.IdPrenda && (p.FecVigencia.Value.Date) == (precioPrenda.FecVigencia.Value.Date))
                 {
                     return "Ya existe un precio para esta prenda con vigencia a partir de la fecha ingresada";
                 }

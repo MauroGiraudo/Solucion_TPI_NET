@@ -70,7 +70,6 @@
             // dgv_lineasDeCarga
             // 
             dgv_lineasDeCarga.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgv_lineasDeCarga.Enabled = false;
             dgv_lineasDeCarga.Location = new Point(118, 128);
             dgv_lineasDeCarga.Name = "dgv_lineasDeCarga";
             dgv_lineasDeCarga.RowHeadersWidth = 51;
