@@ -43,7 +43,6 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result);
             }
-            bonificacion.FecVigenciaBonificacion = DateTime.Now;
             Service.Add(bonificacion);
             return CreatedAtAction(nameof(GetById), new { IdBonificacion = bonificacion.IdBonificacion }, bonificacion);
         }
@@ -60,7 +59,6 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(result);
             }
-            bonificacion.FecVigenciaBonificacion = DateTime.Now;
             Service.Update(bonificacion);
             return NoContent();
         }

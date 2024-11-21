@@ -47,6 +47,7 @@
         {
             NavigationManager.NavigateTo("NotAuthorizedError");
         }
+        Bonificacion.FecVigenciaBonificacion = DateTime.Now.Date;
     }
 
     [SupplyParameterFromForm(FormName = "formAltaBonificacion")]
