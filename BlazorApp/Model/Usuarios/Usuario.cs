@@ -48,7 +48,6 @@ namespace BlazorApp.Model.Usuarios
         [MaxLength(8)]
         public string TipoUsuario { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string? MedioDePago { get; set; }
 
