@@ -35,4 +35,11 @@ namespace Domain.Model.Prendas
 
         public List<LineaCarga>? LineasCarga { get; set; }
     }
+    public class PrendaPedido
+    {
+        public int NumeroLinea { get; set; }
+        public string Prenda { get; set; }
+        public int Cantidad { get; set; }
+        public float Precio { get; set; }
+    }
 }

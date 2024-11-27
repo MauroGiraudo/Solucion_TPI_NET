@@ -45,6 +45,22 @@ namespace WebAPI.Controllers
                 return _pservice;
             }
         }
+        private PrecioPrendaService _ppservice = new PrecioPrendaService();
+        public PrecioPrendaService PPService
+        {
+            get
+            {
+                return _ppservice;
+            }
+        }
+        private BonificacionService _bservice = new BonificacionService();
+        public BonificacionService BService
+        {
+            get
+            {
+                return _bservice;
+            }
+        }
 
         [HttpGet(Name = "GetAllCompras")]
         public ActionResult<IEnumerable<Compra>> GetAll(int IdUsu)
@@ -68,6 +84,63 @@ namespace WebAPI.Controllers
         {
             var compra = Service.GetEnProceso(IdUsu);
             return Ok(compra);
+        }
+
+        [HttpGet("{IdOperacion}/Detalle")]
+        public ActionResult GetPDF(int IdUsu, int IdOperacion)
+        {
+            var compra = Service.GetOne(IdUsu, IdOperacion);
+            if (compra == null)
+            {
+                return NotFound();
+            }
+            if(compra.EstadoOperacion == "En Proceso")
+            {
+                return BadRequest("Error: La compra aún no ha finalizado");
+            }
+            var lineasCompra = LCService.FindAll(IdUsu, IdOperacion);
+            float total = 0;
+            DetalleCompra detalleCompra = new DetalleCompra
+            {
+                IdOperacion = compra.IdOperacion,
+                FechaOperacion = compra.FecOperacion,
+                EstadoOperacion = compra.EstadoOperacion,
+                PrendaPedido = new List<PrendaPedido>()
+            };
+            foreach (LineaCompra lc in lineasCompra)
+            {
+                var prenda = PService.GetOne(lc.IdPrenda);
+                if(prenda == null)
+                {
+                    return NotFound("Error: No se encontró la prenda");
+                }
+                var fecha = PPService.GetDate(lc.IdPrenda, DateTime.Now);
+                if (fecha == null)
+                {
+                    return NotFound("Error: No existe un precio de la prenda para la fecha actual");
+                }
+                var precio = PPService.GetOne(lc.IdPrenda, Convert.ToDateTime(fecha));
+
+                total += precio.Valor * lc.CantidadPrenda; //Sumo el precio de la prenda para luego buscar la bonificación asociada (si corresponde)
+                
+                PrendaPedido prendaPedido = new PrendaPedido
+                {
+                    NumeroLinea = lc.NumeroLinea,
+                    Prenda = prenda.Descripcion,
+                    Cantidad = lc.CantidadPrenda,
+                    Precio = precio.Valor * lc.CantidadPrenda
+                };
+                detalleCompra.PrendaPedido.Add(prendaPedido);
+            } 
+            var bonif = BService.GetByValue(total);
+            if(bonif != null)
+            {
+                detalleCompra.Bonificacion = bonif;
+            }
+
+            // Creación del documento:
+            var documento = Service.GeneratePDF(detalleCompra);
+            return File(documento, "application/pdf", "detalle.pdf");
         }
 
         [HttpPost]

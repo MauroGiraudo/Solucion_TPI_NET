@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlazorApp.Model.Compras;
 using Newtonsoft.Json;
+using BlazorApp.Shared;
 
 namespace BlazorApp.Negocio
 {
@@ -113,6 +114,34 @@ namespace BlazorApp.Negocio
             var response = await Conexion.Instancia.Cliente.GetStringAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + "EnProceso");
             var data = JsonConvert.DeserializeObject<List<Compra>>(response);
             return data;
+        }
+
+        //Generar PDF
+        public static async Task<Boolean> GenerarPDF(string IdOperacion)
+        {
+            string filePath = @"D:\Descargas\detalle_" + IdOperacion.ToString() + ".pdf";
+            var response = await Conexion.Instancia.Cliente.GetAsync(GetURL(UsuarioNegocio.Usuario.IdUsu) + Convert.ToString(IdOperacion) + "/Detalle");
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsByteArrayAsync();
+                    File.WriteAllBytes(filePath, data);
+                    //System.Diagnostics.Process.Start(filePath);
+                    return true;
+                }
+                else
+                {
+                    return JsonConvert.DeserializeObject<Boolean>(await response.Content.ReadAsStringAsync());
+                }
+
+            }
+            catch (Exception exc)
+            {
+                var datos = JsonConvert.DeserializeObject<string>(await response.Content.ReadAsStringAsync());
+                Errors.Errores.Add(datos);
+                return false;
+            }
         }
 
         public static async Task<Boolean> Post(Compra compra)

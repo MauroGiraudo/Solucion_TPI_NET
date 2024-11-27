@@ -46,5 +46,35 @@ namespace Domain.Services
             using var context = new TiendaRopaContext();
             return context.Bonificaciones.ToList();
         }
+
+        public Bonificacion? GetByValue(float cantidad)
+        {
+            using var context = new TiendaRopaContext();
+            var bonificaciones = context.Bonificaciones.ToList();
+            var cantidadFiltrada =
+                from b in bonificaciones
+                where b.CantidadParaDescuento <= cantidad && b.FecVigenciaBonificacion <= DateTime.Now
+                select b.CantidadParaDescuento;
+            if(cantidadFiltrada.Count() == 0)
+            {
+                return null;
+            }
+            var cant = cantidadFiltrada.Max();
+            var fechasFiltradas =
+                from b in bonificaciones
+                where b.FecVigenciaBonificacion <= DateTime.Now && b.CantidadParaDescuento == cant
+                select b.FecVigenciaBonificacion;
+            if(fechasFiltradas.Count() == 0)
+            {
+                return null;
+            }
+            var fecha = fechasFiltradas.Max();
+            var bonificacion =
+                from b in bonificaciones
+                where b.CantidadParaDescuento == cant && b.FecVigenciaBonificacion == fecha
+                select b;
+            return bonificacion.FirstOrDefault();
+
+        }
     }
 }
