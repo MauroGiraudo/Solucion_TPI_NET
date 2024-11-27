@@ -121,7 +121,7 @@ namespace WebAPI.Controllers
                 }
                 var precio = PPService.GetOne(lc.IdPrenda, Convert.ToDateTime(fecha));
 
-                total += precio.Valor; //Sumo el precio de la prenda para luego buscar la bonificación asociada (si corresponde)
+                total += precio.Valor * lc.CantidadPrenda; //Sumo el precio de la prenda para luego buscar la bonificación asociada (si corresponde)
                 
                 PrendaPedido prendaPedido = new PrendaPedido
                 {

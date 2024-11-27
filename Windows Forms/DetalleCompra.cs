@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Windows_Forms.Model.Compras;
 using Windows_Forms.Model.Prendas;
 using Windows_Forms.Negocio;
+using Windows_Forms.Shared;
 
 namespace Windows_Forms
 {
@@ -28,7 +29,7 @@ namespace Windows_Forms
             dtp_fecha.Value = compra.FechaOperacion;
             dgv_compra.DataSource = prendas;
 
-            if(bonificacion != null)
+            if (bonificacion != null)
             {
                 lbl_descuento.Text = $"¡Obtuvo un descuento del {bonificacion.ProporcionDescuento}% !";
                 lbl_descuento.Visible = true;
@@ -49,7 +50,7 @@ namespace Windows_Forms
         private Bonificacion? Descuento(float total)
         {
             var bonif = BonificacionNegocio.GetCurrent(Convert.ToInt32(total)).Result;
-            if(bonif == null)
+            if (bonif == null)
             {
                 return null;
             }
@@ -59,6 +60,25 @@ namespace Windows_Forms
         private void btn_salir_Click(object sender, EventArgs e)
         {
             this.Dispose();
+        }
+
+        private async void btn_descargar_Click(object sender, EventArgs e)
+        {
+            if(await CompraNegocio.GenerarPDF(txb_idOperacion.Text))
+            {
+                MessageBox.Show("Detalle de compra descargado exitosamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            else
+            {
+                if(Errors.Errores.Count != 0)
+                {
+                    MessageBox.Show(string.Join("\n", Errors.Errores), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Errors.Errores.Clear();
+                    return;
+                }
+                MessageBox.Show("Error al descargar el detalle de compra", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

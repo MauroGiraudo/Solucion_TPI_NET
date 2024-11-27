@@ -40,6 +40,7 @@
             lbl_total = new Label();
             txb_total = new TextBox();
             lbl_descuento = new Label();
+            btn_descargar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgv_compra).BeginInit();
             SuspendLayout();
             // 
@@ -115,10 +116,10 @@
             // btn_salir
             // 
             btn_salir.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btn_salir.Location = new Point(358, 451);
+            btn_salir.Location = new Point(459, 451);
             btn_salir.Name = "btn_salir";
             btn_salir.Size = new Size(94, 29);
-            btn_salir.TabIndex = 7;
+            btn_salir.TabIndex = 11;
             btn_salir.Text = "Salir";
             btn_salir.UseVisualStyleBackColor = true;
             btn_salir.Click += btn_salir_Click;
@@ -152,8 +153,19 @@
             lbl_descuento.Location = new Point(126, 401);
             lbl_descuento.Name = "lbl_descuento";
             lbl_descuento.Size = new Size(51, 20);
-            lbl_descuento.TabIndex = 10;
+            lbl_descuento.TabIndex = 7;
             lbl_descuento.Text = "label1";
+            // 
+            // btn_descargar
+            // 
+            btn_descargar.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btn_descargar.Location = new Point(260, 451);
+            btn_descargar.Name = "btn_descargar";
+            btn_descargar.Size = new Size(94, 29);
+            btn_descargar.TabIndex = 10;
+            btn_descargar.Text = "Descargar";
+            btn_descargar.UseVisualStyleBackColor = true;
+            btn_descargar.Click += btn_descargar_Click;
             // 
             // form_detalleCompra
             // 
@@ -161,6 +173,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             ClientSize = new Size(800, 492);
+            Controls.Add(btn_descargar);
             Controls.Add(lbl_descuento);
             Controls.Add(txb_total);
             Controls.Add(lbl_total);
@@ -192,5 +205,6 @@
         private Label lbl_total;
         private TextBox txb_total;
         private Label lbl_descuento;
+        private Button btn_descargar;
     }
 }

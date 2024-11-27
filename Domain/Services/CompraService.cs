@@ -171,7 +171,7 @@ namespace Domain.Services
                                     table.Cell().Background(backgroundColor).Padding(4).Text(item.NumeroLinea.ToString());
                                     table.Cell().Background(backgroundColor).Padding(4).Text(item.Prenda);
                                     table.Cell().Background(backgroundColor).Padding(4).Text(item.Cantidad.ToString()).AlignRight();
-                                    table.Cell().Background(backgroundColor).Padding(4).Text(item.Precio.ToString()).AlignRight();
+                                    table.Cell().Background(backgroundColor).Padding(4).Text("$" + item.Precio.ToString()).AlignRight();
                                 }
 
                                 table.Cell()
@@ -185,7 +185,7 @@ namespace Domain.Services
                                 {
                                     total = total * (1 - detalleCompra.Bonificacion.ProporcionDescuento / 100);
                                 }
-                                table.Cell().ColumnSpan(4).Text(total.ToString()).AlignRight();
+                                table.Cell().ColumnSpan(4).Text("$" + total.ToString()).AlignRight();
                                     
                             });
 

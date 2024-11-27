@@ -36,6 +36,7 @@ else
 
     <div class="buscarContainer">
 
+        <button class="formButton" @onclick="Descargar" style="margin-right: 0.3rem;">Descargar</button>
         <button class="formButton" @onclick="Volver" style="margin-left: 0.3rem;">Volver</button>
 
     </div>
@@ -94,6 +95,22 @@ else
     private void Volver(MouseEventArgs e)
     {
         NavigationManager.NavigateTo("/comprasCliente/" + IdUsu);
+    }
+    private async void Descargar(MouseEventArgs e)
+    {
+        resultado = "Cargando...";
+        if(await CompraNegocio.GenerarPDF(IdOperacion))
+        {
+            resultado = "Detalle de compra descargado exitosamente en [D:\\Descargas]";
+        }
+        else
+        {
+            var error = Errors.Errores.FirstOrDefault();
+            resultado = error;
+            Errors.Errores.Clear();
+        }
+
+        StateHasChanged();
     }
 }
 
