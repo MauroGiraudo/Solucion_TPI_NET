@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows_Forms.Model.Prendas;
 
 namespace Windows_Forms.Model.Compras
 {
@@ -22,5 +23,14 @@ namespace Windows_Forms.Model.Compras
         public int IdOperacion { get; set; }
         public DateTime FechaOperacion { get; set; }
         public string EstadoOperacion { get; set; }
+    }
+
+    public class DetalleCompra
+    {
+        public int IdOperacion { get; set; }
+        public DateTime FechaOperacion { get; set; }
+        public string EstadoOperacion { get; set; }
+        public List<PrendaPedido> PrendaPedido { get; set; }
+        public Bonificacion? Bonificacion { get; set; }
     }
 }

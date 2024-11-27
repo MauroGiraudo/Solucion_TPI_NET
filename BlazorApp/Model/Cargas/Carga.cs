@@ -6,6 +6,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlazorApp.Model.Prendas;
+using BlazorApp.Model.Compras;
 
 namespace BlazorApp.Model.Cargas
 {
@@ -22,5 +24,13 @@ namespace BlazorApp.Model.Cargas
         public int IdOperacion { get; set; }
         public DateTime FechaOperacion { get; set; }
         public string EstadoOperacion { get; set; }
+    }
+    public class DetalleCarga
+    {
+        public int IdOperacion { get; set; }
+        public DateTime FechaOperacion { get; set; }
+        public string EstadoOperacion { get; set; }
+        public List<PrendaPedido> PrendaPedido { get; set; }
+        public Bonificacion? Bonificacion { get; set; }
     }
 }
